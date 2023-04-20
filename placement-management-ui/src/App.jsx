@@ -6,8 +6,11 @@ import './App.css'
 
 function App() {
   return (
-    <Provider theme={defaultTheme}>
-      
+    <Provider
+      theme={defaultTheme}
+      height={"100vh"}
+      width={"100vw"}
+    >
       <Button
         variant="accent"
         onPress={() => alert('Hey there!')}
