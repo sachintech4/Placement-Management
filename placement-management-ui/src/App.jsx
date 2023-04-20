@@ -1,8 +1,5 @@
 import {Button, defaultTheme, Provider} from '@adobe/react-spectrum';
-import { useState } from 'react'
-
 import './App.css'
-
 
 function App() {
   return (
