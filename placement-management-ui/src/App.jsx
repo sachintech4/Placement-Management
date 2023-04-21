@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -16,9 +16,12 @@ function App() {
 
   const [user, setUser] = useState({});
 
+useEffect(() => {
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
+}, [])
+
 
   const register = async () => {
     try {
