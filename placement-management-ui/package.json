@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.26.0",
+    "@react-spectrum/toast": "^3.0.0-beta.0",
     "firebase": "^9.20.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

@@ -1,22 +1,21 @@
-import {Button, defaultTheme, Provider} from '@adobe/react-spectrum';
-import './App.css'
+import { ToastContainer } from "@react-spectrum/toast";
+import { Button, lightTheme, Provider } from "@adobe/react-spectrum";
+
+import "./App.css";
+import LoginScreen from "./components/Loginscreen";
 
 function App() {
   return (
     <Provider
-      theme={defaultTheme}
+      theme={lightTheme}
+      colorScheme="light"
       height={"100vh"}
       width={"100vw"}
     >
-      <Button
-        variant="accent"
-        onPress={() => alert('Hey there!')}
-      >
-        Hello React Spectrum!
-      </Button>
+      <LoginScreen />
+      <ToastContainer />
     </Provider>
   );
- 
 }
 
-export default App
+export default App;
