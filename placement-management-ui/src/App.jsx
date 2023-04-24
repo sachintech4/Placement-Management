@@ -2,7 +2,7 @@ import { ToastContainer } from "@react-spectrum/toast";
 import { Button, lightTheme, Provider } from "@adobe/react-spectrum";
 
 import "./App.css";
-import LoginScreen from "./components/Loginscreen";
+import LoginScreen from "./components/LoginScreen";
 
 function App() {
   return (
