@@ -14,7 +14,6 @@ import {
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import { useState } from "react";
-
 import logo from "../assets/logo.png";
 
 function LoginScreen() {
@@ -65,10 +64,9 @@ function LoginScreen() {
         </View>
         <Heading level={1}>Placement Manager</Heading>
       </Flex>
-
       <Flex gridArea="form" justifyContent="center" alignItems="center">
         <View
-          width={{ base: "size-2500", L: "size:4600" }}
+          maxidth={{ base: "size-2500", L: "size:4600" }}
           borderWidth="thin"
           borderColor="dark"
           borderRadius="medium"
@@ -91,7 +89,7 @@ function LoginScreen() {
               <ActionButton>Role</ActionButton>
               <Menu onAction={(key) => setRole(key)}>
                 <Item key="admin">Admin</Item>
-                <Item key="TPO">TPO</Item>
+                <Item key="tpo">TPO</Item>
                 <Item key="student">Student</Item>
               </Menu>
             </MenuTrigger>
