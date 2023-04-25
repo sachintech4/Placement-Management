@@ -13,29 +13,33 @@ import {
   Heading,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import cons from "../cons.js";
 import logo from "../assets/logo.png";
 
 function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [roleKey, setRoleKey] = useState(null);
+
+  const users = useMemo(() => Object.values(cons.USERS), []);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (email === "") {
+    if (!email) {
       ToastQueue.negative("Please provide an email", { timeout: 1000 });
       return;
     }
-    if (password === "") {
+    if (!password) {
       ToastQueue.negative("Please provide a password", { timeout: 1000 });
       return;
     }
-    if (role === "") {
+    if (!roleKey) {
       ToastQueue.negative("Please provide a role", { timeout: 1000 });
       return;
     }
-    console.log(email, password, role);
+    console.log(email, password, roleKey);
+    // send these details to the server to authenticate the user
   };
 
   return (
@@ -86,11 +90,14 @@ function LoginScreen() {
               isRequired
             />
             <MenuTrigger>
-              <ActionButton>Role</ActionButton>
-              <Menu onAction={(key) => setRole(key)}>
-                <Item key="admin">Admin</Item>
-                <Item key="tpo">TPO</Item>
-                <Item key="student">Student</Item>
+              <ActionButton>
+                {users.find((user) => user.type === roleKey)?.text ?? "Role"}
+              </ActionButton>
+              <Menu
+                onAction={(key) => setRoleKey(key)}
+                items={users}
+              >
+                {(user) => <Item key={user.type}>{user.text}</Item>}
               </Menu>
             </MenuTrigger>
             <Button type="submit">login</Button>
