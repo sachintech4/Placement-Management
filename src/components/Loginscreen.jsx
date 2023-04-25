@@ -24,7 +24,7 @@ function LoginScreen() {
 
   const users = useMemo(() => Object.values(cons.USERS), []);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!email) {
       ToastQueue.negative("Please provide an email", { timeout: 1000 });
@@ -38,8 +38,31 @@ function LoginScreen() {
       ToastQueue.negative("Please provide a role", { timeout: 1000 });
       return;
     }
-    console.log(email, password, roleKey);
-    // send these details to the server to authenticate the user
+    
+    const creds = {
+      email,
+      password,
+      role: roleKey
+    }
+    
+    try {
+      const url = `${cons.BASE_SERVER_URL}/auth`;
+      const opts = {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(creds),
+      }
+      const res = await fetch(url, opts);
+      console.log(res);
+      // todo: 
+      // 1. obtain the response. 
+      // 2. save the token or display error msg as per the response.
+    } catch (error) {
+      console.error(":: error authenticating user ::");
+      console.error(error);
+    }
   };
 
   return (

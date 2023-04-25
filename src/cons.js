@@ -13,6 +13,7 @@ const cons = {
       text: "Admin",
     },
   },
+  BASE_SERVER_URL: "http://localhost:8080",
 };
 
 export default cons;
