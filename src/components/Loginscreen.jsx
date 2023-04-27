@@ -2,10 +2,6 @@ import {
   Flex,
   Form,
   TextField,
-  Menu,
-  MenuTrigger,
-  ActionButton,
-  Item,
   Button,
   Grid,
   View,
@@ -13,16 +9,13 @@ import {
   Heading,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import cons from "../cons.js";
 import logo from "../assets/logo.png";
 
 function LoginScreen() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [roleKey, setRoleKey] = useState(null);
-
-  const users = useMemo(() => Object.values(cons.USERS), []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -36,16 +29,8 @@ function LoginScreen() {
       ToastQueue.negative("Please provide a password", { timeout: 1000 });
       return;
     }
-    if (!roleKey) {
-      ToastQueue.negative("Please provide a role", { timeout: 1000 });
-      return;
-    }
 
-    const creds = {
-      email,
-      password,
-      role: roleKey,
-    };
+    const creds = { email, password };
 
     try {
       const url = `${cons.BASE_SERVER_URL}/auth`;
@@ -100,27 +85,21 @@ function LoginScreen() {
           padding="size-250"
         >
           <Form onSubmit={handleLogin}>
-            <TextField
-              label="Email"
-              type="email"
-              onChange={setEmail}
-              isRequired
-            />
-            <TextField
-              label="Password"
-              type="password"
-              onChange={setPassword}
-              isRequired
-            />
-            <MenuTrigger>
-              <ActionButton>
-                {users.find((user) => user.type === roleKey)?.text ?? "Role"}
-              </ActionButton>
-              <Menu onAction={(key) => setRoleKey(key)} items={users}>
-                {(user) => <Item key={user.type}>{user.text}</Item>}
-              </Menu>
-            </MenuTrigger>
-            <Button type="submit">login</Button>
+            <Flex direction={"column"} gap="size-200">
+              <TextField
+                label="Email"
+                type="email"
+                onChange={setEmail}
+                isRequired
+              />
+              <TextField
+                label="Password"
+                type="password"
+                onChange={setPassword}
+                isRequired
+              />
+              <Button type="submit">login</Button>
+            </Flex>
           </Form>
         </View>
       </Flex>
