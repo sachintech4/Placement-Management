@@ -24,12 +24,9 @@ function LoginScreen() {
 
   const users = useMemo(() => Object.values(cons.USERS), []);
 
-  const validRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !email.match(validRegex)) {
+    if (!email || !email.match(cons.REGEXS.VALID_EMAIL)) {
       ToastQueue.negative("Please provide a valid email address", {
         timeout: 1000,
       });
@@ -62,10 +59,6 @@ function LoginScreen() {
       const res = await fetch(url, opts);
       const resJSON = await res.json();
       console.log(resJSON);
-
-      // todo:
-      // 1. obtain the response.
-      // 2. save the token or display error msg as per the response.
     } catch (error) {
       console.error(":: error authenticating user ::");
       console.error(error);
