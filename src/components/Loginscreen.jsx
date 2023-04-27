@@ -24,10 +24,15 @@ function LoginScreen() {
 
   const users = useMemo(() => Object.values(cons.USERS), []);
 
+  const validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email) {
-      ToastQueue.negative("Please provide an email", { timeout: 1000 });
+    if (!email || !email.match(validRegex)) {
+      ToastQueue.negative("Please provide a valid email address", {
+        timeout: 1000,
+      });
       return;
     }
     if (!password) {
@@ -38,13 +43,13 @@ function LoginScreen() {
       ToastQueue.negative("Please provide a role", { timeout: 1000 });
       return;
     }
-    
+
     const creds = {
       email,
       password,
-      role: roleKey
-    }
-    
+      role: roleKey,
+    };
+
     try {
       const url = `${cons.BASE_SERVER_URL}/auth`;
       const opts = {
@@ -53,11 +58,13 @@ function LoginScreen() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(creds),
-      }
+      };
       const res = await fetch(url, opts);
-      console.log(res);
-      // todo: 
-      // 1. obtain the response. 
+      const resJSON = await res.json();
+      console.log(resJSON);
+
+      // todo:
+      // 1. obtain the response.
       // 2. save the token or display error msg as per the response.
     } catch (error) {
       console.error(":: error authenticating user ::");
@@ -116,10 +123,7 @@ function LoginScreen() {
               <ActionButton>
                 {users.find((user) => user.type === roleKey)?.text ?? "Role"}
               </ActionButton>
-              <Menu
-                onAction={(key) => setRoleKey(key)}
-                items={users}
-              >
+              <Menu onAction={(key) => setRoleKey(key)} items={users}>
                 {(user) => <Item key={user.type}>{user.text}</Item>}
               </Menu>
             </MenuTrigger>
