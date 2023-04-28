@@ -10,8 +10,11 @@ import {
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import { useState } from "react";
+import { auth } from "../firebase-config.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import cons from "../cons.js";
 import logo from "../assets/logo.png";
+
 
 function LoginScreen() {
   const [email, setEmail] = useState(null);
@@ -30,23 +33,11 @@ function LoginScreen() {
       return;
     }
 
-    const creds = { email, password };
-
     try {
-      const url = `${cons.BASE_SERVER_URL}/auth`;
-      const opts = {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(creds),
-      };
-      const res = await fetch(url, opts);
-      const resJSON = await res.json();
-      console.log(resJSON);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.error(":: error authenticating user ::");
-      console.error(error);
+      console.error("failed to sign in user");
+      console.error(error.message);
     }
   };
 
