@@ -69,7 +69,7 @@ function LoginScreen() {
       </Flex>
       <Flex gridArea="form" justifyContent="center" alignItems="center">
         <View
-          maxidth={{ base: "size-2500", L: "size:4600" }}
+          maxWidth={{ base: "size-2500", L: "size:4600" }}
           borderWidth="thin"
           borderColor="dark"
           borderRadius="medium"
