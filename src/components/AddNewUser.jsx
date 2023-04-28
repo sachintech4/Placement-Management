@@ -4,14 +4,12 @@ import {
   TabList,
   TabPanels,
   Tabs,
-  View,
   Form,
   TextField,
   MenuTrigger,
   Menu,
   ActionButton,
 } from "@adobe/react-spectrum";
-import { Select } from "react-aria-components";
 import cons from "../cons";
 
 function AddTpo() {
