@@ -9,31 +9,118 @@ import {
   MenuTrigger,
   Menu,
   ActionButton,
+  DatePicker,
+  Grid,
+  Button,
+  View,
+  Flex,
 } from "@adobe/react-spectrum";
 import cons from "../cons";
 
 function AddTpo() {
   const [gender, setGender] = useState(null);
+  const [dob, setDob] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+
+    const firstName = data.get("first-name");
+    const lastName = data.get("last-name");
+    const email = data.get("email");
+    const prnNumber = data.get("prn-number");
+    const rollNo = data.get("roll-no");
+
+    console.log({
+      firstName,
+      lastName,
+      email,
+      prnNumber,
+      rollNo,
+      gender,
+      dob,
+    })
+  }
+
   return (
-    <Form>
-      <TextField label="Enter First Name" />
-      <TextField label="Enter Last Name" />
-      <MenuTrigger>
-        <ActionButton>{gender || "Select Gender"}</ActionButton>
-        <Menu onAction={(key) => setGender(key)}>
-          <Item key="male">Male</Item>
-          <Item key="female">Female</Item>
-        </Menu>
-      </MenuTrigger>
-      <TextField label="Enter Email" />
-    </Form>
+    <Flex direction="column" alignItems="start" gap={"size-200"}>
+      <View
+        padding="size-250"
+        width="fit-content"
+        borderWidth="thin"
+        borderColor="dark"
+        borderRadius="medium"
+      >
+        <Form onSubmit={handleSubmit} isRequired>
+          <Grid
+            areas={[
+              "first-name last-name",
+              "email email",
+              "prn-no roll-no",
+              "gender dob",
+              "buttons buttons"
+            ]}
+            columns={"1fr 1fr"}
+            alignItems={"end"}
+            gap={"size-200"}
+          >
+            <TextField
+              label="First Name"
+              gridArea={"first-name"}
+              name="first-name"
+            />
+            <TextField
+              label="Last Name"
+              gridArea={"last-name"}
+              name="last-name"
+            />
+            <TextField
+              label="Email"
+              gridArea={"email"}
+              width="100%"
+              name="email"
+            />
+            <TextField
+              label="PRN number"
+              gridArea={"prn-no"}
+              name="prn-number"
+            />
+            <TextField
+              label="Roll number"
+              gridArea={"roll-no"}
+              name="roll-no"
+            />
+            <MenuTrigger gridArea={"gender"}>
+              <ActionButton>{gender || "Select Gender"}</ActionButton>
+              <Menu onAction={(key) => setGender(key)}>
+                <Item key="male">Male</Item>
+                <Item key="female">Female</Item>
+              </Menu>
+            </MenuTrigger>
+            <DatePicker
+              label="Date of birth"
+              gridArea={"dob"}
+              value={dob}
+              onChange={setDob}
+            />
+            <View gridArea={"buttons"}>
+              <Button type="submit">Register</Button>
+            </View>
+          </Grid>
+        </Form>
+      </View>
+    </Flex>
   );
 }
 
 function AddStudent() {
   const [gender, setGender] = useState(null);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <TextField label="Enter First Name" />
       <TextField label="Enter Last Name" />
       <MenuTrigger>
@@ -57,10 +144,14 @@ function AddNewUser() {
       </TabList>
       <TabPanels>
         <Item key={cons.USERS.TPO.type}>
-          <AddTpo />
+          <View paddingX="size-100" paddingY="size-400">
+            <AddTpo />
+          </View>
         </Item>
         <Item key={cons.USERS.STUDENT.type}>
-          <AddStudent />
+          <View paddingX="size-100" paddingY="size-400">
+            <AddStudent />
+          </View>
         </Item>
       </TabPanels>
     </Tabs>
