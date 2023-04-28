@@ -1,4 +1,11 @@
 const cons = {
+  BASE_SERVER_URL: "http://localhost:8080",
+  SECRETS: {
+    ACCESS_TOKEN: null,
+  },
+  REGEXS: {
+    VALID_EMAIL: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+  },
   USERS: {
     TPO: {
       type: "tpo",
@@ -10,12 +17,16 @@ const cons = {
     },
     ADMIN: {
       type: "admin",
-      text: "Admin",
+      text: "Admin"
     },
   },
-  BASE_SERVER_URL: "http://localhost:8080",
-  REGEXS: {
-    VALID_EMAIL: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+  SIDEBARS: {
+    ADMIN: {
+      ADD_NEW_USER: {
+        type: 'add-new-user',
+        text: "Add new user"
+      }
+    }
   }
 };
 
