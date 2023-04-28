@@ -1,25 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Item,
   TabList,
   TabPanels,
   Tabs,
-} from '@adobe/react-spectrum'
+  View,
+  Form,
+  TextField,
+  MenuTrigger,
+  Menu,
+  ActionButton,
+} from "@adobe/react-spectrum";
+import { Select } from "react-aria-components";
 import cons from "../cons";
 
 function AddTpo() {
+  const [gender, setGender] = useState(null);
   return (
-    <View>
-      add new tpo form      
-    </View>
+    <Form>
+      <TextField label="Enter First Name" />
+      <TextField label="Enter Last Name" />
+      <MenuTrigger>
+        <ActionButton>{gender || "Select Gender"}</ActionButton>
+        <Menu onAction={(key) => setGender(key)}>
+          <Item key="male">Male</Item>
+          <Item key="female">Female</Item>
+        </Menu>
+      </MenuTrigger>
+      <TextField label="Enter Email" />
+    </Form>
   );
 }
 
 function AddStudent() {
+  const [gender, setGender] = useState(null);
   return (
-    <View>
-      add new student user form
-    </View>
+    <Form>
+      <TextField label="Enter First Name" />
+      <TextField label="Enter Last Name" />
+      <MenuTrigger>
+        <ActionButton>{gender || "Select Gender"}</ActionButton>
+        <Menu onAction={(key) => setGender(key)}>
+          <Item key="male">Male</Item>
+          <Item key="female">Female</Item>
+        </Menu>
+      </MenuTrigger>
+      <TextField label="Enter Email" />
+    </Form>
   );
 }
 
