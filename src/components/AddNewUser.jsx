@@ -36,7 +36,7 @@ function AddTpo() {
       role: "tpo",
     };
 
-    // send a post request to the server
+    // send a post request to create the user
     try {
       const opts = {
         method: "post",
@@ -45,11 +45,11 @@ function AddTpo() {
         },
         body: JSON.stringify(details),
       };
-
-      const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
-      console.log("Tpo details sent.");
+      await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
+      console.log("new TPO user created");
     } catch (error) {
-      console.log("Error sending tpo details to the backend");
+      console.error("error creating a new TPO user");
+      console.error(error);
     }
   };
 
@@ -135,6 +135,7 @@ function AddStudent() {
       role: "student",
     };
 
+    // send a post request to create the user
     try {
       const opts = {
         method: "post",
@@ -143,11 +144,11 @@ function AddStudent() {
         },
         body: JSON.stringify(details),
       };
-
-      const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
-      console.log("Students details sent");
+      await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
+      console.log("new Student user created");
     } catch (error) {
-      console.log("Error sending student details to the backend");
+      console.error("error creating a new Student user");
+      console.error(error);
     }
   };
 
