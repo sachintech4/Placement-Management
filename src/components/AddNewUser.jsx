@@ -21,26 +21,36 @@ function AddTpo() {
   const [gender, setGender] = useState(null);
   const [dob, setDob] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const data = new FormData(form);
 
-    const firstName = data.get("first-name");
-    const lastName = data.get("last-name");
-    const email = data.get("email");
-    const id = data.get("id-number");
-
-    console.log({
-      firstName,
-      lastName,
-      email,
-      id,
-      gender,
-      dob,
-    });
+    const details = {
+      firstName: data.get("first-name"),
+      lastName: data.get("last-name"),
+      email: data.get("email"),
+      id: data.get("id-number"),
+      gender: gender,
+      dob: dob,
+      role: "tpo",
+    };
 
     // send a post request to the server
+    try {
+      const opts = {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      };
+
+      const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
+      console.log("Tpo details sent.");
+    } catch (error) {
+      console.log("Error sending tpo details to the backend");
+    }
   };
 
   return (
@@ -109,26 +119,36 @@ function AddStudent() {
   const [gender, setGender] = useState(null);
   const [dob, setDob] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const data = new FormData(form);
 
-    const firstName = data.get("first-name");
-    const lastName = data.get("last-name");
-    const email = data.get("email");
-    const prn = data.get("prn-number");
-    const rollNo = data.get("roll-no");
+    const details = {
+      firstName: data.get("first-name"),
+      lastName: data.get("last-name"),
+      email: data.get("email"),
+      prn: data.get("prn-number"),
+      rollNo: data.get("roll-no"),
+      gender: gender,
+      dob: dob,
+      role: "student",
+    };
 
-    console.log({
-      firstName,
-      lastName,
-      email,
-      prn,
-      rollNo,
-      gender,
-      dob,
-    });
+    try {
+      const opts = {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      };
+
+      const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
+      console.log("Students details sent");
+    } catch (error) {
+      console.log("Error sending student details to the backend");
+    }
   };
 
   return (
