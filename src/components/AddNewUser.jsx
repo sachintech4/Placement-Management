@@ -29,16 +29,18 @@ function AddTpo() {
     const firstName = data.get("first-name");
     const lastName = data.get("last-name");
     const email = data.get("email");
-    const idNo = data.get("id-number");
+    const id = data.get("id-number");
 
     console.log({
       firstName,
       lastName,
       email,
-      idNo,
+      id,
       gender,
       dob,
     });
+
+    // send a post request to the server
   };
 
   return (
@@ -115,14 +117,14 @@ function AddStudent() {
     const firstName = data.get("first-name");
     const lastName = data.get("last-name");
     const email = data.get("email");
-    const prnNumber = data.get("prn-number");
+    const prn = data.get("prn-number");
     const rollNo = data.get("roll-no");
 
     console.log({
       firstName,
       lastName,
       email,
-      prnNumber,
+      prn,
       rollNo,
       gender,
       dob,
