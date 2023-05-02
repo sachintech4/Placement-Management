@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, View, ActionButton, Text, Grid } from "@adobe/react-spectrum";
 import Settings from "@spectrum-icons/workflow/Settings";
+import LogOut from "@spectrum-icons/workflow/LogOut";
 import cons from "../cons";
 
 const adminSidebarOptions = Object.values(cons.SIDEBARS.ADMIN);
@@ -24,23 +25,133 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
     }
   };
 
+  // return (
+  //   <View backgroundColor={"blue-400"} padding={"size-200"}>
+  //     <Grid
+  //       gridArea={gridArea}
+  //       areas={["top", "bottom"]}
+  //       rows={["85vh", "auto"]}
+  //       gap={"size-200"}
+  //     >
+  //       <div
+  //         style={{
+  //           display: "flex",
+  //           flexDirection: "column",
+  //           overflowY: "scroll",
+  //           gridArea: "top",
+  //         }}
+  //       >
+  //         {renderSidebarOptions()}
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //         <ActionButton>test</ActionButton>
+  //       </div>
+  //       <Flex gridArea={"bottom"} direction={"column"}>
+  //         <ActionButton>
+  //           <LogOut />
+  //           <Text>Log out</Text>
+  //         </ActionButton>
+  //         <ActionButton>
+  //           <Settings />
+  //           <Text>Settings</Text>
+  //         </ActionButton>
+  //       </Flex>
+  //     </Grid>
+  //   </View>
+  // );
   return (
-    <Grid
-      gridArea={gridArea}
-      areas={["options", "settings"]}
-      rows={["auto", "size-800"]}
-      gap={"size-200"}
-    >
-      <Flex gridArea="options" direction={"column"}>
-        {renderSidebarOptions()}
+    <View backgroundColor={"blue-400"} padding={"size-100"} height={"100vh"}>
+      <Flex
+        gridArea={gridArea}
+        direction={"column"}
+        height={"100%"}
+        gap={"size-100"}
+      >
+        <View height="100%" width="100%" overflow={"hidden auto"}>
+          <Flex direction={"column"} gap={"size-25"} height="100%">
+            {renderSidebarOptions()}
+          </Flex>
+        </View>
+        <Flex gridArea={"bottom"} direction={"column"}>
+          <ActionButton>
+            <LogOut />
+            <Text>Log out</Text>
+          </ActionButton>
+          <ActionButton>
+            <Settings />
+            <Text>Settings</Text>
+          </ActionButton>
+        </Flex>
       </Flex>
-      <Flex gridArea={"settings"} justifyContent={"center"}>
-        <ActionButton>
-          <Settings />
-          <Text>Settings</Text>
-        </ActionButton>
-      </Flex>
-    </Grid>
+    </View>
   );
 }
 
