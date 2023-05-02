@@ -1,27 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Flex, View, ActionButton, Text, Grid } from "@adobe/react-spectrum";
 import Settings from "@spectrum-icons/workflow/Settings";
 import LogOut from "@spectrum-icons/workflow/LogOut";
 import cons from "../cons";
+import { signOut } from "@firebase/auth";
+import { AuthUserContext } from "../contexts";
 
 const adminSidebarOptions = Object.values(cons.SIDEBARS.ADMIN);
 
 function Sidebar({ gridArea, role, onOptionSelect }) {
+  const authUser = useContext(AuthUserContext);
+
+  const logOut = async () => {
+    await signOut(authUser.auth);
+  };
+
   const renderSidebarOptions = () => {
-    switch(role?.type) {
+    switch (role?.type) {
       case cons.USERS.ADMIN.type: {
-        return adminSidebarOptions.map(
-          (opt, index) => (
-            <ActionButton
-              key={`${index}${opt.text}`}
-              onPress={() => { onOptionSelect(opt) }}
-            >
-              {opt.text}
-            </ActionButton>
-          )
-        );
+        return adminSidebarOptions.map((opt, index) => (
+          <ActionButton
+            key={`${index}${opt.text}`}
+            onPress={() => {
+              onOptionSelect(opt);
+            }}
+          >
+            {opt.text}
+          </ActionButton>
+        ));
       }
-      default: onOptionSelect(null);
+      default:
+        onOptionSelect(null);
     }
   };
 
@@ -39,7 +48,7 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
           </Flex>
         </View>
         <Flex gridArea={"bottom"} direction={"column"}>
-          <ActionButton>
+          <ActionButton onPress={logOut}>
             <LogOut />
             <Text>Log out</Text>
           </ActionButton>
