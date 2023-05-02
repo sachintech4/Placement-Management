@@ -61,7 +61,7 @@ function AddTpo() {
       if (error.code === "email-already-exists") {
         ToastQueue.negative(error.message, { timeout: 1000 });
       } else {
-        ToastQueue.negative("error creating a new TPO user", {
+        ToastQueue.negative("error creating the new TPO user", {
           timeout: 1000,
         });
       }
@@ -175,7 +175,7 @@ function AddStudent() {
       if (error.code === "email-already-exists") {
         ToastQueue.negative(error.message, { timeout: 1000 });
       } else {
-        ToastQueue.negative("error creating a new Student user", {
+        ToastQueue.negative("error creating the new Student user", {
           timeout: 1000,
         });
       }
