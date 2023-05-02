@@ -27,17 +27,54 @@ function AddTpo() {
     const form = e.target;
     const data = new FormData(form);
 
+    const firstName = data.get("first-name").trim();
+    const lastName = data.get("last-name").trim();
+    const email = data.get("email").trim();
+    const id = data.get("id-number").trim();
+
     // todo: input sanitsation and validation
 
     const details = {
-      firstName: data.get("first-name"),
-      lastName: data.get("last-name"),
-      email: data.get("email"),
-      id: data.get("id-number"),
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      id: id,
       gender: gender,
       dob: dob,
       role: "tpo",
     };
+
+    // validation
+    if (!details.firstName) {
+      ToastQueue.negative("Please provide the First Name", { timeout: 1000 });
+      return;
+    }
+    if (!details.lastName) {
+      ToastQueue.negative("Please provide the Last Name", { timeout: 1000 });
+      return;
+    }
+    if (!details.email) {
+      ToastQueue.negative("Please provide the Email", { timeout: 1000 });
+      return;
+    }
+    if (!details.email.match(cons.REGEXS.VALID_EMAIL)) {
+      ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
+      return;
+    }
+    if (!details.id) {
+      ToastQueue.negative("Please provide the ID number", { timeout: 1000 });
+      return;
+    }
+    if (!details.gender) {
+      ToastQueue.negative("Please provide the gender", { timeout: 1000 });
+      return;
+    }
+    if (!details.dob) {
+      ToastQueue.negative("Please provide the Date of birth", {
+        timeout: 1000,
+      });
+      return;
+    }
 
     // send a post request to create the user
     try {
@@ -188,7 +225,9 @@ function AddStudent() {
       return;
     }
     if (!details.dob) {
-      ToastQueue.negative("Please provide the Date of birth", { timeout: 1000 });
+      ToastQueue.negative("Please provide the Date of birth", {
+        timeout: 1000,
+      });
       return;
     }
 
