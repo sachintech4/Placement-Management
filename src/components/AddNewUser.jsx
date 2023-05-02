@@ -15,6 +15,7 @@ import {
   View,
   Flex,
 } from "@adobe/react-spectrum";
+import { ToastQueue } from "@react-spectrum/toast";
 import cons from "../cons";
 
 function AddTpo() {
@@ -45,9 +46,19 @@ function AddTpo() {
         },
         body: JSON.stringify(details),
       };
-      await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
-      console.log("new TPO user created");
+      const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
+
+      if (!res.ok) {
+        throw new Error(`${res.status}, ${res.msg}`);
+      } else {
+        ToastQueue.positive("New user: TPO added", {
+          timeout: 1000,
+        });
+      }
     } catch (error) {
+      ToastQueue.negative("Error adding new user: TPO", {
+        timeout: 1000,
+      });
       console.error("error creating a new TPO user");
       console.error(error);
     }
@@ -144,9 +155,19 @@ function AddStudent() {
         },
         body: JSON.stringify(details),
       };
-      await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
-      console.log("new Student user created");
+      const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
+
+      if (!res.ok) {
+        throw new Error(`${res.status}, ${res.msg}`);
+      } else {
+        ToastQueue.positive("New user: Student added", {
+          timeout: 1000,
+        });
+      }
     } catch (error) {
+      ToastQueue.negative("Error adding new user: Student", {
+        timeout: 1000,
+      });
       console.error("error creating a new Student user");
       console.error(error);
     }
