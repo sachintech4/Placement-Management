@@ -47,20 +47,24 @@ function AddTpo() {
         body: JSON.stringify(details),
       };
       const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
-
-      if (!res.ok) {
-        throw new Error(`${res.status}, ${res.msg}`);
-      } else {
+      const resJson = await res.json();
+      if (res.ok) {
         ToastQueue.positive("New user: TPO added", {
           timeout: 1000,
         });
-      }
+      } else {
+        throw { code: resJson.code, message: resJson.message };
+      } 
     } catch (error) {
-      ToastQueue.negative("Error adding new user: TPO", {
-        timeout: 1000,
-      });
-      console.error("error creating a new TPO user");
       console.error(error);
+
+      if (error.code === "email-already-exists") {
+        ToastQueue.negative(error.message, { timeout: 1000 });
+      } else {
+        ToastQueue.negative("error creating a new TPO user", {
+          timeout: 1000,
+        });
+      }
     }
   };
 
