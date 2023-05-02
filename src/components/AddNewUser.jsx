@@ -27,6 +27,8 @@ function AddTpo() {
     const form = e.target;
     const data = new FormData(form);
 
+    // todo: input sanitsation and validation
+
     const details = {
       firstName: data.get("first-name"),
       lastName: data.get("last-name"),
@@ -139,16 +141,56 @@ function AddStudent() {
     const form = e.target;
     const data = new FormData(form);
 
+    const firstName = data.get("first-name").trim();
+    const lastName = data.get("last-name").trim();
+    const email = data.get("email").trim();
+    const prn = data.get("prn-number").trim();
+    const rollNo = data.get("roll-no").trim();
+
     const details = {
-      firstName: data.get("first-name"),
-      lastName: data.get("last-name"),
-      email: data.get("email"),
-      prn: data.get("prn-number"),
-      rollNo: data.get("roll-no"),
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      prn: prn,
+      rollNo: rollNo,
       gender: gender,
       dob: dob,
       role: "student",
     };
+
+    // validation
+    if (!details.firstName) {
+      ToastQueue.negative("Please provide the First Name", { timeout: 1000 });
+      return;
+    }
+    if (!details.lastName) {
+      ToastQueue.negative("Please provide the Last Name", { timeout: 1000 });
+      return;
+    }
+    if (!details.email) {
+      ToastQueue.negative("Please provide the Email", { timeout: 1000 });
+      return;
+    }
+    if (!details.email.match(cons.REGEXS.VALID_EMAIL)) {
+      ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
+      return;
+    }
+    if (!details.prn) {
+      ToastQueue.negative("Please provide the PRN number", { timeout: 1000 });
+      return;
+    }
+    if (!details.rollNo) {
+      ToastQueue.negative("Please provide the Roll number", { timeout: 1000 });
+      return;
+    }
+    if (!details.gender) {
+      ToastQueue.negative("Please provide the gender", { timeout: 1000 });
+      return;
+    }
+    if (!details.dob) {
+      ToastQueue.negative("Please provide the Date of birth", { timeout: 1000 });
+      return;
+    }
 
     // send a post request to create the user
     try {
