@@ -49,12 +49,12 @@ function AddTpo() {
       const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
       const resJson = await res.json();
       if (res.ok) {
-        ToastQueue.positive("New user: TPO added", {
+        ToastQueue.positive(`${resJson.message}`, {
           timeout: 1000,
         });
       } else {
         throw { code: resJson.code, message: resJson.message };
-      } 
+      }
     } catch (error) {
       console.error(error);
 
@@ -160,20 +160,25 @@ function AddStudent() {
         body: JSON.stringify(details),
       };
       const res = await fetch(`${cons.BASE_SERVER_URL}/users`, opts);
+      const resJson = await res.json();
 
-      if (!res.ok) {
-        throw new Error(`${res.status}, ${res.msg}`);
+      if (res.ok) {
+        ToastQueue.positive(`${resJson.message}`, {
+          timeout: 1000,
+        });
       } else {
-        ToastQueue.positive("New user: Student added", {
+        throw { code: resJson.code, message: resJson.message };
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error.code === "email-already-exists") {
+        ToastQueue.negative(error.message, { timeout: 1000 });
+      } else {
+        ToastQueue.negative("error creating a new Student user", {
           timeout: 1000,
         });
       }
-    } catch (error) {
-      ToastQueue.negative("Error adding new user: Student", {
-        timeout: 1000,
-      });
-      console.error("error creating a new Student user");
-      console.error(error);
     }
   };
 
