@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ToastContainer } from "@react-spectrum/toast";
-import { lightTheme, Provider } from "@adobe/react-spectrum";
+import { lightTheme, Provider, ProgressCircle, Flex } from "@adobe/react-spectrum";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "./firebase-config";
 import "./App.css";
@@ -9,21 +9,39 @@ import LoginScreen from "./components/LoginScreen";
 import { AuthUserContext } from "./contexts";
 
 function App() {
+  const [isLoading, setLoading] = useState(true);
   const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log(user)
       if (user) {
         setAuthUser(user);
       } else {
         setAuthUser(null);
       }
+      setLoading(false);
     });
 
     () => {
       unsubscribe();
     }
   }, []);
+
+  const renderContent = useCallback(() => {
+    if (isLoading) {
+      return (
+        <Flex height={"100%"} width={"100%"} alignItems={"center"} justifyContent={"center"}>
+          <ProgressCircle aria-label="loading..." size={"L"} isIndeterminate />
+        </Flex>
+      );
+    }
+    if (authUser) {
+      return <Dashboard />;
+    } else {
+      return <LoginScreen />
+    }
+  }, [isLoading, authUser]);
 
   return (
     <Provider
@@ -33,7 +51,7 @@ function App() {
       width={"100vw"}
     >
       <AuthUserContext.Provider value={authUser}>
-        {authUser ? <Dashboard /> : <LoginScreen />}
+        {renderContent()}
         <ToastContainer />
       </AuthUserContext.Provider>
     </Provider>
@@ -41,5 +59,3 @@ function App() {
 }
 
 export default App;
-
-// todo: show loading screen on first load while firebase checks for auth in the background
