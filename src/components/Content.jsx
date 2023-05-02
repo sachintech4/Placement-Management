@@ -2,10 +2,14 @@ import React, { useCallback } from "react";
 import { View } from "@adobe/react-spectrum";
 import cons from "../cons";
 import AddNewUser from "./AddNewUser";
+import ProfileAndSettings from "./ProfileAndSettings";
 
 function Content({ gridArea, role, selectedSidebarOption }) {  
   const renderContent = useCallback(() => {
     switch(selectedSidebarOption?.type) {
+      case cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type: {
+        return <ProfileAndSettings role={role} />
+      }
       case cons.SIDEBARS.ADMIN.ADD_NEW_USER.type: {
         return <AddNewUser />;
       }

@@ -50,11 +50,11 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
         <Flex gridArea={"bottom"} direction={"column"} gap={"size-50"}>
           <ActionButton onPress={logOut}>
             <LogOut />
-            <Text>Log out</Text>
+            <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
           </ActionButton>
-          <ActionButton>
+          <ActionButton onPress={() => onOptionSelect(cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS)}>
             <Settings />
-            <Text>Settings</Text>
+            <Text>{cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.text}</Text>
           </ActionButton>
         </Flex>
       </Flex>

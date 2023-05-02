@@ -21,6 +21,16 @@ const cons = {
     },
   },
   SIDEBARS: {
+    COMMON: {
+      PROFILE_AND_SETTINGS: {
+        type: 'profile-and-settings',
+        text: "Profile and Settings", 
+      },
+      LOGOUT: {
+        type: 'logout',
+        text: "Logout", 
+      },
+    },
     ADMIN: {
       ADD_NEW_USER: {
         type: 'add-new-user',
