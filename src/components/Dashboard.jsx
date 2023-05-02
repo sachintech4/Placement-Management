@@ -28,7 +28,7 @@ function Dashboard() {
     <Grid
       height="100%"
       areas={["sidebar content"]}
-      columns={["size-3600"]}
+      columns={["size-3600", "auto"]}
       gap={"size-200"}
     >
       <Sidebar
