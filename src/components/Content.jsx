@@ -17,6 +17,7 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       gridArea={gridArea}
       height={"100%"}
       padding={"size-200"}
+      backgroundColor={"gray-200"}
     >
       {renderContent()}
     </View>
