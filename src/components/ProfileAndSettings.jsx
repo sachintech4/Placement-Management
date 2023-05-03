@@ -4,6 +4,7 @@ import cons from "../cons";
 import { sendPasswordResetEmail } from "@firebase/auth";
 import { AuthUserContext } from "../contexts";
 import { ToastQueue } from "@react-spectrum/toast";
+import AdminProfile from "./AdminProfile";
 
 function AdminSettings() {
   const authUser = useContext(AuthUserContext);
@@ -29,11 +30,7 @@ function ProfileAndSettings({ role }) {
   const renderProfile = useCallback(() => {
     switch (role?.type) {
       case cons.USERS.ADMIN.type: {
-        return (
-          <View>
-            <Text>Nothing to show.</Text>
-          </View>
-        );
+        return <AdminProfile />;
       }
       default: {
         return (
