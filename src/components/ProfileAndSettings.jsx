@@ -1,6 +1,28 @@
-import React, { useCallback } from "react";
-import { Tabs, TabList, TabPanels, Item, View, Text } from "@adobe/react-spectrum";
+import React, { useCallback, useContext } from "react";
+import { Tabs, TabList, TabPanels, Item, View, Text, Button } from "@adobe/react-spectrum";
 import cons from "../cons";
+import { sendPasswordResetEmail } from "@firebase/auth";
+import { AuthUserContext } from "../contexts";
+import { ToastQueue } from "@react-spectrum/toast";
+
+function AdminSettings() {
+  const authUser = useContext(AuthUserContext);
+  const handleReset = async () => {
+    try {
+      await sendPasswordResetEmail(authUser.auth, authUser.email);
+      ToastQueue.positive("Password reset email send to your email id", { timeout: 1000 });
+    } catch (error) {
+      console.error('error sending password reset email');
+      console.error(error);
+      ToastQueue.negative("Failed to send password reset email, please try after some time", { timeout: 1000 });
+    }
+  };
+  return(
+    <View>
+      <Button onPress={handleReset}>Reset password</Button>
+    </View>
+  );
+}
 
 function ProfileAndSettings({ role }) {
 
@@ -25,11 +47,7 @@ function ProfileAndSettings({ role }) {
   const renderSettings = useCallback(() =>  {
     switch (role?.type) {
       case cons.USERS.ADMIN.type: {
-        return (
-          <View>
-            <Text>admin settings</Text>
-          </View>
-        );
+        return <AdminSettings />;
       }
       default: {
         return (
