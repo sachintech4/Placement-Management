@@ -1,5 +1,13 @@
 import React, { useContext } from "react";
-import { Flex, View, ActionButton, Text, Heading } from "@adobe/react-spectrum";
+import {
+  Flex,
+  View,
+  ActionButton,
+  Text,
+  Heading,
+  ListBox,
+  Item,
+} from "@adobe/react-spectrum";
 import Settings from "@spectrum-icons/workflow/Settings";
 import LogOut from "@spectrum-icons/workflow/LogOut";
 import cons from "../cons";
@@ -8,7 +16,7 @@ import { AuthUserContext } from "../contexts";
 
 const adminSidebarOptions = Object.values(cons.SIDEBARS.ADMIN);
 const tpoSidebarOptions = Object.values(cons.SIDEBARS.TPO);
-
+const commonSidebarOptions = Object.values(cons.SIDEBARS.COMMON);
 function Sidebar({ gridArea, role, onOptionSelect }) {
   const authUser = useContext(AuthUserContext);
 
@@ -61,6 +69,24 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
             {renderSidebarOptions()}
           </Flex>
         </View>
+        {/* <ListBox
+          selectionMode={"single"}
+          onSelectionChange={(selection) => {
+            console.log("common option changed");
+            console.log(selection);
+          }}
+          items={commonSidebarOptions}
+          aria-label="general options"
+        >
+          <Item key={cons.SIDEBARS.COMMON.LOGOUT.type}>
+            <LogOut />
+            <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
+          </Item>
+          <Item key={cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type}>
+            <Settings />
+            <Text>{cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.text}</Text>
+          </Item>
+        </ListBox> */}
         <Flex direction={"column"} gap={"size-50"}>
           <ActionButton onPress={logOut}>
             <LogOut />
