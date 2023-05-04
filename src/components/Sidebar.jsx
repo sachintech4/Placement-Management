@@ -55,13 +55,13 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
         height={"100%"}
         gap={"size-100"}
       >
+        <Heading level={"1"}>{role?.text}</Heading>
         <View height="100%" width="100%" overflow={"hidden auto"}>
           <Flex direction={"column"} gap={"size-100"} height="100%">
-            <Heading level={"1"}>{role?.text}</Heading>
             {renderSidebarOptions()}
           </Flex>
         </View>
-        <Flex gridArea={"bottom"} direction={"column"} gap={"size-50"}>
+        <Flex direction={"column"} gap={"size-50"}>
           <ActionButton onPress={logOut}>
             <LogOut />
             <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
