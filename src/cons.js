@@ -4,38 +4,39 @@ const cons = {
     ACCESS_TOKEN: null,
   },
   REGEXS: {
-    VALID_EMAIL: /^[a-zA-Z0-9.!#$%&"*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+    VALID_EMAIL:
+      /^[a-zA-Z0-9.!#$%&"*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
   },
   USERS: {
     TPO: {
       type: "tpo",
-      text: "TPO"
+      text: "TPO",
     },
     STUDENT: {
       type: "student",
-      text: "Student"
+      text: "Student",
     },
     ADMIN: {
       type: "admin",
-      text: "Admin"
+      text: "Admin",
     },
   },
   SIDEBARS: {
     COMMON: {
       PROFILE_AND_SETTINGS: {
         type: "profile-and-settings",
-        text: "Profile and Settings", 
+        text: "Profile and Settings",
       },
       LOGOUT: {
         type: "logout",
-        text: "Logout", 
+        text: "Logout",
       },
     },
     ADMIN: {
       ADD_NEW_USER: {
         type: "add-new-user",
-        text: "Add new user"
-      }
+        text: "Add new user",
+      },
     },
     TPO: {
       ADD_NEW_COMPANY: {
@@ -50,12 +51,20 @@ const cons = {
         type: "add-new-placement-drive",
         text: "New Placement Drive",
       },
-      PLACMENT_DETAILS: {
+      PLACEMENT_DETAILS: {
         type: "placement-details",
         text: "Placement Details",
       },
-    }
-  }
+      PLACED_STUDENTS: {
+        type: "placed-students",
+        text: "Students Placed",
+      },
+      PLACEMENT_RECORDS: {
+        type: "placement-records",
+        text: "Placement Records",
+      },
+    },
+  },
 };
 
 export default cons;
