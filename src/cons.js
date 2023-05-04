@@ -55,6 +55,10 @@ const cons = {
         type: "placement-details",
         text: "Placement Details",
       },
+      LIST_OF_STUDENTS: {
+        type: "list-of-students",
+        text: "Students List",
+      },
       PLACED_STUDENTS: {
         type: "placed-students",
         text: "Students Placed",
