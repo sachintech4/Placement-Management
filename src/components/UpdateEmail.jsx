@@ -6,18 +6,20 @@ import {
   Button,
   Flex,
   Form,
+  DialogContainer,
 } from "@adobe/react-spectrum";
 import Edit from "@spectrum-icons/workflow/Edit";
 import { AuthUserContext } from "../contexts";
 import { updateEmail } from "@firebase/auth";
 import { ToastQueue } from "@react-spectrum/toast";
-import cons from "../cons";
+import ReauthDialog from "./ReauthDialog";
 
 function UpdateEmail() {
   const authUser = useContext(AuthUserContext);
   const [edit, setEdit] = useState(false);
   const [emailInput, setEmailInput] = useState(authUser.email);
   const [email, setEmail] = useState(authUser.email);
+  const [showReauthDialog, setShowReauthDialog] = useState(false);
 
   useEffect(() => {
     if (authUser.email !== email) {
@@ -29,29 +31,37 @@ function UpdateEmail() {
   const handleEmailUpdate = async (e) => {
     e.preventDefault();
     if (email === emailInput) {
-      ToastQueue.negative("Please enter a new email address to update", { timout: 1000 });
+      ToastQueue.negative("Please enter a new email address to update", {
+        timout: 1000,
+      });
       return;
     }
+    ToastQueue.info("Please enter your password in order to proceed", {
+      timeout: 1000,
+    });
+    setShowReauthDialog(true);
+  };
+  const onAuthSuccess = async () => {
     try {
       const { currentUser } = authUser.auth;
       await updateEmail(currentUser, emailInput);
       ToastQueue.positive("Your email has been reset", { timeout: 1000 });
+      setEdit(false);
     } catch (error) {
-      if (error.code === "auth/requires-recent-login") {
-        // show a re-auth modal
-      } else {
-        console.error("failed to update email");
-        console.error(error);
-        ToastQueue.negative("Failed to udpate email", { timeout: 1000 });
-      }
+      console.error("failed to update email");
+      console.error(error);
+      ToastQueue.negative("Failed to udpate email", { timeout: 1000 });
+      setEmailInput(email);
+      setEdit(false);
     }
   };
+
   const onToggleEdit = () => {
     setEdit((_edit) => {
       if (_edit) setEmailInput(email);
       return !_edit;
     });
-  }
+  };
 
   return (
     <View
@@ -88,6 +98,9 @@ function UpdateEmail() {
           )}
         </Flex>
       </Form>
+      <DialogContainer onDismiss={() => setShowReauthDialog(false)}>
+        {showReauthDialog && <ReauthDialog onSuccess={onAuthSuccess} />}
+      </DialogContainer>
     </View>
   );
 }
