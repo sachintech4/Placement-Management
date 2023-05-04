@@ -26,9 +26,16 @@ function UpdateEmail() {
     }
   }, [authUser]);
 
-  const handleEmailUpdate = async () => {
+  const handleEmailUpdate = async (e) => {
+    e.preventDefault();
+    if (email === emailInput) {
+      ToastQueue.negative("Please enter a new email address to update", { timout: 1000 });
+      return;
+    }
     try {
-      await updateEmail(authUser.currentUser, emailInput);
+      const { currentUser } = authUser.auth;
+      await updateEmail(currentUser, emailInput);
+      ToastQueue.positive("Your email has been reset", { timeout: 1000 });
     } catch (error) {
       if (error.code === "auth/requires-recent-login") {
         // show a re-auth modal
