@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Flex, View, ActionButton, Text, Grid } from "@adobe/react-spectrum";
+import { Flex, View, ActionButton, Text, Heading } from "@adobe/react-spectrum";
 import Settings from "@spectrum-icons/workflow/Settings";
 import LogOut from "@spectrum-icons/workflow/LogOut";
 import cons from "../cons";
@@ -7,6 +7,7 @@ import { signOut } from "@firebase/auth";
 import { AuthUserContext } from "../contexts";
 
 const adminSidebarOptions = Object.values(cons.SIDEBARS.ADMIN);
+const tpoSidebarOptions = Object.values(cons.SIDEBARS.TPO);
 
 function Sidebar({ gridArea, role, onOptionSelect }) {
   const authUser = useContext(AuthUserContext);
@@ -29,13 +30,25 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
           </ActionButton>
         ));
       }
+      case cons.USERS.TPO.type: {
+        return tpoSidebarOptions.map((opt, index) => (
+          <ActionButton
+            key={`${index}${opt.text}`}
+            onPress={() => {
+              onOptionSelect(opt);
+            }}
+          >
+            {opt.text}
+          </ActionButton>
+        ));
+      }
       default:
         onOptionSelect(null);
     }
   };
 
   return (
-    <View backgroundColor={"blue-400"} padding={"size-100"} height={"100vh"}>
+    <View padding={"size-100"} height={"100vh"}>
       <Flex
         gridArea={gridArea}
         direction={"column"}
@@ -43,7 +56,8 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
         gap={"size-100"}
       >
         <View height="100%" width="100%" overflow={"hidden auto"}>
-          <Flex direction={"column"} gap={"size-50"} height="100%">
+          <Flex direction={"column"} gap={"size-100"} height="100%">
+            <Heading level={"1"}>{role?.text}</Heading>
             {renderSidebarOptions()}
           </Flex>
         </View>
@@ -52,7 +66,11 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
             <LogOut />
             <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
           </ActionButton>
-          <ActionButton onPress={() => onOptionSelect(cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS)}>
+          <ActionButton
+            onPress={() =>
+              onOptionSelect(cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS)
+            }
+          >
             <Settings />
             <Text>{cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.text}</Text>
           </ActionButton>

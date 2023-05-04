@@ -4,7 +4,7 @@ const cons = {
     ACCESS_TOKEN: null,
   },
   REGEXS: {
-    VALID_EMAIL: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+    VALID_EMAIL: /^[a-zA-Z0-9.!#$%&"*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
   },
   USERS: {
     TPO: {
@@ -23,19 +23,37 @@ const cons = {
   SIDEBARS: {
     COMMON: {
       PROFILE_AND_SETTINGS: {
-        type: 'profile-and-settings',
+        type: "profile-and-settings",
         text: "Profile and Settings", 
       },
       LOGOUT: {
-        type: 'logout',
+        type: "logout",
         text: "Logout", 
       },
     },
     ADMIN: {
       ADD_NEW_USER: {
-        type: 'add-new-user',
+        type: "add-new-user",
         text: "Add new user"
       }
+    },
+    TPO: {
+      ADD_NEW_COMPANY: {
+        type: "add-new-company",
+        text: "New company",
+      },
+      SHOW_COMPANIES: {
+        type: "show-companies",
+        text: "Show Companies",
+      },
+      ADD_NEW_PLACEMENT_DRIVE: {
+        type: "add-new-placement-drive",
+        text: "New Placement Drive",
+      },
+      PLACMENT_DETAILS: {
+        type: "placement-details",
+        text: "Placement Details",
+      },
     }
   }
 };
