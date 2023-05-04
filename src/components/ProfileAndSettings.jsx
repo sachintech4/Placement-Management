@@ -45,6 +45,14 @@ function ProfileAndSettings({ role }) {
           </>
         );
       }
+      case cons.USERS.STUDENT.type: {
+        return (
+          <>
+            <UpdateEmail />
+            <ChangePassword />
+          </>
+        );
+      }
       default: {
         return (
           <View>
