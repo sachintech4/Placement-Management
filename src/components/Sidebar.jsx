@@ -1,13 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Flex,
-  View,
-  ActionButton,
-  Text,
-  Heading,
-  ListBox,
-  Item,
-} from "@adobe/react-spectrum";
+import { Flex, View, ActionButton, Text, Heading } from "@adobe/react-spectrum";
 import Settings from "@spectrum-icons/workflow/Settings";
 import LogOut from "@spectrum-icons/workflow/LogOut";
 import cons from "../cons";
@@ -17,6 +9,7 @@ import { AuthUserContext } from "../contexts";
 const adminSidebarOptions = Object.values(cons.SIDEBARS.ADMIN);
 const tpoSidebarOptions = Object.values(cons.SIDEBARS.TPO);
 const commonSidebarOptions = Object.values(cons.SIDEBARS.COMMON);
+
 function Sidebar({ gridArea, role, onOptionSelect }) {
   const authUser = useContext(AuthUserContext);
 
@@ -50,8 +43,12 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
           </ActionButton>
         ));
       }
-      default:
-        onOptionSelect(null);
+      case cons.USERS.STUDENT.type: {
+        return null;
+      }
+      default: {
+        return null;
+      }
     }
   };
 
