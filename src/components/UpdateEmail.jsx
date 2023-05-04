@@ -68,7 +68,6 @@ function UpdateEmail() {
             />
             <ToggleButton
               onPress={onToggleEdit}
-              marginEnd={"size-200"}
               aria-label="edit email"
               isSelected={edit}
             >
