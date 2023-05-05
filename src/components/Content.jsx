@@ -3,6 +3,7 @@ import { View } from "@adobe/react-spectrum";
 import cons from "../cons";
 import AddNewUser from "./AddNewUser";
 import ProfileAndSettings from "./ProfileAndSettings";
+import StudentList from "./StudentList";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -12,6 +13,9 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       }
       case cons.SIDEBARS.ADMIN.ADD_NEW_USER.type: {
         return <AddNewUser />;
+      }
+      case cons.SIDEBARS.ADMIN.VIEW_STUDENTS.type: {
+        return <StudentList />;
       }
       default:
         return null;

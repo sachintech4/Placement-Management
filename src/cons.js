@@ -77,6 +77,12 @@ const cons = {
       },
     },
   },
+  DB: {
+    COLLECTIONS: {
+      USERS_STUDENT: "users_student",
+      USERS_TPO: "users_tpo",
+    },
+  },
 };
 
 export default cons;
