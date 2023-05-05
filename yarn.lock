@@ -3417,6 +3417,34 @@ react-refresh@^0.14.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
 
+react-stately@^3.22.0:
+  version "3.22.0"
+  resolved "https://registry.yarnpkg.com/react-stately/-/react-stately-3.22.0.tgz#c72c82401b7db5815f9906a742a0883839a65363"
+  integrity sha512-w5itlPtjfUpxy+195LxRbaCNaGN1NVfPHelhYXuoPoKNgUvmy54uKXvP1Ek1ETZ9e55BaXuMs83yXv94wIMdpQ==
+  dependencies:
+    "@react-stately/calendar" "^3.2.0"
+    "@react-stately/checkbox" "^3.4.1"
+    "@react-stately/collections" "^3.7.0"
+    "@react-stately/combobox" "^3.5.0"
+    "@react-stately/data" "^3.9.1"
+    "@react-stately/datepicker" "^3.4.0"
+    "@react-stately/dnd" "^3.2.0"
+    "@react-stately/list" "^3.8.0"
+    "@react-stately/menu" "^3.5.1"
+    "@react-stately/numberfield" "^3.4.1"
+    "@react-stately/overlays" "^3.5.1"
+    "@react-stately/radio" "^3.8.0"
+    "@react-stately/searchfield" "^3.4.1"
+    "@react-stately/select" "^3.5.0"
+    "@react-stately/selection" "^3.13.0"
+    "@react-stately/slider" "^3.3.1"
+    "@react-stately/table" "^3.9.0"
+    "@react-stately/tabs" "^3.4.0"
+    "@react-stately/toggle" "^3.5.1"
+    "@react-stately/tooltip" "^3.4.0"
+    "@react-stately/tree" "^3.6.0"
+    "@react-types/shared" "^3.18.0"
+
 react-transition-group@^4.4.5:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
