@@ -5,8 +5,8 @@ import AddNewUser from "./AddNewUser";
 import ProfileAndSettings from "./ProfileAndSettings";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
-  const renderAdminContent = useCallback((sidebarOpt) => {
-    switch (sidebarOpt?.type) {
+  const renderAdminContent = useCallback(() => {
+    switch (selectedSidebarOption?.type) {
       case cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type: {
         return <ProfileAndSettings role={role} />;
       }
@@ -16,27 +16,27 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       default:
         return null;
     }
-  }, []);
+  }, [role, selectedSidebarOption]);
 
-  const renderTpoContent = useCallback((sidebarOpt) => {
-    switch (sidebarOpt?.type) {
+  const renderTpoContent = useCallback(() => {
+    switch (selectedSidebarOption?.type) {
       case cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type: {
         return <ProfileAndSettings role={role} />;
       }
       default:
         return null;
     }
-  }, []);
+  }, [role, selectedSidebarOption]);
 
-  const renderStudentContent = useCallback((sidebarOpt) => {
-    switch (sidebarOpt?.type) {
+  const renderStudentContent = useCallback(() => {
+    switch (selectedSidebarOption?.type) {
       case cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type: {
         return <ProfileAndSettings role={role} />;
       }
       default:
         return null;
     }
-  }, []);
+  }, [role, selectedSidebarOption]);
 
   const renderContent = useCallback(() => {
     switch (role?.type) {
