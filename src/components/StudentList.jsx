@@ -12,6 +12,7 @@ import {
 } from "@adobe/react-spectrum";
 import { useAsyncList } from "react-stately";
 import useStudents from "../hooks/useStudents";
+import { debounce } from "../utils";
 
 function StudentList() {
   const columns = useMemo(
@@ -73,14 +74,9 @@ function StudentList() {
   const handleFilter = (text) => {
     list.setFilterText(text.trim());
   };
-  const handleSearchChange = (text) => {
-    // todo: debounce this call to optimise performance
+  const handleSearchChange = debounce((text) => {
     list.setFilterText(text.trim());
-  }
-
-  useEffect(() => {
-    console.log(list);
-  }, [list]);
+  });
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
