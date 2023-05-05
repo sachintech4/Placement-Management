@@ -10,6 +10,9 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       case cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type: {
         return <ProfileAndSettings role={role} />;
       }
+      case cons.SIDEBARS.ADMIN.ADD_NEW_USER.type: {
+        return <AddNewUser />;
+      }
       default:
         return null;
     }
