@@ -37,6 +37,14 @@ const cons = {
         type: "add-new-user",
         text: "Add new user",
       },
+      VIEW_TPO: {
+        type: "view-tpo",
+        text: "View TPO",
+      },
+      VIEW_STUDENTS: {
+        type: "view-students",
+        text: "View Students",
+      },
     },
     TPO: {
       ADD_NEW_COMPANY: {
