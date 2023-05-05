@@ -27,22 +27,29 @@ function StudentList() {
   const students = useStudents();
   let collator = useCollator({ numeric: true });
   const list = useAsyncList({
-    async load({ signal }) {
+    async load({ signal, filterText }) {
       const prepareRows = () => {
-        const studentRows = students.map((sr, index) => ({
-          id: index,
-          rollNo: sr.rollNo,
-          name: `${sr.firstName} ${sr.lastName}`,
-          contact: sr.contactNumber ?? "Not available",
-          placementStatus: sr.isPlaced ? "Placed" : "Not placed",
-          email: sr.email,
-        }));
-        if (studentRows) return studentRows;
+        const filteredAndNormalisedItems = [];
+        students.forEach((sr, index) => {
+          const row = {
+            id: index,
+            rollNo: sr.rollNo,
+            name: `${sr.firstName} ${sr.lastName}`,
+            contact: sr.contactNumber ?? "Not available",
+            placementStatus: sr.isPlaced ? "Placed" : "Not placed",
+            email: sr.email,
+          };
+          const shouldRowBeInList = Object.values(row).some((cell) =>
+            cell?.toString().toLowerCase().includes(filterText.toLowerCase())
+          );
+          if (shouldRowBeInList) filteredAndNormalisedItems.push(row);
+        });
+        if (filteredAndNormalisedItems) return filteredAndNormalisedItems;
         return [];
       };
-      return {
-        items: prepareRows(),
-      };
+
+      let items = prepareRows();
+      return { items };
     },
     async sort({ items, sortDescriptor }) {
       return {
@@ -63,14 +70,26 @@ function StudentList() {
     list.reload();
   }, [students]);
 
+  const handleFilter = (text) => {
+    list.setFilterText(text.trim());
+  };
+  const handleSearchChange = (text) => {
+    // todo: debounce this call to optimise performance
+    list.setFilterText(text.trim());
+  }
+
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
+
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
       <SearchField
         label="Search"
-        onSubmit={(text) => {
-          console.log(text);
-        }}
+        onSubmit={handleFilter}
         width="size-3600"
+        onChange={handleSearchChange}
+        onClear={() => list.setFilterText("")}
       />
       <TableView
         aria-label="Students"
