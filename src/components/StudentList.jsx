@@ -18,12 +18,17 @@ import {
   Text,
   Grid,
   View,
+  Item,
 } from "@adobe/react-spectrum";
+import Delete from "@spectrum-icons/workflow/Delete";
+import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
 import { useAsyncList } from "react-stately";
 import useStudents from "../hooks/useStudents";
 import { debounce } from "../utils";
 
 function StudentList() {
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
+
   const columns = useMemo(
     () => [
       { name: "Roll No", uid: "rollNo" },
@@ -105,29 +110,49 @@ function StudentList() {
         onChange={handleSearchChange}
         onClear={() => list.setFilterText("")}
       />
-      <TableView
-        aria-label="Students"
-        width={"98%"}
-        maxHeight={"98%"}
-        sortDescriptor={list.sortDescriptor}
-        onSortChange={list.sort}
-        onAction={handleRowAction}
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <Column
-              key={column.uid}
-              allowsResizing
-              allowsSorting={column.uid === "rollNo"}
-            >
-              {column.name}
-            </Column>
-          )}
-        </TableHeader>
-        <TableBody items={list.items} loadingState={list.loadingState}>
-          {(item) => <Row>{(columnKey) => <Cell>{item[columnKey]}</Cell>}</Row>}
-        </TableBody>
-      </TableView>
+      <ActionBarContainer height={"100%"} maxWidth={"100%"}>
+        <TableView
+          aria-label="Students"
+          width={"98%"}
+          maxHeight={"98%"}
+          sortDescriptor={list.sortDescriptor}
+          onSortChange={list.sort}
+          onAction={handleRowAction}
+          selectionMode="multiple"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+        >
+          <TableHeader columns={columns}>
+            {(column) => (
+              <Column
+                key={column.uid}
+                allowsResizing
+                allowsSorting={column.uid === "rollNo"}
+              >
+                {column.name}
+              </Column>
+            )}
+          </TableHeader>
+          <TableBody items={list.items} loadingState={list.loadingState}>
+            {(item) => (
+              <Row>{(columnKey) => <Cell>{item[columnKey]}</Cell>}</Row>
+            )}
+          </TableBody>
+        </TableView>
+        <ActionBar
+          isEmphasized
+          selectedItemCount={selectedKeys === "all" ? "all" : selectedKeys.size}
+          onAction={(key) => alert(`Performing ${key} action...`)}
+          onClearSelection={() => setSelectedKeys(new Set())}
+        >
+          {
+            <Item key="delete">
+              <Delete />
+              <Text>Delete</Text>
+            </Item>
+          }
+        </ActionBar>
+      </ActionBarContainer>
       <DialogContainer onDismiss={() => setDetailsDialog(null)}>
         {detailsDialog && (
           <Dialog isDismissable>
@@ -157,7 +182,9 @@ function StudentList() {
                 </View>
                 <View>
                   <Heading level={4}>Placement Status</Heading>
-                  <Text>{detailsDialog.isPlaced ? "Placed" : "Not placed"}</Text>
+                  <Text>
+                    {detailsDialog.isPlaced ? "Placed" : "Not placed"}
+                  </Text>
                 </View>
                 <View>
                   <Heading level={4}>10th percentage</Heading>
