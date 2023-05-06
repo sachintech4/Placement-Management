@@ -10,8 +10,9 @@ function useStudents() {
     const userStudentsRef = collection(db, cons.DB.COLLECTIONS.USERS_STUDENT);
 
     const unsubscribe = onSnapshot(userStudentsRef, (querySnapshot) => {
-      const data = querySnapshot.docs.map((doc) => doc.data());
-
+      const data = querySnapshot.docs.map((doc) => {
+        return { ...doc.data(), uid: doc.id };
+      });
       if (data) setStudents(data);
     });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   TableView,
   TableHeader,
@@ -13,7 +13,6 @@ import {
   Dialog,
   DialogContainer,
   Divider,
-  Header,
   Heading,
   Text,
   Grid,
@@ -25,10 +24,10 @@ import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
 import { useAsyncList } from "react-stately";
 import useStudents from "../hooks/useStudents";
 import { debounce } from "../utils";
+import { AuthUserContext } from "../contexts";
+import cons from "../cons";
 
 function StudentList() {
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-
   const columns = useMemo(
     () => [
       { name: "Roll No", uid: "rollNo" },
@@ -45,9 +44,9 @@ function StudentList() {
     async load({ signal, filterText }) {
       const prepareRows = () => {
         const filteredAndNormalisedItems = [];
-        students.forEach((sr, index) => {
+        students.forEach((sr) => {
           const row = {
-            id: index,
+            id: sr.uid,
             rollNo: sr.rollNo,
             name: `${sr.firstName} ${sr.lastName}`,
             contact: sr.contactNumber ?? "Not available",
@@ -81,6 +80,8 @@ function StudentList() {
     },
   });
   const [detailsDialog, setDetailsDialog] = useState(null);
+  const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const user = useContext(AuthUserContext);
 
   useEffect(() => {
     list.reload();
@@ -96,8 +97,31 @@ function StudentList() {
     const row = list.items.find((item) => item.id === key);
     const student = students.find((student) => student.rollNo === row.rollNo);
     if (student) {
-      console.log(student);
       setDetailsDialog(student);
+    }
+  };
+  const handleActionbarAction = async (actionKey) => {
+    if (actionKey === "delete") {
+      const selectedRowIds = Array.from(selectedKeys);
+      // now send these id through a function call to backend to delete them
+      const data = {
+        rows: selectedRowIds,
+        token: user.accessToken
+      };
+      try {
+        await fetch(`${cons.BASE_SERVER_URL}/students`, {
+          method: "delete",
+          header: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        // show a toast msg
+      } catch (error) {
+        console.error('failed to delete users');
+        console.error(error);
+        // show a toast msg
+      }
     }
   };
 
@@ -142,15 +166,13 @@ function StudentList() {
         <ActionBar
           isEmphasized
           selectedItemCount={selectedKeys === "all" ? "all" : selectedKeys.size}
-          onAction={(key) => alert(`Performing ${key} action...`)}
+          onAction={handleActionbarAction}
           onClearSelection={() => setSelectedKeys(new Set())}
         >
-          {
-            <Item key="delete">
-              <Delete />
-              <Text>Delete</Text>
-            </Item>
-          }
+          <Item key="delete">
+            <Delete />
+            <Text>Delete</Text>
+          </Item>
         </ActionBar>
       </ActionBarContainer>
       <DialogContainer onDismiss={() => setDetailsDialog(null)}>
