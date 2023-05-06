@@ -9,6 +9,15 @@ import {
   SearchField,
   Flex,
   useCollator,
+  Content,
+  Dialog,
+  DialogContainer,
+  Divider,
+  Header,
+  Heading,
+  Text,
+  Grid,
+  View,
 } from "@adobe/react-spectrum";
 import { useAsyncList } from "react-stately";
 import useStudents from "../hooks/useStudents";
@@ -66,6 +75,7 @@ function StudentList() {
       };
     },
   });
+  const [detailsDialog, setDetailsDialog] = useState(null);
 
   useEffect(() => {
     list.reload();
@@ -77,6 +87,14 @@ function StudentList() {
   const handleSearchChange = debounce((text) => {
     list.setFilterText(text.trim());
   });
+  const handleRowAction = (key) => {
+    const row = list.items.find((item) => item.id === key);
+    const student = students.find((student) => student.rollNo === row.rollNo);
+    if (student) {
+      console.log(student);
+      setDetailsDialog(student);
+    }
+  };
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
@@ -93,6 +111,7 @@ function StudentList() {
         maxHeight={"98%"}
         sortDescriptor={list.sortDescriptor}
         onSortChange={list.sort}
+        onAction={handleRowAction}
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -109,6 +128,82 @@ function StudentList() {
           {(item) => <Row>{(columnKey) => <Cell>{item[columnKey]}</Cell>}</Row>}
         </TableBody>
       </TableView>
+      <DialogContainer onDismiss={() => setDetailsDialog(null)}>
+        {detailsDialog && (
+          <Dialog isDismissable>
+            <Heading>{`${detailsDialog.firstName} ${detailsDialog.lastName} (${detailsDialog.rollNo})`}</Heading>
+            <Divider />
+            <Content>
+              <Grid gap="size-200" columns={["1fr", "1fr"]}>
+                <View>
+                  <Heading level={4}>PRN</Heading>
+                  <Text>{detailsDialog.prn}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>Email</Heading>
+                  <Text>{detailsDialog.email}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>Gender</Heading>
+                  <Text>{detailsDialog.gender}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>Date of Birth</Heading>
+                  <Text>{`${detailsDialog.dob.day}/${detailsDialog.dob.month}/${detailsDialog.dob.year}`}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>Batch</Heading>
+                  <Text>{detailsDialog.batch ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>Placement Status</Heading>
+                  <Text>{detailsDialog.isPlaced ? "Placed" : "Not placed"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>10th percentage</Heading>
+                  <Text>{detailsDialog.tenthPercentage ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>10th Year of passing</Heading>
+                  <Text>{detailsDialog.tenthYearOfPassing ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>12th percentage</Heading>
+                  <Text>{detailsDialog.twelfthPercentage ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>12th Year of passing</Heading>
+                  <Text>{detailsDialog.twelfthYearOfPassing ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>UG CGPA</Heading>
+                  <Text>{detailsDialog.ugCgpa ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>UG Year of passing</Heading>
+                  <Text>{detailsDialog.ugYearOfPassing ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>PG CGPA</Heading>
+                  <Text>{detailsDialog.pgCgpa ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>PG Year of passing</Heading>
+                  <Text>{detailsDialog.pgYearOfPassing ?? "-"}</Text>
+                </View>
+                <View>
+                  <Heading level={4}>Resume</Heading>
+                  <Text>resume-downloader-placeholder</Text>
+                </View>
+                <View>
+                  <Heading level={4}>Applied to</Heading>
+                  <Text>companies-applied-to-placeholder</Text>
+                </View>
+              </Grid>
+            </Content>
+          </Dialog>
+        )}
+      </DialogContainer>
     </Flex>
   );
 }
