@@ -19,6 +19,7 @@ import {
   View,
   Item,
 } from "@adobe/react-spectrum";
+import { ToastQueue } from "@react-spectrum/toast";
 import Delete from "@spectrum-icons/workflow/Delete";
 import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
 import { useAsyncList } from "react-stately";
@@ -102,25 +103,39 @@ function StudentList() {
   };
   const handleActionbarAction = async (actionKey) => {
     if (actionKey === "delete") {
-      const selectedRowIds = Array.from(selectedKeys);
+      // set slectedRowIds value to each students uid if selectedKeys equals "all" else set it with the selected keys
+      const selectedRowIds =
+        selectedKeys === "all"
+          ? students.map((student) => student.uid)
+          : Array.from(selectedKeys);
       // now send these id through a function call to backend to delete them
       const data = {
         rows: selectedRowIds,
-        token: user.accessToken
+        token: user.accessToken,
       };
+
       try {
-        await fetch(`${cons.BASE_SERVER_URL}/students`, {
+        const res = await fetch(`${cons.BASE_SERVER_URL}/students`, {
           method: "delete",
           header: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
         });
+        const resJson = await res.json();
         // show a toast msg
+        if (resJson.code === "success") {
+          ToastQueue.positive("Students deleted successfully", {
+            timeout: 1000,
+          });
+        }
       } catch (error) {
-        console.error('failed to delete users');
+        console.error("failed to delete users");
         console.error(error);
         // show a toast msg
+        ToastQueue.negative("Failed to delete students", {
+          timeout: 1000,
+        });
       }
     }
   };
