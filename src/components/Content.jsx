@@ -31,9 +31,6 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       case cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type: {
         return <ProfileAndSettings role={role} />;
       }
-      case cons.SIDEBARS.TPO.LIST_OF_STUDENTS.type: {
-        return <StudentList />;
-      }
       default:
         return null;
     }
