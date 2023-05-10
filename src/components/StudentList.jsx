@@ -123,14 +123,9 @@ function StudentList() {
           body: JSON.stringify(data),
         });
         const resJson = await res.json();
-        console.log(resJson);
         // show a toast msg
         if (resJson.code === "success") {
-          ToastQueue.positive(resJson.message, {
-            timeout: 1000,
-          });
-        } else {
-          ToastQueue.negative(resJson.message, {
+          ToastQueue.positive("Students deleted successfully", {
             timeout: 1000,
           });
         }
@@ -138,7 +133,7 @@ function StudentList() {
         console.error("failed to delete users");
         console.error(error);
         // show a toast msg
-        ToastQueue.negative("Failed to delete users", {
+        ToastQueue.negative("Failed to delete students", {
           timeout: 1000,
         });
       }
