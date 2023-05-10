@@ -123,7 +123,11 @@ function TpoList() {
         const resJson = await res.json();
         // show a toast msg
         if (resJson.code === "success") {
-          ToastQueue.positive("tpos deleted successfully", {
+          ToastQueue.positive(resJson.message, {
+            timeout: 1000,
+          });
+        } else {
+          ToastQueue.negative(resJson.message, {
             timeout: 1000,
           });
         }
