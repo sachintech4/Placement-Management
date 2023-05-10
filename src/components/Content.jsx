@@ -4,6 +4,7 @@ import cons from "../cons";
 import AddNewUser from "./AddNewUser";
 import ProfileAndSettings from "./ProfileAndSettings";
 import StudentList from "./StudentList";
+import TpoList from "./TpoList";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -16,6 +17,9 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       }
       case cons.SIDEBARS.ADMIN.VIEW_STUDENTS.type: {
         return <StudentList />;
+      }
+      case cons.SIDEBARS.ADMIN.VIEW_TPO.type: {
+        return <TpoList />;
       }
       default:
         return null;
