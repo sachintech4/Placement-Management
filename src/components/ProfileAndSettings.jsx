@@ -11,12 +11,16 @@ import {
 import cons from "../cons";
 import ChangePassword from "./ChangePassword";
 import UpdateEmail from "./UpdateEmail";
+import TpoProfile from "./TpoProfile";
 
 function ProfileAndSettings({ role }) {
   const renderProfile = useCallback(() => {
     switch (role?.type) {
       case cons.USERS.ADMIN.type: {
         return <Text>Nothing to show</Text>;
+      }
+      case cons.USERS.TPO.type: {
+        return <TpoProfile />;
       }
       default: {
         return (
