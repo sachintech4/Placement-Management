@@ -1,12 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthUserContext } from "../contexts";
-import {
-  doc,
-  getDoc,
-  collection,
-  onSnapshot,
-  updateDoc,
-} from "@firebase/firestore";
+import { doc, onSnapshot, updateDoc } from "@firebase/firestore";
 import { db } from "../firebase-config";
 import cons from "../cons";
 import {
@@ -15,6 +9,8 @@ import {
   TextField,
   Form,
   Button,
+  Grid,
+  Flex,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import Edit from "@spectrum-icons/workflow/Edit";
@@ -81,8 +77,10 @@ function TpoProfile() {
     try {
       await updateDoc(docRef, updatedTpoData);
       console.log("Tpo document updated successfully.");
+      ToastQueue.positive("Document updated successfully.", { timeout: 1000 });
     } catch (error) {
       console.error("Error updating Tpo data.");
+      ToastQueue.negative("Failed to update the document.", { timeout: 1000 });
     }
   };
 
@@ -101,73 +99,101 @@ function TpoProfile() {
 
   return (
     <View
+      padding="size-250"
+      width="fit-content"
       borderWidth="thin"
       borderColor="dark"
       borderRadius="medium"
-      padding={"size-150"}
+      backgroundColor="gray-200"
     >
       <Form onSubmit={updateTpoDocument}>
-        <TextField
-          label="First Name"
-          isReadOnly={!edit}
-          value={firstNameInput}
-          onChange={setFirstNameInput}
-        />
-        <TextField
-          label="Last Name"
-          isReadOnly={!edit}
-          value={lastNameInput}
-          onChange={setLastNameInput}
-        />
-        <TextField
-          label={edit ? "To update email look for Settings page." : "Email"}
-          value={email}
-        />
-        <TextField
-          label="Id"
-          isReadOnly={!edit}
-          value={idInput}
-          onChange={setIdInput}
-        />
-        <View>
-          <TextField
-            label="Day"
-            isReadOnly={!edit}
-            value={dobInput.day}
-            onChange={(value) => setDobInput({ ...dobInput, day: value })}
-          />
-          <TextField
-            label="Month"
-            isReadOnly={!edit}
-            value={dobInput.month}
-            onChange={(value) => setDobInput({ ...dobInput, month: value })}
-          />
-          <TextField
-            label="Year"
-            isReadOnly={!edit}
-            value={dobInput.year}
-            onChange={(value) => setDobInput({ ...dobInput, year: value })}
-          />
-        </View>
-        <TextField
-          label="Contact Number"
-          isReadOnly={!edit}
-          value={contactNumberInput}
-          onChange={setContactNumberInput}
-        />
-
-        <ToggleButton
-          onPress={onToggleEdit}
-          aria-label="edit details"
-          isSelected={edit}
+        <Grid
+          areas={[
+            "firstName lastName",
+            "email email",
+            "id dob",
+            "contactNumber contactNumber",
+            "toggle submit",
+          ]}
+          columns={"1fr 1fr"}
+          gap={"size-200"}
         >
-          <Edit />
-        </ToggleButton>
-        {edit && (
-          <Button variant="accent" type="submit">
-            Update
-          </Button>
-        )}
+          <TextField
+            gridArea={"firstName"}
+            label="First Name"
+            isReadOnly={!edit}
+            value={firstNameInput}
+            onChange={setFirstNameInput}
+          />
+          <TextField
+            gridArea={"lastName"}
+            label="Last Name"
+            isReadOnly={!edit}
+            value={lastNameInput}
+            onChange={setLastNameInput}
+          />
+          <TextField
+            gridArea={"email"}
+            label={
+              edit ? "To update email, look for the Settings page." : "Email"
+            }
+            value={email}
+            isReadOnly
+          />
+          <TextField
+            gridArea={"id"}
+            label="Id"
+            isReadOnly={!edit}
+            value={idInput}
+            onChange={setIdInput}
+          />
+          <Flex gridArea={"dob"} alignitems={"end"} gap={"size-400"}>
+            <TextField
+              label="Day"
+              isReadOnly={!edit}
+              value={dobInput.day}
+              width={"size-200"}
+              onChange={(value) => setDobInput({ ...dobInput, day: value })}
+            />
+            <TextField
+              label="Month"
+              isReadOnly={!edit}
+              value={dobInput.month}
+              width={"size-200"}
+              onChange={(value) => setDobInput({ ...dobInput, month: value })}
+            />
+            <TextField
+              label="Year"
+              isReadOnly={!edit}
+              value={dobInput.year}
+              width={"size-800"}
+              onChange={(value) => setDobInput({ ...dobInput, year: value })}
+            />
+          </Flex>
+          <TextField
+            gridArea={"contactNumber"}
+            label="Contact Number"
+            isReadOnly={!edit}
+            value={contactNumberInput}
+            onChange={setContactNumberInput}
+          />
+          <View gridArea={"toggle"} justifySelf={"center"}>
+            <ToggleButton
+              onPress={onToggleEdit}
+              aria-label="edit details"
+              isSelected={edit}
+            >
+              <Edit />
+            </ToggleButton>
+          </View>
+          {edit && (
+            <View gridArea={"submit"} justifySelf={"center"}>
+              <Button variant="cta" type="submit">
+                Update
+              </Button>
+            </View>
+          )}
+        </Grid>
       </Form>
     </View>
   );
