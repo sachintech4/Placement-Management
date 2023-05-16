@@ -40,7 +40,7 @@ function ProfileAndSettings({ role }) {
       case cons.USERS.ADMIN.type: {
         return (
           <>
-            <UpdateEmail />
+            <UpdateEmail role={role} />
             <ChangePassword />
           </>
         );
@@ -48,7 +48,7 @@ function ProfileAndSettings({ role }) {
       case cons.USERS.TPO.type: {
         return (
           <>
-            <UpdateEmail />
+            <UpdateEmail role={role} />
             <ChangePassword />
           </>
         );
@@ -56,7 +56,7 @@ function ProfileAndSettings({ role }) {
       case cons.USERS.STUDENT.type: {
         return (
           <>
-            <UpdateEmail />
+            <UpdateEmail role={role} />
             <ChangePassword />
           </>
         );
