@@ -13,13 +13,23 @@ import { AuthUserContext } from "../contexts";
 import { updateEmail } from "@firebase/auth";
 import { ToastQueue } from "@react-spectrum/toast";
 import ReauthDialog from "./ReauthDialog";
+import { doc, updateDoc } from "@firebase/firestore";
+import { db } from "../firebase-config";
+import cons from "../cons";
 
-function UpdateEmail() {
+function UpdateEmail({ role }) {
   const authUser = useContext(AuthUserContext);
   const [edit, setEdit] = useState(false);
   const [emailInput, setEmailInput] = useState(authUser.email);
   const [email, setEmail] = useState(authUser.email);
   const [showReauthDialog, setShowReauthDialog] = useState(false);
+
+  const userRoleDocRefMap = {
+    [cons.USERS.TPO.type]: cons.DB.COLLECTIONS.USERS_TPO,
+    [cons.USERS.STUDENT.type]: cons.DB.COLLECTIONS.USERS_STUDENT,
+  };
+
+  const docRef = doc(db, userRoleDocRefMap[role.type], authUser.uid);
 
   useEffect(() => {
     if (authUser.email !== email) {
@@ -27,6 +37,18 @@ function UpdateEmail() {
       setEmailInput(authUser.email);
     }
   }, [authUser]);
+
+  const updateEmailInDatabase = async (updatedEmail) => {
+    try {
+      await updateDoc(docRef, { email: updatedEmail });
+      console.log("Email successfully updated in the document.");
+    } catch (error) {
+      console.error("Error updating Tpo email in database.");
+      ToastQueue.negative("Failed to update email in the document.", {
+        timeout: 1000,
+      });
+    }
+  };
 
   const handleEmailUpdate = async (e) => {
     e.preventDefault();
@@ -47,6 +69,11 @@ function UpdateEmail() {
       await updateEmail(currentUser, emailInput);
       ToastQueue.positive("Your email has been reset", { timeout: 1000 });
       setEdit(false);
+      if (role.type === "admin") {
+        return;
+      } else {
+        updateEmailInDatabase(currentUser.email);
+      }
     } catch (error) {
       console.error("failed to update email");
       console.error(error);
