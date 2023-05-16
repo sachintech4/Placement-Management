@@ -122,14 +122,14 @@ function TpoProfile() {
             gridArea={"firstName"}
             label="First Name"
             isReadOnly={!edit}
-            value={firstNameInput}
+            value={firstNameInput === null ? "" : firstNameInput}
             onChange={setFirstNameInput}
           />
           <TextField
             gridArea={"lastName"}
             label="Last Name"
             isReadOnly={!edit}
-            value={lastNameInput}
+            value={lastNameInput === null ? "" : lastNameInput}
             onChange={setLastNameInput}
           />
           <TextField
@@ -144,28 +144,28 @@ function TpoProfile() {
             gridArea={"id"}
             label="Id"
             isReadOnly={!edit}
-            value={idInput}
+            value={idInput === null ? "" : idInput}
             onChange={setIdInput}
           />
           <Flex gridArea={"dob"} alignitems={"end"} gap={"size-400"}>
             <TextField
               label="Day"
               isReadOnly={!edit}
-              value={dobInput.day}
+              value={dobInput.day === null ? "" : dobInput.day}
               width={"size-200"}
               onChange={(value) => setDobInput({ ...dobInput, day: value })}
             />
             <TextField
               label="Month"
               isReadOnly={!edit}
-              value={dobInput.month}
+              value={dobInput.month === null ? "" : dobInput.month}
               width={"size-200"}
               onChange={(value) => setDobInput({ ...dobInput, month: value })}
             />
             <TextField
               label="Year"
               isReadOnly={!edit}
-              value={dobInput.year}
+              value={dobInput.year === null ? "" : dobInput.year}
               width={"size-800"}
               onChange={(value) => setDobInput({ ...dobInput, year: value })}
             />
@@ -174,7 +174,7 @@ function TpoProfile() {
             gridArea={"contactNumber"}
             label="Contact Number"
             isReadOnly={!edit}
-            value={contactNumberInput}
+            value={contactNumberInput === null ? "" : contactNumberInput}
             onChange={setContactNumberInput}
           />
           <View gridArea={"toggle"} justifySelf={"center"}>
