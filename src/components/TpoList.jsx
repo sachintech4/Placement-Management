@@ -113,7 +113,7 @@ function TpoList() {
       };
 
       try {
-        const res = await fetch(`${cons.BASE_SERVER_URL}/tpos`, {
+        const res = await fetch(`${cons.BASE_SERVER_URL}/deleteTpos`, {
           method: "delete",
           header: {
             "Content-Type": "application/json",

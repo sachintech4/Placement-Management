@@ -115,7 +115,7 @@ function StudentList() {
       };
 
       try {
-        const res = await fetch(`${cons.BASE_SERVER_URL}/students`, {
+        const res = await fetch(`${cons.BASE_SERVER_URL}/deleteStudents`, {
           method: "delete",
           header: {
             "Content-Type": "application/json",
