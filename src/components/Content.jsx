@@ -6,6 +6,7 @@ import ProfileAndSettings from "./ProfileAndSettings";
 import StudentList from "./StudentList";
 import TpoList from "./TpoList";
 import AddNewCompany from "./AddNewCompany";
+import ShowCompanies from "./ShowCompanies";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -37,6 +38,9 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       }
       case cons.SIDEBARS.TPO.ADD_NEW_COMPANY.type: {
         return <AddNewCompany />;
+      }
+      case cons.SIDEBARS.TPO.SHOW_COMPANIES.type: {
+        return <ShowCompanies />;
       }
       default:
         return null;
