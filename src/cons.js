@@ -81,6 +81,7 @@ const cons = {
     COLLECTIONS: {
       USERS_STUDENT: "users_student",
       USERS_TPO: "users_tpo",
+      COMPANIES: "companies",
     },
   },
 };
