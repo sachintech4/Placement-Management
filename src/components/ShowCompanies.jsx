@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useContext } from "react";
 import {
   TableView,
   TableHeader,
@@ -20,10 +20,13 @@ import {
   Item,
 } from "@adobe/react-spectrum";
 import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
+import { ToastQueue } from "@react-spectrum/toast";
 import Delete from "@spectrum-icons/workflow/Delete";
 import { useAsyncList } from "react-stately";
 import useCompanies from "../hooks/useCompanies";
 import { debounce } from "../utils";
+import { AuthUserContext } from "../contexts";
+import cons from "../cons";
 
 function ShowCompanies() {
   const companies = useCompanies();
@@ -62,6 +65,7 @@ function ShowCompanies() {
 
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const user = useContext(AuthUserContext);
 
   useEffect(() => {
     list.reload();
@@ -80,6 +84,49 @@ function ShowCompanies() {
     );
     if (company) {
       setDetailsDialog(company);
+    }
+  };
+
+  const handleActionbarAction = async (actionKey) => {
+    if (actionKey === "delete") {
+      // set slectedRowIds value to each companies uid if selectedKeys equals "all" else set it with the selected keys
+      const selectedRowIds =
+        selectedKeys === "all"
+          ? companies.map((company) => company.uid)
+          : Array.from(selectedKeys);
+      // now send these id through a function call to backend to delete them
+      const data = {
+        rows: selectedRowIds,
+        token: user.accessToken,
+      };
+
+      try {
+        const res = await fetch(`${cons.BASE_SERVER_URL}/deleteCompanies`, {
+          method: "delete",
+          header: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const resJson = await res.json();
+        // show a toast msg
+        if (resJson.code === "success") {
+          ToastQueue.positive(resJson.message, {
+            timeout: 1000,
+          });
+        } else {
+          ToastQueue.negative(resJson.message, {
+            timeout: 1000,
+          });
+        }
+      } catch (error) {
+        console.error("failed to delete companies");
+        console.error(error);
+        // show a toast msg
+        ToastQueue.negative("Failed to delete companies", {
+          timeout: 1000,
+        });
+      }
     }
   };
 
@@ -124,7 +171,7 @@ function ShowCompanies() {
         <ActionBar
           isEmphasized
           selectedItemCount={selectedKeys === "all" ? "all" : selectedKeys.size}
-          // onAction={handleActionbarAction}
+          onAction={handleActionbarAction}
           onClearSelection={() => setSelectedKeys(new Set())}
         >
           <Item key="delete">
