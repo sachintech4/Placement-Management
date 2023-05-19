@@ -53,9 +53,6 @@ function AddNewCompany() {
       return;
     }
 
-    console.log(details);
-    console.log(data);
-
     try {
       const opts = {
         method: "post",
