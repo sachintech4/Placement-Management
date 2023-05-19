@@ -59,7 +59,7 @@ const cons = {
         type: "add-new-placement-drive",
         text: "New Placement Drive",
       },
-      PLACEMENT_DETAILS: {
+      PLACEMENT_DRIVE_DETAILS: {
         type: "placement-drive-details",
         text: "Placement Drive Details",
       },
