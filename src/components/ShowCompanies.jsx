@@ -58,7 +58,6 @@ function ShowCompanies() {
       };
 
       let items = prepareRows();
-      console.log(items);
       return { items };
     },
   });
