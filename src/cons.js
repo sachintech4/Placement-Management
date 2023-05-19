@@ -60,8 +60,8 @@ const cons = {
         text: "New Placement Drive",
       },
       PLACEMENT_DETAILS: {
-        type: "placement-details",
-        text: "Placement Details",
+        type: "placement-drive-details",
+        text: "Placement Drive Details",
       },
       LIST_OF_STUDENTS: {
         type: "list-of-students",

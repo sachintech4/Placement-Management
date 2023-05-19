@@ -80,7 +80,7 @@ function AddNewCompany() {
   return (
     <Flex direction="column" alignItems="start" gap={"size-200"}>
       <View padding="size-200">
-        <Heading level={2}>Create new company</Heading>
+        <Heading level={2}>Add new company</Heading>
       </View>
       <View
         padding="size-250"
