@@ -9,22 +9,30 @@ import {
   Heading,
   Picker,
   Item,
+  TextArea,
+  Well,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import { useAsyncList } from "react-stately";
+
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
 import useCompanies from "../hooks/useCompanies";
 
 function AddNewPlacementDrive() {
+  const [companyDescription, setCompanyDescription] = useState("");
+  console.log(value);
+
   const user = useContext(AuthUserContext);
   const companies = useCompanies();
-  console.log(companies);
 
   const [selectedCompany, setSelectedCompany] = useState(null);
 
   const list = useAsyncList({
-    async load({ signal, filterText }) {
+    async load() {
       const prepareRows = () => {
         const rows = companies.map((cr) => ({
           id: cr.uid,
@@ -35,7 +43,6 @@ function AddNewPlacementDrive() {
         return rows;
       };
       let items = prepareRows();
-      console.log(items);
       return { items };
     },
   });
@@ -47,20 +54,16 @@ function AddNewPlacementDrive() {
   const handleCompanyChange = (value) => {
     const selectedCompany = companies.find((company) => company.uid === value);
     setSelectedCompany(selectedCompany);
-    console.log(selectedCompany);
   };
 
   //   const handleSubmit = async (e) => {
   //     e.preventDefault();
-  //     const form = e.target;
-  //     const formData = new FormData(form);
-
-  //     const PlacementDriveName = formData.get("placement-drive-name").trim();
 
   //     const details = {
-  //       companyName: companyName,
-  //       location: location,
-  //       email: email,
+  //       companyName: selectedCompany.companyName,
+  //       location: selectedCompany.location,
+  //       email: selectedCompany.email,
+  //       companyDescription: companyDescription,
   //     };
 
   //     const data = {
@@ -128,12 +131,45 @@ function AddNewPlacementDrive() {
         </Picker>
       )}
       {selectedCompany && (
-        <div>
-          <p>Selected company: {selectedCompany.companyName}</p>
-          <p>Company location: {selectedCompany.location}</p>
-          <p>Company email: {selectedCompany.email}</p>
-          {/* Store the selectedCompany reference object or perform any other actions */}
-        </div>
+        <View>
+          <Flex gap={"size-200"}>
+            <Well>Selected company: {selectedCompany.companyName}</Well>
+            <Well>Company location: {selectedCompany.location}</Well>
+            <Well>Company email: {selectedCompany.email}</Well>
+          </Flex>
+          <View>
+            <TextArea label="Company description" />
+          </View>
+          <ReactQuill
+            onChange={setValue}
+            modules={{
+              toolbar: [
+                [{ header: [1, 2, 3, false] }],
+                ["bold", "italic", "underline", "strike"],
+                [{ color: [] }, { background: [] }],
+                ["blockquote", "code-block"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                [{ align: [] }],
+                ["clean"],
+              ],
+            }}
+            formats={[
+              "header",
+              "bold",
+              "italic",
+              "underline",
+              "strike",
+              "color",
+              "background",
+              "blockquote",
+              "code-block",
+              "list",
+              "bullet",
+              "align",
+            ]}
+            theme="snow"
+          />
+        </View>
       )}
     </Flex>
   );
