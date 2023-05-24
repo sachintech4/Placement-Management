@@ -1,15 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import {
-  Form,
-  TextField,
   Grid,
-  Button,
+  ActionButton,
   View,
   Flex,
   Heading,
   Picker,
   Item,
-  TextArea,
   Well,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
@@ -24,7 +21,6 @@ import useCompanies from "../hooks/useCompanies";
 
 function AddNewPlacementDrive() {
   const [companyDescription, setCompanyDescription] = useState("");
-  console.log(value);
 
   const user = useContext(AuthUserContext);
   const companies = useCompanies();
@@ -56,66 +52,72 @@ function AddNewPlacementDrive() {
     setSelectedCompany(selectedCompany);
   };
 
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  //     const details = {
-  //       companyName: selectedCompany.companyName,
-  //       location: selectedCompany.location,
-  //       email: selectedCompany.email,
-  //       companyDescription: companyDescription,
-  //     };
+    const details = {
+      companyName: selectedCompany.companyName,
+      location: selectedCompany.location,
+      email: selectedCompany.email,
+      companyDescription: companyDescription,
+    };
 
-  //     const data = {
-  //       details,
-  //       token: user.accessToken,
-  //     };
+    const data = {
+      details,
+      token: user.accessToken,
+    };
 
-  //     // validation
-  //     if (!details.companyName) {
-  //       ToastQueue.negative("Please provide the Company Name", { timeout: 1000 });
-  //       return;
-  //     }
-  //     if (!details.location) {
-  //       ToastQueue.negative("Please provide the Location", { timeout: 1000 });
-  //       return;
-  //     }
-  //     if (!details.email) {
-  //       ToastQueue.negative("Please provide the Email", { timeout: 1000 });
-  //       return;
-  //     }
-  //     if (!details.email.match(cons.REGEXS.VALID_EMAIL)) {
-  //       ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
-  //       return;
-  //     }
+    // validation
+    if (!details.companyName) {
+      ToastQueue.negative("Please provide the Company Name", { timeout: 1000 });
+      return;
+    }
+    if (!details.location) {
+      ToastQueue.negative("Please provide the Location", { timeout: 1000 });
+      return;
+    }
+    if (!details.email) {
+      ToastQueue.negative("Please provide the Email", { timeout: 1000 });
+      return;
+    }
+    if (!details.email.match(cons.REGEXS.VALID_EMAIL)) {
+      ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
+      return;
+    }
+    if (!details.companyDescription) {
+      ToastQueue.negative("Please provide Company Description", {
+        timeout: 1000,
+      });
+      return;
+    }
 
-  //     try {
-  //       const opts = {
-  //         method: "post",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(data),
-  //       };
+    try {
+      const opts = {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      };
 
-  //       const res = await fetch(
-  //         `${cons.BASE_SERVER_URL}/addNewPlacementDrive`,
-  //         opts
-  //       );
-  //       const resJson = await res.json();
-  //       if (resJson.code === "success") {
-  //         ToastQueue.positive(resJson.message, { timeout: 1000 });
-  //       } else if (resJson.code === "failed") {
-  //         ToastQueue.negative(resJson.message, { timeout: 1000 });
-  //       }
-  //     } catch (error) {
-  //       console.error("some error occured");
-  //     }
-  //   };
+      const res = await fetch(
+        `${cons.BASE_SERVER_URL}/addNewPlacementDrive`,
+        opts
+      );
+      const resJson = await res.json();
+      if (resJson.code === "success") {
+        ToastQueue.positive(resJson.message, { timeout: 1000 });
+      } else if (resJson.code === "failed") {
+        ToastQueue.negative(resJson.message, { timeout: 1000 });
+      }
+    } catch (error) {
+      console.error("some error occured");
+    }
+  };
 
   return (
     <Flex direction="column" alignItems="start" gap="size-200">
-      <Heading level={2}>Company Dropdown</Heading>
+      <Heading level={2}>New Placement Drive</Heading>
       {list.isLoading ? (
         <p>Loading companies...</p>
       ) : list.items.length === 0 ? (
@@ -138,37 +140,39 @@ function AddNewPlacementDrive() {
             <Well>Company email: {selectedCompany.email}</Well>
           </Flex>
           <View>
-            <TextArea label="Company description" />
+            <ReactQuill
+              onChange={setCompanyDescription}
+              modules={{
+                toolbar: [
+                  [{ header: [1, 2, 3, false] }],
+                  ["bold", "italic", "underline", "strike"],
+                  [{ color: [] }, { background: [] }],
+                  ["blockquote", "code-block"],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  [{ align: [] }],
+                  ["clean"],
+                ],
+              }}
+              formats={[
+                "header",
+                "bold",
+                "italic",
+                "underline",
+                "strike",
+                "color",
+                "background",
+                "blockquote",
+                "code-block",
+                "list",
+                "bullet",
+                "align",
+              ]}
+              theme="snow"
+            />
           </View>
-          <ReactQuill
-            onChange={setValue}
-            modules={{
-              toolbar: [
-                [{ header: [1, 2, 3, false] }],
-                ["bold", "italic", "underline", "strike"],
-                [{ color: [] }, { background: [] }],
-                ["blockquote", "code-block"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                [{ align: [] }],
-                ["clean"],
-              ],
-            }}
-            formats={[
-              "header",
-              "bold",
-              "italic",
-              "underline",
-              "strike",
-              "color",
-              "background",
-              "blockquote",
-              "code-block",
-              "list",
-              "bullet",
-              "align",
-            ]}
-            theme="snow"
-          />
+          <View>
+            <ActionButton>Submit</ActionButton>
+          </View>
         </View>
       )}
     </Flex>
