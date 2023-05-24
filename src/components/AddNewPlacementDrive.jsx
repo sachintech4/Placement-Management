@@ -52,10 +52,9 @@ function AddNewPlacementDrive() {
     setSelectedCompany(selectedCompany);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     const details = {
+      companyUid: selectedCompany.uid,
       companyName: selectedCompany.companyName,
       location: selectedCompany.location,
       email: selectedCompany.email,
@@ -171,7 +170,7 @@ function AddNewPlacementDrive() {
             />
           </View>
           <View>
-            <ActionButton>Submit</ActionButton>
+            <ActionButton onPress={handleSubmit}>Submit</ActionButton>
           </View>
         </View>
       )}
