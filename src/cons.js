@@ -82,6 +82,7 @@ const cons = {
       USERS_STUDENT: "users_student",
       USERS_TPO: "users_tpo",
       COMPANIES: "companies",
+      PLACEMENTS: "placements",
     },
   },
 };
