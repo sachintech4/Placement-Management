@@ -8,7 +8,6 @@ import {
   Cell,
   SearchField,
   Flex,
-  useCollator,
   Content,
   Dialog,
   DialogContainer,
