@@ -3,17 +3,17 @@ import { collection, onSnapshot } from "@firebase/firestore";
 import { db } from "../firebase-config";
 import cons from "../cons";
 
-function useTpos() {
-  const [tpos, setTpos] = useState([]);
+function usePlacements() {
+  const [placements, setPlacements] = useState([]);
 
   useEffect(() => {
-    const userTposRef = collection(db, cons.DB.COLLECTIONS.USERS_TPO);
+    const placementsRef = collection(db, cons.DB.COLLECTIONS.PLACEMENTS);
 
-    const unsubscribe = onSnapshot(userTposRef, (querySnapshot) => {
+    const unsubscribe = onSnapshot(placementsRef, (querySnapshot) => {
       const data = querySnapshot.docs.map((doc) => {
         return { ...doc.data(), uid: doc.id };
       });
-      if (data) setTpos(data);
+      if (data) setPlacements(data);
     });
 
     return () => {
@@ -21,7 +21,7 @@ function useTpos() {
     };
   }, []);
 
-  return tpos;
+  return placements;
 }
 
-export default useTpos;
+export default usePlacements;
