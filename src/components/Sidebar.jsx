@@ -8,7 +8,7 @@ import { AuthUserContext } from "../contexts";
 
 const adminSidebarOptions = Object.values(cons.SIDEBARS.ADMIN);
 const tpoSidebarOptions = Object.values(cons.SIDEBARS.TPO);
-const commonSidebarOptions = Object.values(cons.SIDEBARS.COMMON);
+const studentSidebarOptions = Object.values(cons.SIDEBARS.STUDENTS);
 
 function Sidebar({ gridArea, role, onOptionSelect }) {
   const authUser = useContext(AuthUserContext);
@@ -44,7 +44,16 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
         ));
       }
       case cons.USERS.STUDENT.type: {
-        return null;
+        return studentSidebarOptions.map((opt, index) => (
+          <ActionButton
+            key={`${index}${opt.text}`}
+            onPress={() => {
+              onOptionSelect(opt);
+            }}
+          >
+            {opt.text}
+          </ActionButton>
+        ));
       }
       default: {
         return null;

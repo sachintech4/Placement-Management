@@ -76,6 +76,16 @@ const cons = {
         text: "Placement Records",
       },
     },
+    STUDENTS: {
+      ACTIVE_PLACEMENTS: {
+        type: "active-placements",
+        text: "Active Placements",
+      },
+      PLACEMENTS_APPLIED_TO: {
+        type: "placements-applied-to",
+        text: "Placements Applied to",
+      },
+    },
   },
   DB: {
     COLLECTIONS: {
