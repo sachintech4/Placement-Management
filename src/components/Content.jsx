@@ -9,6 +9,7 @@ import AddNewCompany from "./AddNewCompany";
 import ShowCompanies from "./ShowCompanies";
 import AddNewPlacementDrive from "./AddNewPlacementDrive";
 import PlacementDriveDetalis from "./PlacementDriveDetails";
+import PlacedStudents from "./PlacedStudents";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -49,6 +50,9 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       }
       case cons.SIDEBARS.TPO.PLACEMENT_DRIVE_DETAILS.type: {
         return <PlacementDriveDetalis />;
+      }
+      case cons.SIDEBARS.TPO.PLACED_STUDENTS.type: {
+        return <PlacedStudents />;
       }
       default:
         return null;
