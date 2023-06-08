@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   TableView,
   TableHeader,
@@ -18,12 +18,9 @@ import {
   Grid,
   View,
 } from "@adobe/react-spectrum";
-import { ToastQueue } from "@react-spectrum/toast";
 import { useAsyncList } from "react-stately";
 import useStudents from "../hooks/useStudents";
 import { debounce } from "../utils";
-import { AuthUserContext } from "../contexts";
-import cons from "../cons";
 
 function PlacedStudents() {
   const columns = useMemo(
@@ -80,7 +77,6 @@ function PlacedStudents() {
   });
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const user = useContext(AuthUserContext);
 
   useEffect(() => {
     list.reload();
