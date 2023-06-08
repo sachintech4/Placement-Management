@@ -10,6 +10,8 @@ import ShowCompanies from "./ShowCompanies";
 import AddNewPlacementDrive from "./AddNewPlacementDrive";
 import PlacementDriveDetalis from "./PlacementDriveDetails";
 import PlacedStudents from "./PlacedStudents";
+import ActivePlacements from "./ActivePlacements";
+import PlacemnetsAppliedTo from "./PlacementsAppliedTo";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -63,6 +65,12 @@ function Content({ gridArea, role, selectedSidebarOption }) {
     switch (selectedSidebarOption?.type) {
       case cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type: {
         return <ProfileAndSettings role={role} />;
+      }
+      case cons.SIDEBARS.STUDENTS.ACTIVE_PLACEMENTS.type: {
+        return <ActivePlacements />;
+      }
+      case cons.SIDEBARS.STUDENTS.PLACEMENTS_APPLIED_TO.type: {
+        return <PlacemnetsAppliedTo />;
       }
       default:
         return null;
