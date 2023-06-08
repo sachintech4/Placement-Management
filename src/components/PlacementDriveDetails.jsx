@@ -72,7 +72,6 @@ function PlacementDriveDetalis() {
 
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [activeStatus, setActiveStatus] = useState(null);
   const user = useContext(AuthUserContext);
 
   const handleFilter = (text) => {
@@ -162,7 +161,6 @@ function PlacementDriveDetalis() {
           width={"98%"}
           maxHeight={"98%"}
           sortDescriptor={list.sortDescriptor}
-          onSortChange={list.sort}
           onAction={handleRowAction}
           selectionMode="multiple"
           selectedKeys={selectedKeys}
