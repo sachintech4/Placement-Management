@@ -21,13 +21,7 @@ import {
 } from "@adobe/react-spectrum";
 import { useAsyncList } from "react-stately";
 import { db } from "../firebase-config";
-import {
-  doc,
-  getDoc,
-  onSnapshot,
-  updateDoc,
-  writeBatch,
-} from "@firebase/firestore";
+import { doc, getDoc, onSnapshot, writeBatch } from "@firebase/firestore";
 import { debounce } from "../utils";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
@@ -79,8 +73,6 @@ function ActivePlacements() {
   useEffect(() => {
     list.reload();
   }, [placements]);
-
-  console.log(list);
 
   const handleFilter = (text) => {
     list.setFilterText(text.trim());
@@ -193,7 +185,7 @@ function ActivePlacements() {
                   if (userData.placementsAppliedTo.includes(item.id)) {
                     return (
                       <Cell>
-                        <Button variant="accent" style="fill">
+                        <Button variant="primary" style="fill">
                           Applied
                         </Button>
                       </Cell>
@@ -202,7 +194,7 @@ function ActivePlacements() {
                     return (
                       <Cell>
                         <Button
-                          variant="accent"
+                          variant="primary"
                           style="outline"
                           onPress={() => applyForPlacement(item.id)}
                         >
