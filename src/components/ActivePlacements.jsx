@@ -21,7 +21,13 @@ import {
 } from "@adobe/react-spectrum";
 import { useAsyncList } from "react-stately";
 import { db } from "../firebase-config";
-import { doc, getDoc, onSnapshot, updateDoc } from "@firebase/firestore";
+import {
+  doc,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+  writeBatch,
+} from "@firebase/firestore";
 import { debounce } from "../utils";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
@@ -63,7 +69,6 @@ function ActivePlacements() {
         return [];
       };
       let items = prepareRows();
-      console.log(items);
       return { items };
     },
   });
@@ -74,6 +79,8 @@ function ActivePlacements() {
   useEffect(() => {
     list.reload();
   }, [placements]);
+
+  console.log(list);
 
   const handleFilter = (text) => {
     list.setFilterText(text.trim());
@@ -91,19 +98,65 @@ function ActivePlacements() {
     }
   };
 
-  const getUserDoc = async () => {
-    try {
-      const documentRef = doc(db, cons.DB.COLLECTIONS.USERS_STUDENT, user.uid);
-      const documentSnapshot = await getDoc(documentRef);
+  const [userData, setUserData] = useState({ placementsAppliedTo: [] });
+
+  const studentDocumentRef = doc(
+    db,
+    cons.DB.COLLECTIONS.USERS_STUDENT,
+    user.uid
+  );
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(studentDocumentRef, (documentSnapshot) => {
       if (documentSnapshot.exists()) {
         const documentData = documentSnapshot.data();
-        // console.log("Document data:", documentData);
-        return documentData;
+        setUserData(documentData);
       } else {
         console.log("Document does not exist");
+        setUserData(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [user.uid]);
+
+  const applyForPlacement = async (placementUid) => {
+    const placementDocumentRef = doc(
+      db,
+      cons.DB.COLLECTIONS.PLACEMENTS,
+      placementUid
+    );
+
+    try {
+      const [placementSnapshot, studentSnapshot] = await Promise.all([
+        getDoc(placementDocumentRef),
+        getDoc(studentDocumentRef),
+      ]);
+
+      if (placementSnapshot.exists() && studentSnapshot.exists()) {
+        const batch = writeBatch(db);
+
+        const placementData = placementSnapshot.data();
+        const studentData = studentSnapshot.data();
+
+        batch.update(placementDocumentRef, {
+          studentsApplied: [...(placementData.studentsApplied || []), user.uid],
+        });
+
+        batch.update(studentDocumentRef, {
+          placementsAppliedTo: [
+            ...(studentData.placementsAppliedTo || []),
+            placementUid,
+          ],
+        });
+
+        await batch.commit();
+        console.log("students and placemnt feild updated.");
+      } else {
+        console.log("placement and student doc does not exist");
       }
     } catch (error) {
-      console.error("Error getting document:", error);
+      console.error("Error appllying for placement");
     }
   };
 
@@ -137,11 +190,27 @@ function ActivePlacements() {
             <Row>
               {(columnKey) => {
                 if (columnKey === "apply") {
-                  return (
-                    <Cell>
-                      <Button>Apply</Button>
-                    </Cell>
-                  );
+                  if (userData.placementsAppliedTo.includes(item.id)) {
+                    return (
+                      <Cell>
+                        <Button variant="accent" style="fill">
+                          Applied
+                        </Button>
+                      </Cell>
+                    );
+                  } else {
+                    return (
+                      <Cell>
+                        <Button
+                          variant="accent"
+                          style="outline"
+                          onPress={() => applyForPlacement(item.id)}
+                        >
+                          Apply
+                        </Button>
+                      </Cell>
+                    );
+                  }
                 } else {
                   return <Cell>{item[columnKey]}</Cell>;
                 }
