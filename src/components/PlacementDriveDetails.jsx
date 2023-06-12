@@ -217,18 +217,35 @@ function PlacementDriveDetalis() {
             <Heading>{`${detailsDialog.companyName}`}</Heading>
             <Divider />
             <Content>
-              <Grid gap="size-200" columns={["1fr", "1fr"]}>
-                <View>
+              <Grid
+                gap="size-200"
+                areas={[
+                  "email location",
+                  "status status",
+                  "companyDescription companyDescription",
+                ]}
+                columns={["1fr", "1fr"]}
+              >
+                <View gridArea="email">
                   <Heading level={4}>Email</Heading>
                   <Text>{detailsDialog.email}</Text>
                 </View>
-                <View>
+                <View gridArea="location">
                   <Heading level={4}>Location</Heading>
                   <Text>{detailsDialog.location}</Text>
                 </View>
-                <View>
+                <View gridArea="status">
                   <Heading level={4}>Status</Heading>
                   <Text>{detailsDialog.isActive ? "Active" : "Inactive"}</Text>
+                </View>
+                <View gridArea="companyDescription">
+                  <Heading level={4}>Description</Heading>
+                  <div
+                    style={{ backgroundColor: "#e6e2d3" }}
+                    dangerouslySetInnerHTML={{
+                      __html: detailsDialog.companyDescription,
+                    }}
+                  ></div>
                 </View>
               </Grid>
             </Content>
