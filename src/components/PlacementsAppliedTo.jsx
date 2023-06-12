@@ -37,6 +37,7 @@ function PlacementsAppliedTo() {
   const placements = usePlacements();
   const user = useContext(AuthUserContext);
   const [userPlacementData, setUserPlacementData] = useState(null);
+  const [detailsDialog, setDetailsDialog] = useState(null);
 
   useEffect(() => {
     const getUserData = () => {
@@ -61,7 +62,12 @@ function PlacementsAppliedTo() {
     userPlacementData.includes(placement.uid)
   );
 
-  console.log(placementsAppliedTo);
+  const handleRowAction = (key) => {
+    const row = placementsAppliedTo.find((item) => item.uid === key);
+    if (row) {
+      setDetailsDialog(row);
+    }
+  };
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
@@ -76,8 +82,7 @@ function PlacementsAppliedTo() {
         aria-label="Active placements"
         width={"98%"}
         maxHeight={"98%"}
-        // sortDescriptor={list.sortDescriptor}
-        // onAction={handleRowAction}
+        onAction={handleRowAction}
         // selectedKeys={selectedKeys}
         // onSelectionChange={setSelectedKeys}
       >
@@ -106,6 +111,47 @@ function PlacementsAppliedTo() {
           )}
         </TableBody>
       </TableView>
+      <DialogContainer onDismiss={() => setDetailsDialog(null)}>
+        {detailsDialog && (
+          <Dialog isDismissable>
+            <Heading>{`${detailsDialog.companyName}`}</Heading>
+            <Divider />
+            <Content>
+              <Grid
+                gap="size-200"
+                areas={[
+                  "email location",
+                  "status status",
+                  "companyDescription companyDescription",
+                ]}
+                columns={["1fr", "1fr"]}
+              >
+                <View gridArea="email">
+                  <Heading level={4}>Email</Heading>
+                  <Text>{detailsDialog.email}</Text>
+                </View>
+                <View gridArea="location">
+                  <Heading level={4}>Location</Heading>
+                  <Text>{detailsDialog.location}</Text>
+                </View>
+                <View gridArea="status">
+                  <Heading level={4}>Status</Heading>
+                  <Text>{detailsDialog.isActive ? "Active" : "Inactive"}</Text>
+                </View>
+                <View gridArea="companyDescription">
+                  <Heading level={4}>Description</Heading>
+                  <div
+                    style={{ backgroundColor: "#e6e2d3" }}
+                    dangerouslySetInnerHTML={{
+                      __html: detailsDialog.companyDescription,
+                    }}
+                  ></div>
+                </View>
+              </Grid>
+            </Content>
+          </Dialog>
+        )}
+      </DialogContainer>
     </Flex>
   );
 }
