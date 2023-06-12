@@ -81,7 +81,6 @@ function PlacementDriveDetalis() {
     list.setFilterText(text.trim());
   });
   const handleRowAction = (key) => {
-    console.log(key);
     const row = list.items.find((item) => item.id === key);
     const placement = placements.find(
       (placement) => placement.companyName === row.placementDriveName
