@@ -20,7 +20,9 @@ import {
 import { AuthUserContext } from "../contexts";
 import { db } from "../firebase-config";
 import { doc, onSnapshot } from "@firebase/firestore";
+import { useAsyncList } from "react-stately";
 import usePlacements from "../hooks/usePlacements";
+import { debounce } from "../utils";
 import cons from "../cons";
 
 function PlacementsAppliedTo() {
@@ -62,6 +64,29 @@ function PlacementsAppliedTo() {
     userPlacementData.includes(placement.uid)
   );
 
+  const list = useAsyncList({
+    async load({ signal, filterText }) {
+      const prepareRows = () => {
+        const filteredAndNormalisedItems = [];
+        placementsAppliedTo.forEach((placement) => {
+          const shouldRowBeInList = Object.values(placement).some((cell) =>
+            cell?.toString().toLowerCase().includes(filterText.toLowerCase())
+          );
+          if (shouldRowBeInList) filteredAndNormalisedItems.push(placement);
+        });
+        if (filteredAndNormalisedItems) return filteredAndNormalisedItems;
+        return [];
+      };
+
+      let items = prepareRows();
+      return { items };
+    },
+  });
+
+  useEffect(() => {
+    list.reload();
+  }, [placements]);
+
   const handleRowAction = (key) => {
     const row = placementsAppliedTo.find((item) => item.uid === key);
     if (row) {
@@ -69,22 +94,27 @@ function PlacementsAppliedTo() {
     }
   };
 
+  const handleFilter = (text) => {
+    list.setFilterText(text.trim());
+  };
+  const handleSearchChange = debounce((text) => {
+    list.setFilterText(text.trim());
+  });
+
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
       <SearchField
         label="Search"
-        // onSubmit={handleFilter}
+        onSubmit={handleFilter}
         width="size-3600"
-        // onChange={handleSearchChange}
-        // onClear={() => list.setFilterText("")}
+        onChange={handleSearchChange}
+        onClear={() => list.setFilterText("")}
       />
       <TableView
         aria-label="Active placements"
         width={"98%"}
         maxHeight={"98%"}
         onAction={handleRowAction}
-        // selectedKeys={selectedKeys}
-        // onSelectionChange={setSelectedKeys}
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -93,7 +123,7 @@ function PlacementsAppliedTo() {
             </Column>
           )}
         </TableHeader>
-        <TableBody items={placementsAppliedTo}>
+        <TableBody items={list.items}>
           {(item) => (
             <Row key={item.uid}>
               {(columnKey) => (
