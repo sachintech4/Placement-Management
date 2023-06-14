@@ -27,6 +27,7 @@ import useStudents from "../hooks/useStudents";
 import { debounce } from "../utils";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
+import usePlacements from "../hooks/usePlacements";
 
 function StudentList() {
   const columns = useMemo(
@@ -82,7 +83,9 @@ function StudentList() {
   });
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const [placementsAppliedTo, setPlacementsAppliedTo] = useState(null);
   const user = useContext(AuthUserContext);
+  const placements = usePlacements();
 
   useEffect(() => {
     list.reload();
@@ -101,6 +104,17 @@ function StudentList() {
       setDetailsDialog(student);
     }
   };
+
+  useEffect(() => {
+    if (detailsDialog) {
+      const filterPlacements = placements.filter((placement) =>
+        detailsDialog.placementsAppliedTo.includes(placement.uid)
+      );
+      setPlacementsAppliedTo(filterPlacements);
+    }
+  }),
+    [detailsDialog];
+
   const handleActionbarAction = async (actionKey) => {
     if (actionKey === "delete") {
       // set slectedRowIds value to each students uid if selectedKeys equals "all" else set it with the selected keys
@@ -265,7 +279,21 @@ function StudentList() {
                 </View>
                 <View>
                   <Heading level={4}>Applied to</Heading>
-                  <Text>companies-applied-to-placeholder</Text>
+                  <View>
+                    <Text>
+                      {placementsAppliedTo ? (
+                        placementsAppliedTo.length > 0 ? (
+                          placementsAppliedTo
+                            .map((placement) => placement.companyName)
+                            .join(", ")
+                        ) : (
+                          <Text>No Placemnent Applied</Text>
+                        )
+                      ) : (
+                        <Text>Loading...</Text>
+                      )}
+                    </Text>
+                  </View>
                 </View>
               </Grid>
             </Content>
