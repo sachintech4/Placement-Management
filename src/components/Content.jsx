@@ -99,6 +99,7 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       height={"100vh"}
       padding={"size-200"}
       backgroundColor={"gray-200"}
+      overflow={"hidden auto"}
     >
       {renderContent()}
     </View>
