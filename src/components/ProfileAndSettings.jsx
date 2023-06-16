@@ -13,6 +13,7 @@ import ChangePassword from "./ChangePassword";
 import UpdateEmail from "./UpdateEmail";
 import TpoProfile from "./TpoProfile";
 import StudentProfile from "./StudentProfile";
+import StudentGeneralAndResume from "./StudentGeneralAndResume";
 
 function ProfileAndSettings({ role }) {
   const renderProfile = useCallback(() => {
@@ -24,7 +25,7 @@ function ProfileAndSettings({ role }) {
         return <TpoProfile />;
       }
       case cons.USERS.STUDENT.type: {
-        return <StudentProfile />;
+        return <StudentGeneralAndResume />;
       }
       default: {
         return (
