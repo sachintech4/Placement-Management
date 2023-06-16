@@ -56,7 +56,7 @@ function StudentProfile() {
 
   const docRef = doc(db, cons.DB.COLLECTIONS.USERS_STUDENT, user.uid);
 
-  // Get Tpo document using uid
+  // Get Student document using uid
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
@@ -102,9 +102,9 @@ function StudentProfile() {
     return () => unsubscribe();
   }, [user.uid]);
 
-  const updateTpoDocument = async (e) => {
+  const updateStudentDocument = async (e) => {
     e.preventDefault();
-    const updatedTpoData = {
+    const updatedStudentData = {
       firstName: firstNameInput,
       lastName: lastNameInput,
       dob: {
@@ -126,11 +126,11 @@ function StudentProfile() {
     };
 
     try {
-      await updateDoc(docRef, updatedTpoData);
-      console.log("Tpo document updated successfully.");
+      await updateDoc(docRef, updatedStudentData);
+      console.log("Student document updated successfully.");
       ToastQueue.positive("Document updated successfully.", { timeout: 1000 });
     } catch (error) {
-      console.error("Error updating Tpo data.");
+      console.error("Error updating Student data.");
       ToastQueue.negative("Failed to update the document.", { timeout: 1000 });
     }
   };
@@ -168,7 +168,7 @@ function StudentProfile() {
         borderRadius="medium"
         backgroundColor="gray-200"
       >
-        <Form onSubmit={updateTpoDocument}>
+        <Form onSubmit={updateStudentDocument}>
           <Grid
             areas={[
               "firstName lastName",
