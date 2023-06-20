@@ -9,7 +9,7 @@ function ChangePassword() {
   const handleReset = async () => {
     try {
       await sendPasswordResetEmail(authUser.auth, authUser.email);
-      ToastQueue.positive("Password reset email send to your email id", {
+      ToastQueue.positive("Password reset email sent to your email id", {
         timeout: 1000,
       });
     } catch (error) {
