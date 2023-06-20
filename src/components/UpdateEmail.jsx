@@ -25,6 +25,7 @@ function UpdateEmail({ role }) {
   const [showReauthDialog, setShowReauthDialog] = useState(false);
 
   const userRoleDocRefMap = {
+    [cons.USERS.ADMIN.type]: cons.DB.COLLECTIONS.USERS_ADMIN,
     [cons.USERS.TPO.type]: cons.DB.COLLECTIONS.USERS_TPO,
     [cons.USERS.STUDENT.type]: cons.DB.COLLECTIONS.USERS_STUDENT,
   };
