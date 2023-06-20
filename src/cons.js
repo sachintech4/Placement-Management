@@ -89,6 +89,7 @@ const cons = {
   },
   DB: {
     COLLECTIONS: {
+      USERS_ADMIN: "users_admin",
       USERS_STUDENT: "users_student",
       USERS_TPO: "users_tpo",
       COMPANIES: "companies",
