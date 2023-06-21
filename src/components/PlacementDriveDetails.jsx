@@ -18,6 +18,7 @@ import {
   View,
   Item,
   Switch,
+  Button,
 } from "@adobe/react-spectrum";
 import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
 import { ToastQueue } from "@react-spectrum/toast";
@@ -29,6 +30,7 @@ import { useAsyncList } from "react-stately";
 import { debounce } from "../utils";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
+import Download from "@spectrum-icons/workflow/Download";
 
 function PlacementDriveDetalis() {
   const placements = usePlacements();
@@ -145,6 +147,36 @@ function PlacementDriveDetalis() {
     }
   };
 
+  const downloadExcelSheet = async (studentsApplied) => {
+    try {
+      const queryParams = new URLSearchParams({
+        students: studentsApplied.join(","),
+      });
+      console.log(queryParams);
+      const res = await fetch(
+        `${cons.BASE_SERVER_URL}/downloadExcelSheet?${queryParams}`
+      );
+      console.log(res.url);
+      // if (res.ok) {
+      //   ToastQueue.positive(`${resJson.message}`, {
+      //     timeout: 1000,
+      //   });
+      // } else {
+      //   throw { code: resJson.code, message: resJson.message };
+      // }
+    } catch (error) {
+      console.error(error);
+
+      if (error.code === "email-already-exists") {
+        ToastQueue.negative(error.message, { timeout: 1000 });
+      } else {
+        ToastQueue.negative("error creating the new TPO user", {
+          timeout: 1000,
+        });
+      }
+    }
+  };
+
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
       <SearchField
@@ -220,7 +252,7 @@ function PlacementDriveDetalis() {
                 gap="size-200"
                 areas={[
                   "email location",
-                  "status status",
+                  "status downloadExcelSheet",
                   "companyDescription companyDescription",
                 ]}
                 columns={["1fr", "1fr"]}
@@ -236,6 +268,16 @@ function PlacementDriveDetalis() {
                 <View gridArea="status">
                   <Heading level={4}>Status</Heading>
                   <Text>{detailsDialog.isActive ? "Active" : "Inactive"}</Text>
+                </View>
+                <View gridArea="downloadExcelSheet">
+                  <Button
+                    onPress={() =>
+                      downloadExcelSheet(detailsDialog.studentsApplied)
+                    }
+                  >
+                    <Download />
+                    <Text>Student Details</Text>
+                  </Button>
                 </View>
                 <View gridArea="companyDescription">
                   <Heading level={4}>Description</Heading>
