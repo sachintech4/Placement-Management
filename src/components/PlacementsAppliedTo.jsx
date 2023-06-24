@@ -134,6 +134,8 @@ function PlacementsAppliedTo() {
                     ? item[columnKey]
                       ? "Active"
                       : "Inactive"
+                    : columnKey === "studentsApplied"
+                    ? item["studentsApplied"].length
                     : item[columnKey]}
                 </Cell>
               )}
