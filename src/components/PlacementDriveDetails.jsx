@@ -147,33 +147,38 @@ function PlacementDriveDetalis() {
     }
   };
 
-  const downloadExcelSheet = async (studentsApplied) => {
+  const downloadExcelSheet = async (studentsApplied, placementDriveName) => {
     try {
       const queryParams = new URLSearchParams({
         students: studentsApplied.join(","),
+        placementDriveName: placementDriveName,
       });
-      console.log(queryParams);
       const res = await fetch(
         `${cons.BASE_SERVER_URL}/downloadExcelSheet?${queryParams}`
       );
       console.log(res.url);
-      // if (res.ok) {
-      //   ToastQueue.positive(`${resJson.message}`, {
-      //     timeout: 1000,
-      //   });
-      // } else {
-      //   throw { code: resJson.code, message: resJson.message };
-      // }
+      if (res.ok) {
+        const link = document.createElement("a");
+        link.href = res.url;
+        link.donwload = `${placementDriveName}.xlsx`;
+
+        link.click();
+
+        ToastQueue.positive(
+          `Excel sheet for ${placementDriveName} donwloaded`,
+          {
+            timeout: 1000,
+          }
+        );
+      } else {
+        throw new error("Error downloading excel sheet");
+      }
     } catch (error) {
       console.error(error);
 
-      if (error.code === "email-already-exists") {
-        ToastQueue.negative(error.message, { timeout: 1000 });
-      } else {
-        ToastQueue.negative("error creating the new TPO user", {
-          timeout: 1000,
-        });
-      }
+      ToastQueue.negative("Error downloading excel sheet", {
+        timeout: 1000,
+      });
     }
   };
 
@@ -272,7 +277,10 @@ function PlacementDriveDetalis() {
                 <View gridArea="downloadExcelSheet">
                   <Button
                     onPress={() =>
-                      downloadExcelSheet(detailsDialog.studentsApplied)
+                      downloadExcelSheet(
+                        detailsDialog.studentsApplied,
+                        detailsDialog.companyName
+                      )
                     }
                   >
                     <Download />
