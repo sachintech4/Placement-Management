@@ -183,6 +183,7 @@ function AddStudent() {
     const email = data.get("email").trim();
     const prn = data.get("prn-number").trim();
     const rollNo = data.get("roll-no").trim();
+    const batch = data.get("batch").trim();
 
     const details = {
       firstName: firstName,
@@ -193,6 +194,7 @@ function AddStudent() {
       gender: gender,
       dob: dob,
       role: "student",
+      batch: batch,
     };
 
     // validation
@@ -228,6 +230,20 @@ function AddStudent() {
       ToastQueue.negative("Please provide the Date of birth", {
         timeout: 1000,
       });
+      return;
+    }
+
+    if (!details.batch) {
+      ToastQueue.negative("Please provide the batch", { timeout: 1000 });
+      return;
+    }
+
+    if (
+      isNaN(details.batch) ||
+      details.batch < 2000 ||
+      details.batch > new Date().getFullYear()
+    ) {
+      ToastQueue.negative("Please enter a valid batch", { timeout: 1000 });
       return;
     }
 
@@ -279,6 +295,7 @@ function AddStudent() {
               "email email",
               "prn-no roll-no",
               "gender dob",
+              "batch batch",
               "buttons buttons",
             ]}
             columns={"1fr 1fr"}
@@ -324,6 +341,7 @@ function AddStudent() {
               value={dob}
               onChange={setDob}
             />
+            <TextField label="Batch" gridArea={"batch"} name="batch" />
             <View gridArea={"buttons"}>
               <Button type="submit">Register</Button>
             </View>
