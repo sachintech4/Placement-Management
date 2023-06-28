@@ -18,6 +18,7 @@ import {
   Grid,
   View,
   Item,
+  Button,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import Delete from "@spectrum-icons/workflow/Delete";
@@ -29,7 +30,7 @@ import { AuthUserContext } from "../contexts";
 import cons from "../cons";
 import usePlacements from "../hooks/usePlacements";
 
-function StudentList() {
+function StudentList({ role }) {
   const columns = useMemo(
     () => [
       { name: "Roll No", uid: "rollNo" },
@@ -175,7 +176,7 @@ function StudentList() {
           sortDescriptor={list.sortDescriptor}
           onSortChange={list.sort}
           onAction={handleRowAction}
-          selectionMode="multiple"
+          selectionMode={role.type === "admin" ? "multiple" : "none"}
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
         >
@@ -274,8 +275,19 @@ function StudentList() {
                   <Text>{detailsDialog.pgYearOfPassing ?? "-"}</Text>
                 </View>
                 <View>
-                  <Heading level={4}>Resume</Heading>
-                  <Text>resume-downloader-placeholder</Text>
+                  {detailsDialog.resume ? (
+                    <Button
+                      marginTop={"size-100"}
+                      onPress={() => window.open(detailsDialog.resume)}
+                    >
+                      Resume
+                    </Button>
+                  ) : (
+                    <>
+                      <Heading level={4}>Resume</Heading>
+                      <Text>Resume not uploaded</Text>
+                    </>
+                  )}
                 </View>
                 <View>
                   <Heading level={4}>Applied to</Heading>
