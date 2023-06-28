@@ -23,7 +23,7 @@ function Content({ gridArea, role, selectedSidebarOption }) {
         return <AddNewUser />;
       }
       case cons.SIDEBARS.ADMIN.VIEW_STUDENTS.type: {
-        return <StudentList />;
+        return <StudentList role={role} />;
       }
       case cons.SIDEBARS.ADMIN.VIEW_TPO.type: {
         return <TpoList />;
@@ -39,7 +39,7 @@ function Content({ gridArea, role, selectedSidebarOption }) {
         return <ProfileAndSettings role={role} />;
       }
       case cons.SIDEBARS.TPO.LIST_OF_STUDENTS.type: {
-        return <StudentList />;
+        return <StudentList role={role} />;
       }
       case cons.SIDEBARS.TPO.ADD_NEW_COMPANY.type: {
         return <AddNewCompany />;
