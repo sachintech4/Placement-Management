@@ -85,6 +85,7 @@ function StudentList({ role }) {
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [placementsAppliedTo, setPlacementsAppliedTo] = useState(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
   const user = useContext(AuthUserContext);
   const placements = usePlacements();
 
@@ -116,46 +117,97 @@ function StudentList({ role }) {
   }),
     [detailsDialog];
 
-  const handleActionbarAction = async (actionKey) => {
+  const handleActionbarAction = (actionKey) => {
     if (actionKey === "delete") {
-      // set slectedRowIds value to each students uid if selectedKeys equals "all" else set it with the selected keys
-      const selectedRowIds =
-        selectedKeys === "all"
-          ? students.map((student) => student.uid)
-          : Array.from(selectedKeys);
-      // now send these id through a function call to backend to delete them
-      const data = {
-        rows: selectedRowIds,
-        token: user.accessToken,
-      };
+      setDeleteConfirmation(true);
+    }
+  };
 
-      try {
-        const res = await fetch(`${cons.BASE_SERVER_URL}/deleteStudents`, {
+  const handlePermanentDeletion = async () => {
+    // set slectedRowIds value to each students uid if selectedKeys equals "all" else set it with the selected keys
+    const selectedRowIds =
+      selectedKeys === "all"
+        ? students.map((student) => student.uid)
+        : Array.from(selectedKeys);
+    // now send these id through a function call to backend to delete them
+    const data = {
+      rows: selectedRowIds,
+      token: user.accessToken,
+    };
+
+    try {
+      const res = await fetch(
+        `${cons.BASE_SERVER_URL}/permanentlyDeleteStudents`,
+        {
           method: "delete",
           header: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
-        });
-        const resJson = await res.json();
-        // show a toast msg
-        if (resJson.code === "success") {
-          ToastQueue.positive(resJson.message, {
-            timeout: 1000,
-          });
-        } else {
-          ToastQueue.negative(resJson.message, {
-            timeout: 1000,
-          });
         }
-      } catch (error) {
-        console.error("failed to delete users");
-        console.error(error);
-        // show a toast msg
-        ToastQueue.negative("Failed to delete students", {
+      );
+      const resJson = await res.json();
+      // show a toast msg
+      if (resJson.code === "success") {
+        ToastQueue.positive(resJson.message, {
+          timeout: 1000,
+        });
+      } else {
+        ToastQueue.negative(resJson.message, {
           timeout: 1000,
         });
       }
+    } catch (error) {
+      console.error("failed to delete users");
+      console.error(error);
+      // show a toast msg
+      ToastQueue.negative("Failed to delete students", {
+        timeout: 1000,
+      });
+    }
+  };
+
+  const handleDeletionAndMoveData = async () => {
+    // set slectedRowIds value to each students uid if selectedKeys equals "all" else set it with the selected keys
+    const selectedRowIds =
+      selectedKeys === "all"
+        ? students.map((student) => student.uid)
+        : Array.from(selectedKeys);
+
+    const data = {
+      rows: selectedRowIds,
+      token: user.accessToken,
+    };
+
+    try {
+      const res = await fetch(
+        `${cons.BASE_SERVER_URL}/deleteStudentAndMoveData`,
+        {
+          method: "delete",
+          header: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const resJson = await res.json();
+      // show a toast msg
+      if (resJson.code === "success") {
+        ToastQueue.positive(resJson.message, {
+          timeout: 1000,
+        });
+      } else {
+        ToastQueue.negative(resJson.message, {
+          timeout: 1000,
+        });
+      }
+    } catch (error) {
+      console.error("failed to delete users");
+      console.error(error);
+      // show a toast msg
+      ToastQueue.negative("Failed to delete students", {
+        timeout: 1000,
+      });
     }
   };
 
@@ -307,6 +359,39 @@ function StudentList({ role }) {
                     </Text>
                   </View>
                 </View>
+              </Grid>
+            </Content>
+          </Dialog>
+        )}
+      </DialogContainer>
+      <DialogContainer onDismiss={() => setDeleteConfirmation(null)}>
+        {deleteConfirmation && (
+          <Dialog isDismissable>
+            <Heading>Confirm Delete Option</Heading>
+            <Divider />
+            <Content>
+              <Grid columns={["1fr", "1fr"]} marginBottom={"size-300"}>
+                <Heading level={4}>
+                  Permanently delete users and their corresponding records:
+                </Heading>
+                <Button
+                  variant="negative"
+                  style="fill"
+                  onPress={handlePermanentDeletion}
+                >
+                  <Delete />
+                  <Text>Delete Permanently</Text>
+                </Button>
+              </Grid>
+              <Divider size="M" />
+              <Grid columns={["1fr", "1fr"]} marginTop={"size-200"}>
+                <Heading level={4}>
+                  Delete users but move their information to records:
+                </Heading>
+                <Button variant="primary" onPress={handleDeletionAndMoveData}>
+                  <Delete />
+                  <Text>Keep the records</Text>
+                </Button>
               </Grid>
             </Content>
           </Dialog>
