@@ -12,6 +12,7 @@ import PlacementDriveDetalis from "./PlacementDriveDetails";
 import PlacedStudents from "./PlacedStudents";
 import ActivePlacements from "./ActivePlacements";
 import PlacemnetsAppliedTo from "./PlacementsAppliedTo";
+import Records from "./Records";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -55,6 +56,9 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       }
       case cons.SIDEBARS.TPO.PLACED_STUDENTS.type: {
         return <PlacedStudents />;
+      }
+      case cons.SIDEBARS.TPO.RECORDS.type: {
+        return <Records />;
       }
       default:
         return null;
