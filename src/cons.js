@@ -71,9 +71,9 @@ const cons = {
         type: "placed-students",
         text: "Students Placed",
       },
-      PLACEMENT_RECORDS: {
-        type: "placement-records",
-        text: "Placement Records",
+      RECORDS: {
+        type: "records",
+        text: "Records",
       },
     },
     STUDENTS: {
@@ -94,6 +94,7 @@ const cons = {
       USERS_TPO: "users_tpo",
       COMPANIES: "companies",
       PLACEMENTS: "placements",
+      RECORDS: "records",
     },
   },
 };
