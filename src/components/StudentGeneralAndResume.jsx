@@ -10,6 +10,7 @@ import {
 } from "@adobe/react-spectrum";
 import StudentResume from "./StudentResume";
 import StudentProfile from "./StudentProfile";
+import StudentPlacementStatus from "./StudentsPlacementStatus";
 
 function StudentGeneralAndResume() {
   return (
@@ -33,7 +34,9 @@ function StudentGeneralAndResume() {
           </View>
         </Item>
         <Item key={"placementStatus"}>
-          <View paddingX="size-100" paddingY="size-400"></View>
+          <View paddingX="size-100" paddingY="size-400">
+            <StudentPlacementStatus />
+          </View>
         </Item>
       </TabPanels>
     </Tabs>
