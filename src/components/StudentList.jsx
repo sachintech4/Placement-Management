@@ -202,10 +202,10 @@ function StudentList({ role }) {
         });
       }
     } catch (error) {
-      console.error("failed to delete users");
+      console.error("failed to move users");
       console.error(error);
       // show a toast msg
-      ToastQueue.negative("Failed to delete students", {
+      ToastQueue.negative("Failed to move students", {
         timeout: 1000,
       });
     }
