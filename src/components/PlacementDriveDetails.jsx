@@ -25,12 +25,12 @@ import { ToastQueue } from "@react-spectrum/toast";
 import { db } from "../firebase-config";
 import { doc, onSnapshot, updateDoc } from "@firebase/firestore";
 import Delete from "@spectrum-icons/workflow/Delete";
+import Download from "@spectrum-icons/workflow/Download";
 import usePlacements from "../hooks/usePlacements";
 import { useAsyncList } from "react-stately";
 import { debounce } from "../utils";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
-import Download from "@spectrum-icons/workflow/Download";
 
 function PlacementDriveDetalis() {
   const placements = usePlacements();
@@ -74,6 +74,8 @@ function PlacementDriveDetalis() {
 
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+  const [placementYear, setPlacementYear] = useState(null);
   const user = useContext(AuthUserContext);
 
   const handleFilter = (text) => {
@@ -88,50 +90,105 @@ function PlacementDriveDetalis() {
       (placement) => placement.companyName === row.placementDriveName
     );
     if (placement) {
+      const createdAtTimestamp = placement.createdAt;
+      const createdAtDate = createdAtTimestamp.toDate();
+      const year = createdAtDate.getFullYear().toString();
       setDetailsDialog(placement);
+      setPlacementYear(year);
     }
   };
 
   const handleActionbarAction = async (actionKey) => {
     if (actionKey === "delete") {
-      // set slectedRowIds value to each placements uid if selectedKeys equals "all" else set it with the selected keys
-      const selectedRowIds =
-        selectedKeys === "all"
-          ? placements.map((placement) => placement.uid)
-          : Array.from(selectedKeys);
-      // now send these id through a function call to backend to delete them
-      const data = {
-        rows: selectedRowIds,
-        token: user.accessToken,
-      };
+      setDeleteConfirmation(true);
+    }
+  };
 
-      try {
-        const res = await fetch(`${cons.BASE_SERVER_URL}/deletePlacements`, {
+  const handlePermanentDeletion = async () => {
+    // set slectedRowIds value to each placements uid if selectedKeys equals "all" else set it with the selected keys
+    const selectedRowIds =
+      selectedKeys === "all"
+        ? placements.map((placement) => placement.uid)
+        : Array.from(selectedKeys);
+    // now send these id through a function call to backend to delete them
+    const data = {
+      rows: selectedRowIds,
+      token: user.accessToken,
+    };
+
+    try {
+      const res = await fetch(
+        `${cons.BASE_SERVER_URL}/permanentlyDeletePlacements`,
+        {
           method: "delete",
           header: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
-        });
-        const resJson = await res.json();
-        // show a toast msg
-        if (resJson.code === "success") {
-          ToastQueue.positive(resJson.message, {
-            timeout: 1000,
-          });
-        } else {
-          ToastQueue.negative(resJson.message, {
-            timeout: 1000,
-          });
         }
-      } catch (error) {
-        console.error("failed to delete placements");
-        console.error(error);
-        // show a toast msg
-        ToastQueue.negative("Failed to delete placements", {
+      );
+      const resJson = await res.json();
+      // show a toast msg
+      if (resJson.code === "success") {
+        ToastQueue.positive(resJson.message, {
+          timeout: 1000,
+        });
+      } else {
+        ToastQueue.negative(resJson.message, {
           timeout: 1000,
         });
       }
+    } catch (error) {
+      console.error("failed to delete placements");
+      console.error(error);
+      // show a toast msg
+      ToastQueue.negative("Failed to delete placements", {
+        timeout: 1000,
+      });
+    }
+  };
+
+  const handlePlacementRecords = async () => {
+    // set slectedRowIds value to each placements uid if selectedKeys equals "all" else set it with the selected keys
+    const selectedRowIds =
+      selectedKeys === "all"
+        ? placements.map((placement) => placement.uid)
+        : Array.from(selectedKeys);
+    // now send these id through a function call to backend to delete them
+    const data = {
+      rows: selectedRowIds,
+      token: user.accessToken,
+    };
+
+    try {
+      const res = await fetch(
+        `${cons.BASE_SERVER_URL}/moveToPlacementRecords`,
+        {
+          method: "delete",
+          header: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const resJson = await res.json();
+      // show a toast msg
+      if (resJson.code === "success") {
+        ToastQueue.positive(resJson.message, {
+          timeout: 1000,
+        });
+      } else {
+        ToastQueue.negative(resJson.message, {
+          timeout: 1000,
+        });
+      }
+    } catch (error) {
+      console.error("failed to move placements");
+      console.error(error);
+      // show a toast msg
+      ToastQueue.negative("Failed to move placements", {
+        timeout: 1000,
+      });
     }
   };
 
@@ -165,7 +222,7 @@ function PlacementDriveDetalis() {
         link.click();
 
         ToastQueue.positive(
-          `Excel sheet for ${placementDriveName} donwloaded`,
+          `Excel sheet for ${placementDriveName} downloaded`,
           {
             timeout: 1000,
           }
@@ -257,7 +314,8 @@ function PlacementDriveDetalis() {
                 gap="size-200"
                 areas={[
                   "email location",
-                  "status downloadExcelSheet",
+                  "status year",
+                  "downloadExcelSheet downloadExcelSheet",
                   "companyDescription companyDescription",
                 ]}
                 columns={["1fr", "1fr"]}
@@ -273,6 +331,10 @@ function PlacementDriveDetalis() {
                 <View gridArea="status">
                   <Heading level={4}>Status</Heading>
                   <Text>{detailsDialog.isActive ? "Active" : "Inactive"}</Text>
+                </View>
+                <View gridArea="year">
+                  <Heading level={4}>Year</Heading>
+                  <Text>{placementYear}</Text>
                 </View>
                 <View gridArea="downloadExcelSheet">
                   <Button
@@ -296,6 +358,37 @@ function PlacementDriveDetalis() {
                     }}
                   ></div>
                 </View>
+              </Grid>
+            </Content>
+          </Dialog>
+        )}
+      </DialogContainer>
+      <DialogContainer onDismiss={() => setDeleteConfirmation(null)}>
+        {deleteConfirmation && (
+          <Dialog isDismissable>
+            <Heading>Confirm Delete Option</Heading>
+            <Divider />
+            <Content>
+              <Grid columns={["1fr", "1fr"]} marginBottom={"size-300"}>
+                <Heading level={4}>Permanently delete Placement Drive:</Heading>
+                <Button
+                  variant="negative"
+                  style="fill"
+                  onPress={handlePermanentDeletion}
+                >
+                  <Delete />
+                  <Text>Delete Permanently</Text>
+                </Button>
+              </Grid>
+              <Divider size="M" />
+              <Grid columns={["1fr", "1fr"]} marginTop={"size-200"}>
+                <Heading level={4}>
+                  Move the Placement drive to the records:
+                </Heading>
+                <Button variant="primary" onPress={handlePlacementRecords}>
+                  <Delete />
+                  <Text>Delete but keep the records</Text>
+                </Button>
               </Grid>
             </Content>
           </Dialog>
