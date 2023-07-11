@@ -75,6 +75,10 @@ const cons = {
         type: "placemeny-status",
         text: "Placement Status",
       },
+      PLACEMENT_RECORDS: {
+        type: "placement-records",
+        text: "Placement Records",
+      },
       RECORDS: {
         type: "records",
         text: "Records",
