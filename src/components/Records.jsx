@@ -21,10 +21,8 @@ import {
   Button,
   Picker,
 } from "@adobe/react-spectrum";
-import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
 import { useAsyncList } from "react-stately";
 import { debounce } from "../utils";
-
 import useRecords from "../hooks/useRecords";
 import useBatch from "../hooks/useBatch";
 
@@ -88,6 +86,7 @@ function Records() {
 
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  // const [placementsAppliedTo, setPlacementsAppliedTo] = useState(null);
 
   useEffect(() => {
     list.reload();
@@ -108,6 +107,15 @@ function Records() {
       setDetailsDialog(selectedBatch);
     }
   };
+  // useEffect(() => {
+  //   if (detailsDialog) {
+  //     const filterPlacements = batch.filter((batch) =>
+  //       detailsDialog.placementsAppliedTo.includes(batch.uid)
+  //     );
+  //     setPlacementsAppliedTo(filterPlacements);
+  //   }
+  // }),
+  //   [detailsDialog];
 
   return (
     <View>
@@ -254,7 +262,7 @@ function Records() {
                       </>
                     )}
                   </View>
-                  <View>
+                  {/* <View>
                     <Heading level={4}>Applied to</Heading>
                     <View>
                       <Text>
@@ -271,7 +279,7 @@ function Records() {
                         )}
                       </Text>
                     </View>
-                  </View>
+                  </View> */}
                 </Grid>
               </Content>
             </Dialog>
