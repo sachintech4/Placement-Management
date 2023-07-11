@@ -14,6 +14,7 @@ import ActivePlacements from "./ActivePlacements";
 import PlacemnetsAppliedTo from "./PlacementsAppliedTo";
 import Records from "./Records";
 import TpoPlacementStatus from "./TpoPlacementStatus";
+import PlacementRecords from "./PlacementRecords";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -60,6 +61,9 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       }
       case cons.SIDEBARS.TPO.PLACEMENT_STATUS.type: {
         return <TpoPlacementStatus />;
+      }
+      case cons.SIDEBARS.TPO.PLACEMENT_RECORDS.type: {
+        return <PlacementRecords />;
       }
       case cons.SIDEBARS.TPO.RECORDS.type: {
         return <Records />;
