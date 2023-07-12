@@ -17,12 +17,14 @@ import "react-quill/dist/quill.snow.css";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
 import useCompanies from "../hooks/useCompanies";
+import usePlacements from "../hooks/usePlacements";
 
 function AddNewPlacementDrive() {
   const [companyDescription, setCompanyDescription] = useState("");
 
   const user = useContext(AuthUserContext);
   const companies = useCompanies();
+  const placements = usePlacements();
 
   const [selectedCompany, setSelectedCompany] = useState(null);
 
@@ -88,6 +90,15 @@ function AddNewPlacementDrive() {
       });
       return;
     }
+    const isPlacementDriveExist = placements.some(
+      (placement) => placement.companyUid === details.companyUid
+    );
+    if (isPlacementDriveExist) {
+      ToastQueue.negative(
+        `Placement Drive for ${details.companyName} already exists`
+      );
+      return;
+    }
 
     try {
       const opts = {
@@ -105,6 +116,8 @@ function AddNewPlacementDrive() {
       const resJson = await res.json();
       if (resJson.code === "success") {
         ToastQueue.positive(resJson.message, { timeout: 1000 });
+        setSelectedCompany(null);
+        setCompanyDescription("");
       } else if (resJson.code === "failed") {
         ToastQueue.negative(resJson.message, { timeout: 1000 });
       }
