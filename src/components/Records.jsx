@@ -128,7 +128,7 @@ function Records() {
           <Item key={item}>{item}</Item>
         ))}
       </Picker>
-      <View paddingTop={"size-200"}>
+      <View paddingTop={"size-200"} paddingBottom={"size-200"}>
         <Divider size="M" />
       </View>
       <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
