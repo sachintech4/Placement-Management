@@ -41,6 +41,7 @@ function TpoPlacementStatus() {
       { name: "CTC", uid: "salaryPackage" },
       { name: "Offer Letter", uid: "offerLetter" },
       { name: "Approve", uid: "approve" },
+      { name: "Decline", uid: "decline" },
     ],
     []
   );
@@ -130,6 +131,7 @@ function TpoPlacementStatus() {
           companyName: placement.companyName,
         },
         salaryPackage: salaryPackage,
+        revokeOfferLetter: null,
       });
 
       await updateDoc(placementDocumentRef, {
@@ -137,6 +139,19 @@ function TpoPlacementStatus() {
       });
     } catch (error) {
       console.error("Error updating student's and placemnet's field", error);
+    }
+  };
+
+  const declineOfferLetter = async (id) => {
+    const studentDocRef = doc(db, cons.DB.COLLECTIONS.USERS_STUDENT, id);
+
+    try {
+      await updateDoc(studentDocRef, {
+        offerLetter: null,
+        revokeOfferLetter: true,
+      });
+    } catch (error) {
+      console.error("Error declining students's placemnt request", error);
     }
   };
 
@@ -203,6 +218,20 @@ function TpoPlacementStatus() {
                         }}
                       >
                         Approve
+                      </Button>
+                    </Cell>
+                  );
+                } else if (columnKey === "decline") {
+                  return (
+                    <Cell>
+                      <Button
+                        variant="secondary"
+                        style="fill"
+                        onPress={() => {
+                          declineOfferLetter(item.id);
+                        }}
+                      >
+                        Decline
                       </Button>
                     </Cell>
                   );
