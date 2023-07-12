@@ -93,6 +93,10 @@ const cons = {
         type: "placements-applied-to",
         text: "Placements Applied to",
       },
+      PLACEMENT_STATUS: {
+        type: "placements-status",
+        text: "Placement Status",
+      },
     },
   },
   DB: {
