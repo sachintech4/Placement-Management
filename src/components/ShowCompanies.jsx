@@ -181,7 +181,7 @@ function ShowCompanies() {
       <DialogContainer onDismiss={() => setDetailsDialog(null)}>
         {detailsDialog && (
           <Dialog isDismissable>
-            <Heading>{`${detailsDialog.companyName})`}</Heading>
+            <Heading>{`${detailsDialog.companyName}`}</Heading>
             <Divider />
             <Content>
               <Grid gap="size-200" columns={["1fr", "1fr"]}>
@@ -192,10 +192,6 @@ function ShowCompanies() {
                 <View>
                   <Heading level={4}>Location</Heading>
                   <Text>{detailsDialog.location}</Text>
-                </View>
-                <View>
-                  <Heading level={4}>Placed Students</Heading>
-                  <Text>{detailsDialog.placedStudents}</Text>
                 </View>
               </Grid>
             </Content>
