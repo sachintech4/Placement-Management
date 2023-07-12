@@ -11,9 +11,11 @@ import {
 import { ToastQueue } from "@react-spectrum/toast";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
+import useCompanies from "../hooks/useCompanies";
 
 function AddNewCompany() {
   const user = useContext(AuthUserContext);
+  const companies = useCompanies();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +54,13 @@ function AddNewCompany() {
       ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
       return;
     }
+    const isCompanyExist = companies.some(
+      (company) => company.companyName === companyName
+    );
+    if (isCompanyExist) {
+      ToastQueue.negative("Company already exists", { timeout: 1000 });
+      return;
+    }
 
     try {
       const opts = {
@@ -66,6 +75,7 @@ function AddNewCompany() {
       const resJson = await res.json();
       if (resJson.code === "success") {
         ToastQueue.positive(resJson.message, { timeout: 1000 });
+        form.reset();
       } else if (resJson.code === "failed") {
         ToastQueue.negative(resJson.message, { timeout: 1000 });
       }

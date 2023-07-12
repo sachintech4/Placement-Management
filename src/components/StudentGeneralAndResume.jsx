@@ -18,7 +18,7 @@ function StudentGeneralAndResume() {
       <TabList>
         <Item key={"general"}>General</Item>
         <Item key={"resume"}>Resume</Item>
-        <Item key={"placementStatus"}>Placement Status</Item>
+        {/* <Item key={"placementStatus"}>Placement Status</Item> */}
       </TabList>
       <TabPanels>
         <Item key={"general"}>
@@ -33,11 +33,11 @@ function StudentGeneralAndResume() {
             </Flex>
           </View>
         </Item>
-        <Item key={"placementStatus"}>
+        {/* <Item key={"placementStatus"}>
           <View paddingX="size-100" paddingY="size-400">
             <StudentPlacementStatus />
           </View>
-        </Item>
+        </Item> */}
       </TabPanels>
     </Tabs>
   );

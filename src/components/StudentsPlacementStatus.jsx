@@ -6,9 +6,11 @@ import {
   Button,
   Grid,
   Heading,
+  Divider,
   Picker,
   Item,
   TextField,
+  Header,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import { doc, updateDoc, onSnapshot } from "@firebase/firestore";
@@ -35,6 +37,7 @@ function StudentPlacementStatus() {
   const [offerLetterDownloadLink, setOfferLetterDownloadLink] = useState(null);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [salaryPackage, setSalaryPackage] = useState(null);
+  const [revokeOfferLetterStatus, setRevokeOfferLetterStatus] = useState(null);
 
   const companies = useCompanies();
 
@@ -62,6 +65,11 @@ function StudentPlacementStatus() {
     const unsubcsribe = onSnapshot(studentDocRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.data();
+        if (data.revokeOfferLetter) {
+          setRevokeOfferLetterStatus(true);
+        } else {
+          setRevokeOfferLetterStatus(false);
+        }
         if (data.offerLetter) {
           setIsOfferLetterAvailable(true);
           setOfferLetterDownloadLink(data.offerLetter);
@@ -93,6 +101,11 @@ function StudentPlacementStatus() {
       await uploadBytes(offerLetterRef, file);
       const downloadRef = await getDownloadURL(offerLetterRef);
       updateStudentsOfferLetterFieldAndSalary(downloadRef);
+
+      await updateDoc(studentDocRef, {
+        revokeOfferLetter: null,
+      });
+
       ToastQueue.positive("OfferLetter uploaded Successfully", {
         timeout: 1000,
       });
@@ -132,80 +145,96 @@ function StudentPlacementStatus() {
   };
 
   return (
-    <Flex direction="column" alignItems="start" gap={"size-200"}>
-      <Heading level={"4"}>
-        Your current placement status:
-        {user.isPlaced ? " Placed" : " Not Placed"}
-      </Heading>
-
-      {isOfferLetterAvailable ? (
-        <View>
-          <Grid areas={["delete", "view"]} gap={"size-100"}>
-            <Button
-              gridArea={"delete"}
-              variant="primary"
-              onPress={handelOfferLetterDeletion}
-            >
-              <Delete />
-              <Text>Delete existing Offer Letter.</Text>
-            </Button>
-            <Button
-              gridArea={"view"}
-              variant="primary"
-              onPress={() => window.open(offerLetterDownloadLink)}
-            >
-              <ViewDetail />
-              <Text>View Offer Letter</Text>
-            </Button>
-          </Grid>
-        </View>
-      ) : (
-        <View>
-          {list.isLoading ? (
-            <p>Loading companies...</p>
-          ) : list.items.length === 0 ? (
-            <p>No companies available</p>
-          ) : (
-            <Picker
-              label="Select a company"
-              items={list.items}
-              onSelectionChange={handleCompanyChange}
-              width="size-2400"
-            >
-              {(item) => <Item>{item.companyName}</Item>}
-            </Picker>
-          )}
-
+    <View
+      paddingLeft={"size-400"}
+      paddingRight={"size-400"}
+      paddingTop={"size-200"}
+    >
+      <View paddingTop={"size-200"} paddingBottom={"size-200"}>
+        <Divider size="M" />
+      </View>
+      <Flex direction="column" alignItems="start" gap={"size-200"}>
+        <Heading level={"4"}>
+          Your current placement status:
+          {user.isPlaced ? " Placed" : " Not Placed"}
+        </Heading>
+        {revokeOfferLetterStatus ? (
           <View>
-            <TextField
-              label="Enter CTC eg. if 8LPA then 8,00,000"
-              onChange={setSalaryPackage}
-            />
+            <Header>
+              Your application for approving placemnet status has been revoked.
+              Please reupload your Offer Letter.
+            </Header>
           </View>
-
+        ) : null}
+        {isOfferLetterAvailable ? (
           <View>
+            <Grid areas={["delete", "view"]} gap={"size-100"}>
+              <Button
+                gridArea={"delete"}
+                variant="primary"
+                onPress={handelOfferLetterDeletion}
+              >
+                <Delete />
+                <Text>Delete existing Offer Letter.</Text>
+              </Button>
+              <Button
+                gridArea={"view"}
+                variant="primary"
+                onPress={() => window.open(offerLetterDownloadLink)}
+              >
+                <ViewDetail />
+                <Text>View Offer Letter</Text>
+              </Button>
+            </Grid>
+          </View>
+        ) : (
+          <View>
+            {list.isLoading ? (
+              <p>Loading companies...</p>
+            ) : list.items.length === 0 ? (
+              <p>No companies available</p>
+            ) : (
+              <Picker
+                label="Select a company"
+                items={list.items}
+                onSelectionChange={handleCompanyChange}
+                width="size-2400"
+              >
+                {(item) => <Item>{item.companyName}</Item>}
+              </Picker>
+            )}
+
             <View>
-              <Text>Upload your Offer Letter.</Text>
-            </View>
-            <View
-              padding="size-250"
-              width="fit-content"
-              borderWidth="thin"
-              borderColor="dark"
-              borderRadius="medium"
-            >
-              <input
-                type="file"
-                onChange={(e) => {
-                  setFile(e.target.files[0]);
-                }}
+              <TextField
+                label="Enter CTC eg. if 8LPA then 8,00,000"
+                onChange={setSalaryPackage}
               />
-              <button onClick={handleOfferLetterUpload}>Upload</button>
+            </View>
+
+            <View>
+              <View>
+                <Text>Upload your Offer Letter.</Text>
+              </View>
+              <View
+                padding="size-250"
+                width="fit-content"
+                borderWidth="thin"
+                borderColor="dark"
+                borderRadius="medium"
+              >
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    setFile(e.target.files[0]);
+                  }}
+                />
+                <button onClick={handleOfferLetterUpload}>Upload</button>
+              </View>
             </View>
           </View>
-        </View>
-      )}
-    </Flex>
+        )}
+      </Flex>
+    </View>
   );
 }
 
