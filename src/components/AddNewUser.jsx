@@ -17,10 +17,13 @@ import {
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import cons from "../cons";
+import useTpos from "../hooks/useTpos";
+import useStudents from "../hooks/useStudents";
 
 function AddTpo() {
   const [gender, setGender] = useState(null);
   const [dob, setDob] = useState(null);
+  const tpos = useTpos();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +36,6 @@ function AddTpo() {
     const id = data.get("id-number").trim();
 
     // todo: input sanitsation and validation
-
     const details = {
       firstName: firstName,
       lastName: lastName,
@@ -75,6 +77,12 @@ function AddTpo() {
       });
       return;
     }
+    // Check if ID already exists in TPO array
+    const isIdExists = tpos.some((tpo) => tpo.id === id);
+    if (isIdExists) {
+      ToastQueue.negative("ID already exists", { timeout: 1000 });
+      return;
+    }
 
     // send a post request to create the user
     try {
@@ -91,6 +99,10 @@ function AddTpo() {
         ToastQueue.positive(`${resJson.message}`, {
           timeout: 1000,
         });
+        // Clear the form by resetting the state values
+        setGender(null);
+        setDob(null);
+        form.reset(); // Reset the form fields
       } else {
         throw { code: resJson.code, message: resJson.message };
       }
@@ -145,7 +157,13 @@ function AddTpo() {
               width="100%"
               name="email"
             />
-            <TextField label="ID" gridArea={"id-no"} name="id-number" />
+            <TextField
+              label="ID"
+              gridArea={"id-no"}
+              name="id-number"
+              inputMode="numeric"
+              pattern="^\d*$"
+            />
             <MenuTrigger gridArea={"gender"}>
               <ActionButton>{gender || "Select Gender"}</ActionButton>
               <Menu onAction={(key) => setGender(key)}>
@@ -172,6 +190,7 @@ function AddTpo() {
 function AddStudent() {
   const [gender, setGender] = useState(null);
   const [dob, setDob] = useState(null);
+  const students = useStudents();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -246,6 +265,18 @@ function AddStudent() {
       ToastQueue.negative("Please enter a valid batch", { timeout: 1000 });
       return;
     }
+    const isRollNoExists = students.some(
+      (student) => student.rollNo === rollNo
+    );
+    if (isRollNoExists) {
+      ToastQueue.negative("Roll no. already exists", { timeout: 1000 });
+      return;
+    }
+    const isPrnExists = students.some((student) => student.prn === prn);
+    if (isPrnExists) {
+      ToastQueue.negative("PRN already exists", { timeout: 1000 });
+      return;
+    }
 
     // send a post request to create the user
     try {
@@ -263,6 +294,10 @@ function AddStudent() {
         ToastQueue.positive(`${resJson.message}`, {
           timeout: 1000,
         });
+        // Clear the form by resetting the state values
+        setGender(null);
+        setDob(null);
+        form.reset(); // Reset the form fields
       } else {
         throw { code: resJson.code, message: resJson.message };
       }
