@@ -15,6 +15,10 @@ import PlacemnetsAppliedTo from "./PlacementsAppliedTo";
 import Records from "./Records";
 import TpoPlacementStatus from "./TpoPlacementStatus";
 import PlacementRecords from "./PlacementRecords";
+import StudentPlacementStatus from "./StudentsPlacementStatus";
+import DefaultTpoPage from "./DefaultTpoPage";
+import DefaultAdmin from "./DefaultAdmin";
+import DefaultStudentPage from "./DefaultStudentPage";
 
 function Content({ gridArea, role, selectedSidebarOption }) {
   const renderAdminContent = useCallback(() => {
@@ -32,7 +36,7 @@ function Content({ gridArea, role, selectedSidebarOption }) {
         return <TpoList />;
       }
       default:
-        return null;
+        return <DefaultAdmin />;
     }
   }, [role, selectedSidebarOption]);
 
@@ -69,7 +73,7 @@ function Content({ gridArea, role, selectedSidebarOption }) {
         return <Records />;
       }
       default:
-        return null;
+        return <DefaultTpoPage />;
     }
   }, [role, selectedSidebarOption]);
 
@@ -84,8 +88,11 @@ function Content({ gridArea, role, selectedSidebarOption }) {
       case cons.SIDEBARS.STUDENTS.PLACEMENTS_APPLIED_TO.type: {
         return <PlacemnetsAppliedTo />;
       }
+      case cons.SIDEBARS.STUDENTS.PLACEMENT_STATUS.type: {
+        return <StudentPlacementStatus />;
+      }
       default:
-        return null;
+        return <DefaultStudentPage />;
     }
   }, [role, selectedSidebarOption]);
 
