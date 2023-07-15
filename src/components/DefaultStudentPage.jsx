@@ -44,7 +44,7 @@ function DefaultStudentPage() {
       <View paddingY="size-200">
         <Heading level={3}>Welcome to the Placement Management System.</Heading>
         <Heading level={3}>
-          Naviagte through the sidebar options according to your need.
+          Navigate through the sidebar options according to your need.
         </Heading>
         <Heading level={3}>
           To get your placement status approved look for "Placement Status" and

@@ -253,14 +253,14 @@ function StudentProfile() {
             />
             <TextField
               gridArea={"tenthPercentage"}
-              label="Tenth Percentage"
+              label="10th Percentage"
               isReadOnly={!edit}
               value={tenthPercentageInput === null ? "" : tenthPercentageInput}
               onChange={setTenthPercentageInput}
             />
             <TextField
               gridArea={"tenthYearOfPassing"}
-              label="Tenth Year Of Passing"
+              label="10th Year Of Passing"
               isReadOnly={!edit}
               value={
                 tenthYearOfPassingInput === null ? "" : tenthYearOfPassingInput
@@ -269,7 +269,7 @@ function StudentProfile() {
             />
             <TextField
               gridArea={"twelfthPercentage"}
-              label="Twelfth Percentage"
+              label="12th Percentage"
               isReadOnly={!edit}
               value={
                 twelfthPercentageInput === null ? "" : twelfthPercentageInput
@@ -278,7 +278,7 @@ function StudentProfile() {
             />
             <TextField
               gridArea={"twelfthYearOfPassing"}
-              label="Twelfth Year Of Passing"
+              label="12th Year Of Passing"
               isReadOnly={!edit}
               value={
                 twelfthYearOfPassingInput === null
@@ -289,28 +289,28 @@ function StudentProfile() {
             />
             <TextField
               gridArea={"ugCgpa"}
-              label="ugCgpa"
+              label="Under Graduate CGPA"
               isReadOnly={!edit}
               value={ugCgpaInput === null ? "" : ugCgpaInput}
               onChange={setUgCgpaInput}
             />
             <TextField
               gridArea={"ugYearOfPassing"}
-              label="ugYearOfPassing"
+              label="under Graduate Year Of Passing"
               isReadOnly={!edit}
               value={ugYearOfPassingInput === null ? "" : ugYearOfPassingInput}
               onChange={setUgYearOfPassingInput}
             />
             <TextField
               gridArea={"pgCgpa"}
-              label="pgCgpa"
+              label="Post Graduate CGPA"
               isReadOnly={!edit}
               value={pgCgpaInput === null ? "" : pgCgpaInput}
               onChange={setPgCgpaInput}
             />
             <TextField
               gridArea={"pgYearOfPassing"}
-              label="pgYearOfPassing"
+              label="Post Graduate Year Of Passing"
               isReadOnly={!edit}
               value={pgYearOfPassingInput === null ? "" : pgYearOfPassingInput}
               onChange={setPgYearOfPassingInput}
@@ -319,7 +319,7 @@ function StudentProfile() {
               gridArea={"isPlaced"}
               label="Placement Status"
               isReadOnly={!edit}
-              value={isPlacedInput}
+              value={isPlacedInput ? "Placed" : "not Placed"}
               onChange={setIsPlacedInput}
             />
             <View gridArea={"toggle"} justifySelf={"center"}>

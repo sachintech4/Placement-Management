@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
-import { View, Heading, Divider } from "@adobe/react-spectrum";
+import { View, Heading, Divider, Button } from "@adobe/react-spectrum";
+
+import UserAdd from "@spectrum-icons/workflow/UserAdd";
 
 function DefaultAdmin() {
   return (
@@ -17,7 +19,7 @@ function DefaultAdmin() {
       <View paddingY="size-200">
         <Heading level={3}>Welcome to the Placement Management System.</Heading>
         <Heading level={3}>
-          Naviagte through the options to add, delete or view users.
+          Navigate through the options to add, delete or view users.
         </Heading>
         <Heading level={3}>
           Look for Profile and Settings to upadate your Email ID or Password.
