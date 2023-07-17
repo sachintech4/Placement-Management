@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Flex, View, ActionButton, Text, Heading } from "@adobe/react-spectrum";
+import {
+  Flex,
+  View,
+  ActionButton,
+  Text,
+  Heading,
+  ProgressCircle,
+  ListBox,
+  Item,
+} from "@adobe/react-spectrum";
 import cons from "../cons";
 import { signOut } from "@firebase/auth";
 import { AuthUserContext } from "../contexts";
@@ -22,6 +31,7 @@ import Artboard from "@spectrum-icons/workflow/Artboard";
 import ViewStack from "@spectrum-icons/workflow/ViewStack";
 import WebPages from "@spectrum-icons/workflow/WebPages";
 import ExperienceAddTo from "@spectrum-icons/workflow/ExperienceAddTo";
+import User from "@spectrum-icons/workflow/User";
 
 const adminSidebarOptions = Object.values(cons.SIDEBARS.ADMIN);
 const tpoSidebarOptions = Object.values(cons.SIDEBARS.TPO);
@@ -31,35 +41,37 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
   const authUser = useContext(AuthUserContext);
 
   const [userName, setUserName] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // console.log(role);
+  let dbRef;
+  if (role?.type === "tpo") {
+    dbRef = cons.DB.COLLECTIONS.USERS_TPO;
+  } else if (role?.type === "student") {
+    dbRef = cons.DB.COLLECTIONS.USERS_STUDENT;
+  }
 
-  // let dbRef;
-  // if (role.text === "tpo") {
-  //   dbRef = cons.DB.COLLECTIONS.USERS_TPO;
-  // } else if (role.text === "student") {
-  //   dbRef = cons.DB.COLLECTIONS.USERS_STUDENT;
-  // }
+  useEffect(() => {
+    const getUserData = () => {
+      if (role?.type === "tpo" || role?.type === "student") {
+        try {
+          const userDocRef = doc(db, dbRef, authUser.uid);
 
-  // useEffect(() => {
-  //   const getUserData = () => {
-  //     try {
-  //       const userDocRef = doc(db, dbRef, user.uid);
+          const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+            const documentData = snapshot.data();
+            if (documentData) {
+              setUserName(`${documentData.firstName} ${documentData.lastName}`);
+            }
+            setIsLoading(false);
+          });
 
-  //       const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
-  //         const documentData = snapshot.data();
-  //         if (documentData) {
-  //           setUserName(`${documentData.firstName} ${documentData.lastName}`);
-  //         }
-  //       });
-
-  //       return () => unsubscribe();
-  //     } catch (error) {
-  //       console.error("Error getting user data:", error);
-  //     }
-  //   };
-  //   getUserData();
-  // }, []);
+          return () => unsubscribe();
+        } catch (error) {
+          console.error("Error getting user data:", error);
+        }
+      }
+    };
+    getUserData();
+  }, [role]);
 
   const logOut = async () => {
     await signOut(authUser.auth);
@@ -162,35 +174,55 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
         height={"100%"}
         gap={"size-100"}
       >
-        <Heading level={"1"}>{role?.text}</Heading>
+        <Heading level={"1"}>
+          <User />
+          {role?.type === "admin" ? (
+            role.text
+          ) : isLoading ? (
+            <View width="100%" height="100%">
+              <ProgressCircle
+                aria-label="loading..."
+                size={"S"}
+                justifySelf={"center"}
+                isIndeterminate
+              />
+            </View>
+          ) : (
+            <Text>{role?.type === "admin" ? role.text : userName}</Text>
+          )}
+        </Heading>
+
         <View height="100%" width="100%" overflow={"hidden auto"}>
           <Flex direction={"column"} gap={"size-100"} height="100%">
             {renderSidebarOptions()}
           </Flex>
         </View>
-        {/* <ListBox
-          selectionMode={"single"}
-          onSelectionChange={(selection) => {
-            console.log("common option changed");
-            console.log(selection);
-          }}
-          items={commonSidebarOptions}
-          aria-label="general options"
-        >
-          <Item key={cons.SIDEBARS.COMMON.LOGOUT.type}>
-            <LogOut />
-            <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
-          </Item>
-          <Item key={cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type}>
-            <Settings />
-            <Text>{cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.text}</Text>
-          </Item>
-        </ListBox> */}
         <Flex direction={"column"} gap={"size-50"}>
-          <ActionButton onPress={logOut}>
-            <LogOut />
-            <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
-          </ActionButton>
+          {/* <ListBox
+            selectionMode="single"
+            onSelectionChange={(selection) => {
+              if (
+                selection.currentKey ===
+                cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type
+              ) {
+                onOptionSelect(cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS);
+              }
+            }}
+            // items={cons.COMMON}
+            aria-label="general options"
+          >
+            <Item
+              key={cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.type}
+              textValue="Profile and Settings"
+            >
+              <Settings />
+              <Text>{cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.text}</Text>
+            </Item>
+            <Item key={cons.SIDEBARS.COMMON.LOGOUT.type}>
+              <LogOut />
+              <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
+            </Item>
+          </ListBox> */}
           <ActionButton
             onPress={() =>
               onOptionSelect(cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS)
@@ -198,6 +230,10 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
           >
             <Settings />
             <Text>{cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.text}</Text>
+          </ActionButton>
+          <ActionButton onPress={logOut}>
+            <LogOut />
+            <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
           </ActionButton>
         </Flex>
       </Flex>
