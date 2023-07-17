@@ -91,6 +91,8 @@ function ActivePlacements() {
   };
 
   const [userData, setUserData] = useState({ placementsAppliedTo: [] });
+  const [userIsPlaced, setUserIsPlaced] = useState(null);
+  const [isPlacedDialogueBox, setIsPlacedDialogueBox] = useState(null);
 
   const studentDocumentRef = doc(
     db,
@@ -103,6 +105,7 @@ function ActivePlacements() {
       if (documentSnapshot.exists()) {
         const documentData = documentSnapshot.data();
         setUserData(documentData);
+        if (documentData.isPlaced) setUserIsPlaced(true);
       } else {
         console.log("Document does not exist");
         setUserData(null);
@@ -118,6 +121,11 @@ function ActivePlacements() {
       cons.DB.COLLECTIONS.PLACEMENTS,
       placementUid
     );
+
+    if (userIsPlaced) {
+      setIsPlacedDialogueBox(true);
+      return;
+    }
 
     try {
       const [placementSnapshot, studentSnapshot] = await Promise.all([
@@ -248,6 +256,18 @@ function ActivePlacements() {
                   ></div>
                 </View>
               </Grid>
+            </Content>
+          </Dialog>
+        )}
+      </DialogContainer>
+      <DialogContainer onDismiss={() => setIsPlacedDialogueBox(null)}>
+        {isPlacedDialogueBox && (
+          <Dialog isDismissable>
+            <Heading>Application invalid.</Heading>
+            <Divider />
+            <Content>
+              You are already Placed and cannot apply for another placement
+              drive.
             </Content>
           </Dialog>
         )}
