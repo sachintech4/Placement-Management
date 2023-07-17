@@ -63,6 +63,7 @@ function StudentResume() {
       await deleteObject(resumeRef);
       await updateDoc(studentDocRef, { resume: null });
       ToastQueue.positive("Resume deleted successfully", { timeout: 1000 });
+      setFile(null);
     } catch (error) {
       ToastQueue.negative("Could not delete Resume", { timeout: 1000 });
     }
@@ -106,6 +107,7 @@ function StudentResume() {
             >
               <input
                 type="file"
+                accept="application/pdf"
                 onChange={(e) => {
                   setFile(e.target.files[0]);
                 }}
