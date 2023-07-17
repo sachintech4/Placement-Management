@@ -122,6 +122,8 @@ function AddTpo() {
     }
   };
 
+  const handleMultipleTpoAddition = async () => {};
+
   return (
     <Flex direction="row" alignItems="start" gap={"size-200"}>
       <View
@@ -203,12 +205,13 @@ function AddTpo() {
         >
           <View gridArea={"heading"} width="fit-content">
             <Heading level={4}>
-              Upload an excel sheet to add multiple TPO at once.
+              Upload an Excel sheet to add multiple TPO at once.
             </Heading>
           </View>
           <View gridArea={"inputField"}>
             <input
               type="file"
+              accept=".xlsx, .xls"
               onChange={(e) => {
                 setFile(e.target.files[0]);
               }}
@@ -216,7 +219,7 @@ function AddTpo() {
           </View>
           {file && (
             <View gridArea={"upload"}>
-              <Button>Upload</Button>
+              <Button onPress={handleMultipleTpoAddition}>Upload</Button>
             </View>
           )}
         </Grid>
