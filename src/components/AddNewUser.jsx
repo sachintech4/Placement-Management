@@ -14,6 +14,8 @@ import {
   Button,
   View,
   Flex,
+  Divider,
+  Heading,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import cons from "../cons";
@@ -24,6 +26,7 @@ function AddTpo() {
   const [gender, setGender] = useState(null);
   const [dob, setDob] = useState(null);
   const tpos = useTpos();
+  const [file, setFile] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -120,7 +123,7 @@ function AddTpo() {
   };
 
   return (
-    <Flex direction="column" alignItems="start" gap={"size-200"}>
+    <Flex direction="row" alignItems="start" gap={"size-200"}>
       <View
         padding="size-250"
         width="fit-content"
@@ -182,6 +185,41 @@ function AddTpo() {
             </View>
           </Grid>
         </Form>
+      </View>
+
+      <Divider orientation="vertical" size="M" />
+
+      <View
+        padding="size-250"
+        width="fit-content"
+        borderWidth="thin"
+        borderColor="dark"
+        borderRadius="medium"
+      >
+        <Grid
+          columns={["1fr", "1fr"]}
+          rows={["size-500", "size-500"]}
+          areas={["heading heading", "inputField inputField", "upload upload"]}
+        >
+          <View gridArea={"heading"} width="fit-content">
+            <Heading level={4}>
+              Upload an excel sheet to add multiple TPO at once.
+            </Heading>
+          </View>
+          <View gridArea={"inputField"}>
+            <input
+              type="file"
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
+            />
+          </View>
+          {file && (
+            <View gridArea={"upload"}>
+              <Button>Upload</Button>
+            </View>
+          )}
+        </Grid>
       </View>
     </Flex>
   );
