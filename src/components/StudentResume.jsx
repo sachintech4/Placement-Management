@@ -93,24 +93,31 @@ function StudentResume() {
         </View>
       ) : (
         <View>
-          <View>
-            <Text>Upload your resume.</Text>
-          </View>
-          <View
-            padding="size-250"
-            width="fit-content"
-            borderWidth="thin"
-            borderColor="dark"
-            borderRadius="medium"
-          >
-            <input
-              type="file"
-              onChange={(e) => {
-                setFile(e.target.files[0]);
-              }}
-            />
-            <button onClick={handleResumeUpload}>Upload</button>
-          </View>
+          <Flex direction="column" gap="size-200">
+            <View>
+              <Text>Upload your resume.</Text>
+            </View>
+            <View
+              padding="size-250"
+              width="fit-content"
+              borderWidth="thin"
+              borderColor="dark"
+              borderRadius="medium"
+            >
+              <input
+                type="file"
+                onChange={(e) => {
+                  setFile(e.target.files[0]);
+                }}
+              />
+              {/* <button onClick={handleResumeUpload}>Upload</button> */}
+            </View>
+            {file && (
+              <View>
+                <Button onPress={handleResumeUpload}>Upload Resume.</Button>
+              </View>
+            )}
+          </Flex>
         </View>
       )}
     </Flex>
