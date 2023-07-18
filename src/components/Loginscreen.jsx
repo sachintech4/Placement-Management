@@ -11,7 +11,10 @@ import {
 import { ToastQueue } from "@react-spectrum/toast";
 import { useState } from "react";
 import { auth } from "../firebase-config.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import cons from "../cons.js";
 import logo from "../assets/logo.png";
 
@@ -37,6 +40,27 @@ function LoginScreen() {
     } catch (error) {
       console.error("failed to sign in user");
       console.error(error.message);
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    // e.preventDefault();
+    if (!email || !email.match(cons.REGEXS.VALID_EMAIL)) {
+      ToastQueue.negative("Please provide a valid email address", {
+        timeout: 1000,
+      });
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      ToastQueue.positive("Password reset email sent!", { timeout: 1000 });
+    } catch (error) {
+      console.error("failed to send password reset email");
+      console.error(error.message);
+      ToastQueue.negative("Failed to send password reset email", {
+        timeout: 1000,
+      });
     }
   };
 
@@ -89,6 +113,9 @@ function LoginScreen() {
                 isRequired
               />
               <Button type="submit">Login</Button>
+              <Button variant="secondary" onPress={handleForgotPassword}>
+                Forgot Password
+              </Button>
             </Flex>
           </Form>
         </View>
