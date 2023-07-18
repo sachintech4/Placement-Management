@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ToastContainer } from "@react-spectrum/toast";
-import { lightTheme, Provider, ProgressCircle, Flex } from "@adobe/react-spectrum";
+import {
+  lightTheme,
+  Provider,
+  ProgressCircle,
+  Flex,
+} from "@adobe/react-spectrum";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "./firebase-config";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
-import LoginScreen from "./components/LoginScreen";
+import LoginScreen from "./components/Loginscreen";
 import { AuthUserContext } from "./contexts";
 
 function App() {
@@ -24,13 +29,18 @@ function App() {
 
     () => {
       unsubscribe();
-    }
+    };
   }, []);
 
   const renderContent = useCallback(() => {
     if (isLoading) {
       return (
-        <Flex height={"100%"} width={"100%"} alignItems={"center"} justifyContent={"center"}>
+        <Flex
+          height={"100%"}
+          width={"100%"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
           <ProgressCircle aria-label="loading..." size={"L"} isIndeterminate />
         </Flex>
       );
@@ -38,7 +48,7 @@ function App() {
     if (authUser) {
       return <Dashboard />;
     } else {
-      return <LoginScreen />
+      return <LoginScreen />;
     }
   }, [isLoading, authUser]);
 
