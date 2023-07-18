@@ -21,6 +21,7 @@ import {
   Button,
   Picker,
 } from "@adobe/react-spectrum";
+import ViewStack from "@spectrum-icons/workflow/ViewStack";
 import { ToastQueue } from "@react-spectrum/toast";
 import { useAsyncList } from "react-stately";
 import Download from "@spectrum-icons/workflow/Download";
@@ -138,6 +139,13 @@ function PlacementRecords() {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <ViewStack />
+          <Heading level={2}>Placement Records</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <Picker
         label="Select Year"
         items={placementYears}
@@ -147,7 +155,7 @@ function PlacementRecords() {
           <Item key={item}>{item}</Item>
         ))}
       </Picker>
-      <View paddingTop={"size-200"}>
+      <View>
         <Divider size="M" />
       </View>
       <SearchField
@@ -163,7 +171,7 @@ function PlacementRecords() {
         maxHeight={"98%"}
         sortDescriptor={list.sortDescriptor}
         onAction={handleRowAction}
-        selectionMode="multiple"
+        // selectionMode="multiple"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
       >

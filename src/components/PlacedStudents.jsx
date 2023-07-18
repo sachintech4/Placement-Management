@@ -19,6 +19,7 @@ import {
   View,
   Button,
 } from "@adobe/react-spectrum";
+import UserActivity from "@spectrum-icons/workflow/UserActivity";
 import { ToastQueue } from "@react-spectrum/toast";
 import Download from "@spectrum-icons/workflow/Download";
 import { useAsyncList } from "react-stately";
@@ -140,6 +141,14 @@ function PlacedStudents() {
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
       <View width="100%">
+        <View paddingY="size-200">
+          <Flex gap={"size-125"}>
+            <UserActivity />
+            <Heading level={2}>Placed Students</Heading>
+          </Flex>
+        </View>
+        <Divider size="M" />
+        <View paddingTop="size-200"></View>
         <Flex>
           <SearchField
             label="Search"

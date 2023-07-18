@@ -7,7 +7,9 @@ import {
   View,
   Flex,
   Heading,
+  Divider,
 } from "@adobe/react-spectrum";
+import CollectionAdd from "@spectrum-icons/workflow/CollectionAdd";
 import { ToastQueue } from "@react-spectrum/toast";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
@@ -86,9 +88,13 @@ function AddNewCompany() {
 
   return (
     <Flex direction="column" alignItems="start" gap={"size-200"}>
-      <View padding="size-200">
-        <Heading level={2}>Add new company</Heading>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <CollectionAdd />
+          <Heading level={2}>Add new company</Heading>
+        </Flex>
       </View>
+      <Divider size="M" />
       <View
         padding="size-250"
         width="fit-content"

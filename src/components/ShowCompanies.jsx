@@ -18,6 +18,7 @@ import {
   View,
   Item,
 } from "@adobe/react-spectrum";
+import ViewDetail from "@spectrum-icons/workflow/ViewDetail";
 import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
 import { ToastQueue } from "@react-spectrum/toast";
 import Delete from "@spectrum-icons/workflow/Delete";
@@ -130,6 +131,13 @@ function ShowCompanies() {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <ViewDetail />
+          <Heading level={2}>View Students</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <SearchField
         label="Search"
         onSubmit={handleFilter}

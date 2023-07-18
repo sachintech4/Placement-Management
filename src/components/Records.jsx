@@ -21,6 +21,7 @@ import {
   Button,
   Picker,
 } from "@adobe/react-spectrum";
+import DataUser from "@spectrum-icons/workflow/DataUser";
 import { useAsyncList } from "react-stately";
 import { debounce } from "../utils";
 import useRecords from "../hooks/useRecords";
@@ -118,7 +119,14 @@ function Records() {
   //   [detailsDialog];
 
   return (
-    <View>
+    <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <DataUser />
+          <Heading level={2}>Student Records</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <Picker
         label="Select Batch"
         items={recordYears}
@@ -128,7 +136,7 @@ function Records() {
           <Item key={item}>{item}</Item>
         ))}
       </Picker>
-      <View paddingTop={"size-200"} paddingBottom={"size-200"}>
+      <View>
         <Divider size="M" />
       </View>
       <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
@@ -319,7 +327,7 @@ function Records() {
           )}
         </DialogContainer> */}
       </Flex>
-    </View>
+    </Flex>
   );
 }
 

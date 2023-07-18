@@ -7,7 +7,9 @@ import {
   Picker,
   Item,
   Well,
+  Divider,
 } from "@adobe/react-spectrum";
+import ExperienceAdd from "@spectrum-icons/workflow/ExperienceAdd";
 import { ToastQueue } from "@react-spectrum/toast";
 import { useAsyncList } from "react-stately";
 
@@ -128,7 +130,13 @@ function AddNewPlacementDrive() {
 
   return (
     <Flex direction="column" alignItems="start" gap="size-200">
-      <Heading level={2}>New Placement Drive</Heading>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <ExperienceAdd />
+          <Heading level={2}>New Placement Drive</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       {list.isLoading ? (
         <p>Loading companies...</p>
       ) : list.items.length === 0 ? (

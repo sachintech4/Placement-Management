@@ -23,6 +23,7 @@ import {
 import { ToastQueue } from "@react-spectrum/toast";
 import { doc, updateDoc, getDoc } from "@firebase/firestore";
 import Delete from "@spectrum-icons/workflow/Delete";
+import Artboard from "@spectrum-icons/workflow/Artboard";
 import ViewDetail from "@spectrum-icons/workflow/ViewDetail";
 import { useAsyncList } from "react-stately";
 import { db } from "../firebase-config";
@@ -159,6 +160,13 @@ function TpoPlacementStatus() {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <Artboard />
+          <Heading level={2}>Placement Status</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <SearchField
         label="Search"
         onSubmit={handleFilter}

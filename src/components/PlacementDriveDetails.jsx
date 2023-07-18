@@ -20,6 +20,7 @@ import {
   Switch,
   Button,
 } from "@adobe/react-spectrum";
+import ViewList from "@spectrum-icons/workflow/ViewList";
 import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
 import { ToastQueue } from "@react-spectrum/toast";
 import { db } from "../firebase-config";
@@ -241,6 +242,13 @@ function PlacementDriveDetalis() {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <ViewList />
+          <Heading level={2}>Placement Drive Details</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <SearchField
         label="Search"
         onSubmit={handleFilter}
