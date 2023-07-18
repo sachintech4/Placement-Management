@@ -122,7 +122,27 @@ function AddTpo() {
     }
   };
 
-  const handleMultipleTpoAddition = async () => {};
+  const handleMultipleTpoAddition = async () => {
+    try {
+      const response = await fetch(`${cons.BASE_SERVER_URL}/addMultipleTpos`, {
+        method: "POST",
+        body: file,
+      });
+
+      if (response.ok) {
+        ToastQueue.positive("Users: TPO added successfully.", {
+          timeout: 1000,
+        });
+        setFile(null);
+      } else {
+        // Handle error response
+        console.error("Error uploading file");
+      }
+    } catch (error) {
+      // Handle fetch error
+      console.error("Fetch error:", error);
+    }
+  };
 
   return (
     <Flex direction="row" alignItems="start" gap={"size-200"}>
@@ -231,6 +251,7 @@ function AddTpo() {
 function AddStudent() {
   const [gender, setGender] = useState(null);
   const [dob, setDob] = useState(null);
+  const [file, setFile] = useState(null);
   const students = useStudents();
 
   const handleSubmit = async (e) => {
@@ -355,8 +376,33 @@ function AddStudent() {
     }
   };
 
+  const handleMultipleStudentAddition = async () => {
+    try {
+      const response = await fetch(
+        `${cons.BASE_SERVER_URL}/addMultipleStudents`,
+        {
+          method: "POST",
+          body: file,
+        }
+      );
+
+      if (response.ok) {
+        ToastQueue.positive("Users: Students added successfully.", {
+          timeout: 1000,
+        });
+        setFile(null);
+      } else {
+        // Handle error response
+        console.error("Error uploading file");
+      }
+    } catch (error) {
+      // Handle fetch error
+      console.error("Fetch error:", error);
+    }
+  };
+
   return (
-    <Flex direction="column" alignItems="start" gap={"size-200"}>
+    <Flex direction="row" alignItems="start" gap={"size-200"}>
       <View
         padding="size-250"
         width="fit-content"
@@ -423,6 +469,42 @@ function AddStudent() {
             </View>
           </Grid>
         </Form>
+      </View>
+
+      <Divider orientation="vertical" size="M" />
+
+      <View
+        padding="size-250"
+        width="fit-content"
+        borderWidth="thin"
+        borderColor="dark"
+        borderRadius="medium"
+      >
+        <Grid
+          columns={["1fr", "1fr"]}
+          rows={["size-500", "size-500"]}
+          areas={["heading heading", "inputField inputField", "upload upload"]}
+        >
+          <View gridArea={"heading"} width="fit-content">
+            <Heading level={4}>
+              Upload an Excel sheet to add multiple Students at once.
+            </Heading>
+          </View>
+          <View gridArea={"inputField"}>
+            <input
+              type="file"
+              accept=".xlsx, .xls"
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
+            />
+          </View>
+          {file && (
+            <View gridArea={"upload"}>
+              <Button onPress={handleMultipleStudentAddition}>Upload</Button>
+            </View>
+          )}
+        </Grid>
       </View>
     </Flex>
   );
