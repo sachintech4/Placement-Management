@@ -147,8 +147,10 @@ function TpoPlacementStatus() {
 
     try {
       await updateDoc(studentDocRef, {
+        isPlaced: false,
         offerLetter: null,
         revokeOfferLetter: true,
+        isPlacedAt: null,
       });
     } catch (error) {
       console.error("Error declining students's placemnt request", error);
