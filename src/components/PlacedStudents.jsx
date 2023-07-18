@@ -17,10 +17,14 @@ import {
   Text,
   Grid,
   View,
+  Button,
 } from "@adobe/react-spectrum";
+import { ToastQueue } from "@react-spectrum/toast";
+import Download from "@spectrum-icons/workflow/Download";
 import { useAsyncList } from "react-stately";
 import useStudents from "../hooks/useStudents";
 import { debounce } from "../utils";
+import cons from "../cons";
 
 function PlacedStudents() {
   const columns = useMemo(
@@ -34,6 +38,7 @@ function PlacedStudents() {
     []
   );
   const students = useStudents();
+  const notPlacedStudents = students.filter((student) => !student.isPlaced);
   const placedStudents = students.filter((student) => student.isPlaced);
   let collator = useCollator({ numeric: true });
   const list = useAsyncList({
@@ -77,6 +82,8 @@ function PlacedStudents() {
   });
   const [detailsDialog, setDetailsDialog] = useState(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const placedStudentsUids = placedStudents.map((student) => student.uid);
+  const notPlacedStudentsUids = notPlacedStudents.map((student) => student.uid);
 
   useEffect(() => {
     list.reload();
@@ -98,15 +105,75 @@ function PlacedStudents() {
     }
   };
 
+  const downloadExcelSheet = async (studentUids, fileName) => {
+    try {
+      const queryParams = new URLSearchParams({
+        students: studentUids.join(","),
+        fileName: fileName,
+      });
+      const res = await fetch(
+        `${cons.BASE_SERVER_URL}/downloadExcelSheetOfStudents?${queryParams}`
+      );
+      console.log(res.url);
+      if (res.ok) {
+        const link = document.createElement("a");
+        link.href = res.url;
+        link.donwload = `${fileName}.xlsx`;
+
+        link.click();
+
+        ToastQueue.positive(`Excel sheet for ${fileName} downloaded`, {
+          timeout: 1000,
+        });
+      } else {
+        throw new Error("Error downloading excel sheet");
+      }
+    } catch (error) {
+      console.error(error);
+
+      ToastQueue.negative("Error downloading excel sheet", {
+        timeout: 1000,
+      });
+    }
+  };
+
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
-      <SearchField
-        label="Search"
-        onSubmit={handleFilter}
-        width="size-3600"
-        onChange={handleSearchChange}
-        onClear={() => list.setFilterText("")}
-      />
+      <View width="100%">
+        <Flex>
+          <SearchField
+            label="Search"
+            onSubmit={handleFilter}
+            width="size-3600"
+            onChange={handleSearchChange}
+            onClear={() => list.setFilterText("")}
+          />
+          <View flexGrow={1} />
+          <View justifySelf={"end"} alignSelf={"end"}>
+            <Flex gap={"size-200"} ś>
+              <Button
+                onPress={() =>
+                  downloadExcelSheet(placedStudentsUids, "Placed Students")
+                }
+              >
+                <Download />
+                <Text>Placed Students</Text>
+              </Button>
+              <Button
+                onPress={() =>
+                  downloadExcelSheet(
+                    notPlacedStudentsUids,
+                    "Not Placed Studnets"
+                  )
+                }
+              >
+                <Download />
+                <Text>Not Placed Students</Text>
+              </Button>
+            </Flex>
+          </View>
+        </Flex>
+      </View>
       <TableView
         aria-label="Students"
         width={"98%"}
