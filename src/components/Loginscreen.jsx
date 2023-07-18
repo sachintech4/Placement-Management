@@ -15,7 +15,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import cons from "../cons.js";
 import logo from "../assets/logo.png";
 
-
 function LoginScreen() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -89,7 +88,7 @@ function LoginScreen() {
                 onChange={setPassword}
                 isRequired
               />
-              <Button type="submit">login</Button>
+              <Button type="submit">Login</Button>
             </Flex>
           </Form>
         </View>
