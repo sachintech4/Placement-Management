@@ -22,6 +22,7 @@ import {
 import { ToastQueue } from "@react-spectrum/toast";
 import Delete from "@spectrum-icons/workflow/Delete";
 import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
+import UserEdit from "@spectrum-icons/workflow/UserEdit";
 import { useAsyncList } from "react-stately";
 import useTpos from "../hooks/useTpos";
 import { debounce } from "../utils";
@@ -144,6 +145,13 @@ function TpoList() {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop={"size-200"}>
+        <Flex gap={"size-125"}>
+          <UserEdit />
+          <Heading level={2}>View TPO</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <SearchField
         label="Search"
         onSubmit={handleFilter}

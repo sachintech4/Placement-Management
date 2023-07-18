@@ -17,6 +17,7 @@ import {
   Divider,
   Heading,
 } from "@adobe/react-spectrum";
+import UserAdd from "@spectrum-icons/workflow/UserAdd";
 import { ToastQueue } from "@react-spectrum/toast";
 import cons from "../cons";
 import useTpos from "../hooks/useTpos";
@@ -512,24 +513,33 @@ function AddStudent() {
 
 function AddNewUser() {
   return (
-    <Tabs aria-label="add new users">
-      <TabList>
-        <Item key={cons.USERS.TPO.type}>{cons.USERS.TPO.text}</Item>
-        <Item key={cons.USERS.STUDENT.type}>{cons.USERS.STUDENT.text}</Item>
-      </TabList>
-      <TabPanels>
-        <Item key={cons.USERS.TPO.type}>
-          <View paddingX="size-100" paddingY="size-400">
-            <AddTpo />
-          </View>
-        </Item>
-        <Item key={cons.USERS.STUDENT.type}>
-          <View paddingX="size-100" paddingY="size-400">
-            <AddStudent />
-          </View>
-        </Item>
-      </TabPanels>
-    </Tabs>
+    <View>
+      <View padding="size-200">
+        <Flex gap={"size-125"}>
+          <UserAdd />
+          <Heading level={2}>Add user</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
+      <Tabs aria-label="add new users">
+        <TabList>
+          <Item key={cons.USERS.TPO.type}>{cons.USERS.TPO.text}</Item>
+          <Item key={cons.USERS.STUDENT.type}>{cons.USERS.STUDENT.text}</Item>
+        </TabList>
+        <TabPanels>
+          <Item key={cons.USERS.TPO.type}>
+            <View paddingX="size-100" paddingY="size-400">
+              <AddTpo />
+            </View>
+          </Item>
+          <Item key={cons.USERS.STUDENT.type}>
+            <View paddingX="size-100" paddingY="size-400">
+              <AddStudent />
+            </View>
+          </Item>
+        </TabPanels>
+      </Tabs>
+    </View>
   );
 }
 

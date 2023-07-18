@@ -20,6 +20,7 @@ import {
   Item,
   Button,
 } from "@adobe/react-spectrum";
+import UserEdit from "@spectrum-icons/workflow/UserEdit";
 import { ToastQueue } from "@react-spectrum/toast";
 import Delete from "@spectrum-icons/workflow/Delete";
 import { ActionBar, ActionBarContainer } from "@react-spectrum/actionbar";
@@ -213,6 +214,13 @@ function StudentList({ role }) {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <UserEdit />
+          <Heading level={2}>View Students</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <SearchField
         label="Search"
         onSubmit={handleFilter}
