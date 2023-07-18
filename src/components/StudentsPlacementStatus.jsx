@@ -11,6 +11,7 @@ import {
   Item,
   TextField,
   Header,
+  Content,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import { doc, updateDoc, onSnapshot } from "@firebase/firestore";
@@ -38,6 +39,8 @@ function StudentPlacementStatus() {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [salaryPackage, setSalaryPackage] = useState(null);
   const [revokeOfferLetterStatus, setRevokeOfferLetterStatus] = useState(null);
+  const [isPlaced, setIsPlaced] = useState(null);
+  const [isPlacedAt, setIsPlacedAt] = useState(null);
 
   const companies = useCompanies();
 
@@ -75,6 +78,12 @@ function StudentPlacementStatus() {
           setOfferLetterDownloadLink(data.offerLetter);
         } else {
           setIsOfferLetterAvailable(false);
+        }
+        if (data.isPlaced) {
+          setIsPlaced(data.isPlaced);
+        }
+        if (data.isPlacedAt) {
+          setIsPlacedAt(data.isPlacedAt);
         }
       } else {
         console.log("data does not exist");
@@ -156,8 +165,15 @@ function StudentPlacementStatus() {
       <Flex direction="column" alignItems="start" gap={"size-200"}>
         <Heading level={"4"}>
           Your current placement status:
-          {user.isPlaced ? " Placed" : " Not Placed"}
+          {isPlaced ? " Placed" : " Not Placed"}
         </Heading>
+        {isPlaced ? (
+          <View>
+            <Content>
+              Congratulations! You have been placed at {isPlacedAt.companyName}.
+            </Content>
+          </View>
+        ) : null}
         {revokeOfferLetterStatus ? (
           <View>
             <Header>
