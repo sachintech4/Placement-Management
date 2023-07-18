@@ -19,6 +19,7 @@ import {
   View,
   Button,
 } from "@adobe/react-spectrum";
+import ExperienceAddTo from "@spectrum-icons/workflow/ExperienceAddTo";
 import { useAsyncList } from "react-stately";
 import { db } from "../firebase-config";
 import { doc, getDoc, onSnapshot, writeBatch } from "@firebase/firestore";
@@ -162,6 +163,13 @@ function ActivePlacements() {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <ExperienceAddTo />
+          <Heading level={2}>Active Placements</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <SearchField
         label="Search"
         onSubmit={handleFilter}

@@ -13,6 +13,7 @@ import {
   Header,
   Content,
 } from "@adobe/react-spectrum";
+import Artboard from "@spectrum-icons/workflow/Artboard";
 import { ToastQueue } from "@react-spectrum/toast";
 import { doc, updateDoc, onSnapshot } from "@firebase/firestore";
 import {
@@ -154,11 +155,13 @@ function StudentPlacementStatus() {
   };
 
   return (
-    <View
-      paddingLeft={"size-400"}
-      paddingRight={"size-400"}
-      paddingTop={"size-200"}
-    >
+    <View paddingLeft={"size-200"} paddingRight={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <Artboard />
+          <Heading level={2}>Placement Status</Heading>
+        </Flex>
+      </View>
       <View paddingTop={"size-200"} paddingBottom={"size-200"}>
         <Divider size="M" />
       </View>

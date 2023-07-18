@@ -17,6 +17,7 @@ import {
   Grid,
   View,
 } from "@adobe/react-spectrum";
+import WebPages from "@spectrum-icons/workflow/WebPages";
 import { AuthUserContext } from "../contexts";
 import { db } from "../firebase-config";
 import { doc, onSnapshot } from "@firebase/firestore";
@@ -103,6 +104,13 @@ function PlacementsAppliedTo() {
 
   return (
     <Flex height="100%" width="100%" direction={"column"} gap={"size-200"}>
+      <View paddingX="size-200" paddingTop="size-200">
+        <Flex gap={"size-125"}>
+          <WebPages />
+          <Heading level={2}>Placements Appiled To</Heading>
+        </Flex>
+      </View>
+      <Divider size="M" />
       <SearchField
         label="Search"
         onSubmit={handleFilter}
