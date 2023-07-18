@@ -158,7 +158,7 @@ function AddNewPlacementDrive() {
             <Well>Company location: {selectedCompany.location}</Well>
             <Well>Company email: {selectedCompany.email}</Well>
           </Flex>
-          <View>
+          <View padding="size-200">
             <ReactQuill
               onChange={setCompanyDescription}
               modules={{
