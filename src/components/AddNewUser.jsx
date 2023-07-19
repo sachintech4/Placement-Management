@@ -64,9 +64,17 @@ function AddTpo() {
       return;
     }
     if (!details.email.match(cons.REGEXS.VALID_EMAIL)) {
-      ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
-      return;
+      if (!details.email.includes("@")) {
+        ToastQueue.negative("@ is missing from the email address", {
+          timeout: 1000,
+        });
+        return;
+      } else {
+        ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
+        return;
+      }
     }
+
     if (!details.id) {
       ToastQueue.negative("Please provide the ID number", { timeout: 1000 });
       return;
@@ -293,8 +301,15 @@ function AddStudent() {
       return;
     }
     if (!details.email.match(cons.REGEXS.VALID_EMAIL)) {
-      ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
-      return;
+      if (!details.email.includes("@")) {
+        ToastQueue.negative("@ is missing from the email address", {
+          timeout: 1000,
+        });
+        return;
+      } else {
+        ToastQueue.negative("Please provide a valid Email", { timeout: 1000 });
+        return;
+      }
     }
     if (!details.prn) {
       ToastQueue.negative("Please provide the PRN number", { timeout: 1000 });
