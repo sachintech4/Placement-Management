@@ -117,6 +117,8 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
           const IconComponent = renderIcon(opt.icon);
           return (
             <ActionButton
+              staticColor="white"
+              isQuiet
               key={`${index}${opt.text}`}
               onPress={() => {
                 onOptionSelect(opt);
@@ -133,6 +135,8 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
           const IconComponent = renderIcon(opt.icon);
           return (
             <ActionButton
+              staticColor="white"
+              isQuiet
               key={`${index}${opt.text}`}
               onPress={() => {
                 onOptionSelect(opt);
@@ -149,6 +153,8 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
           const IconComponent = renderIcon(opt.icon);
           return (
             <ActionButton
+              staticColor="white"
+              isQuiet
               key={`${index}${opt.text}`}
               onPress={() => {
                 onOptionSelect(opt);
@@ -224,6 +230,8 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
             </Item>
           </ListBox> */}
           <ActionButton
+            staticColor="white"
+            isQuiet
             onPress={() =>
               onOptionSelect(cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS)
             }
@@ -231,7 +239,7 @@ function Sidebar({ gridArea, role, onOptionSelect }) {
             <Settings />
             <Text>{cons.SIDEBARS.COMMON.PROFILE_AND_SETTINGS.text}</Text>
           </ActionButton>
-          <ActionButton onPress={logOut}>
+          <ActionButton staticColor="white" isQuiet onPress={logOut}>
             <LogOut />
             <Text>{cons.SIDEBARS.COMMON.LOGOUT.text}</Text>
           </ActionButton>

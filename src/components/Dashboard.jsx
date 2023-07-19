@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Grid } from "@adobe/react-spectrum";
+import { Grid, View } from "@adobe/react-spectrum";
 import { AuthUserContext } from "../contexts";
 import cons from "../cons";
 import Sidebar from "./Sidebar";
@@ -23,25 +23,27 @@ function Dashboard() {
     };
     fetchUserDashboard();
   }, [authUser]);
-  
+
   return (
     <Grid
       height="100%"
       areas={["sidebar content"]}
       columns={["size-3600", "auto"]}
     >
-      <Sidebar
-        gridArea="sidebar"
-        role={role}
-        onOptionSelect={setSidebarOption}
-      />
+      <View backgroundColor="static-blue-600">
+        <Sidebar
+          gridArea="sidebar"
+          role={role}
+          onOptionSelect={setSidebarOption}
+        />
+      </View>
       <Content
         gridArea="content"
         role={role}
         selectedSidebarOption={selectedSidebarOption}
       />
     </Grid>
-  )
+  );
 }
 
 export default Dashboard;

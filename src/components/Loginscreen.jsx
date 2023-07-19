@@ -88,7 +88,7 @@ function LoginScreen() {
         >
           <Image src={logo} alt="TIMSCDR Logo"></Image>
         </View>
-        <Heading level={1}>Placement Manager</Heading>
+        <Heading level={3}>Placement Management System</Heading>
       </Flex>
       <Flex gridArea="form" justifyContent="center" alignItems="center">
         <View
