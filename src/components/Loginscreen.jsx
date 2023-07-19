@@ -7,6 +7,10 @@ import {
   View,
   Image,
   Heading,
+  Content,
+  Dialog,
+  Divider,
+  DialogContainer,
 } from "@adobe/react-spectrum";
 import { ToastQueue } from "@react-spectrum/toast";
 import { useState } from "react";
@@ -21,6 +25,7 @@ import logo from "../assets/logo.png";
 function LoginScreen() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [passwordResetForm, setPasswordResetForm] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -113,13 +118,37 @@ function LoginScreen() {
                 isRequired
               />
               <Button type="submit">Login</Button>
-              <Button variant="secondary" onPress={handleForgotPassword}>
+              <Button
+                variant="secondary"
+                onPress={() => setPasswordResetForm(true)}
+              >
                 Forgot Password
               </Button>
             </Flex>
           </Form>
         </View>
       </Flex>
+      <DialogContainer onDismiss={() => setPasswordResetForm(null)}>
+        {passwordResetForm && (
+          <Dialog isDismissable>
+            <Heading>Forgot Password?</Heading>
+            <Divider />
+            <Content>
+              <Flex gap="size-400">
+                <TextField
+                  label="Enter Email"
+                  type="email"
+                  onChange={setEmail}
+                  isRequired
+                />
+                <View alignSelf={"end"}>
+                  <Button onPress={handleForgotPassword}>Reset</Button>
+                </View>
+              </Flex>
+            </Content>
+          </Dialog>
+        )}
+      </DialogContainer>
     </Grid>
   );
 }
