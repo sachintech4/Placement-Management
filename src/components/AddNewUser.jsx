@@ -17,6 +17,7 @@ import {
   Divider,
   Heading,
 } from "@adobe/react-spectrum";
+import { parseDate } from "@internationalized/date";
 import UserAdd from "@spectrum-icons/workflow/UserAdd";
 import { ToastQueue } from "@react-spectrum/toast";
 import cons from "../cons";
@@ -209,6 +210,7 @@ function AddTpo() {
               label="Date of birth"
               gridArea={"dob"}
               value={dob}
+              maxValue={parseDate("2005-01-01")}
               onChange={setDob}
             />
             <View gridArea={"buttons"}>
@@ -476,6 +478,7 @@ function AddStudent() {
             <DatePicker
               label="Date of birth"
               gridArea={"dob"}
+              maxValue={parseDate("2005-01-01")}
               value={dob}
               onChange={setDob}
             />

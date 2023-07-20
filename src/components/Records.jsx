@@ -211,7 +211,11 @@ function Records() {
                   </View>
                   <View>
                     <Heading level={4}>Date of Birth</Heading>
-                    <Text>{`${detailsDialog.dob.day}/${detailsDialog.dob.month}/${detailsDialog.dob.year}`}</Text>
+                    {typeof detailsDialog.dob === "string" ? (
+                      <Text>{detailsDialog.dob}</Text>
+                    ) : (
+                      <Text>{`${detailsDialog.dob.day}/${detailsDialog.dob.month}/${detailsDialog.dob.year}`}</Text>
+                    )}
                   </View>
                   <View>
                     <Heading level={4}>Batch</Heading>

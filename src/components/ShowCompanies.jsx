@@ -134,7 +134,7 @@ function ShowCompanies() {
       <View paddingX="size-200" paddingTop="size-200">
         <Flex gap={"size-125"}>
           <ViewDetail />
-          <Heading level={2}>View Students</Heading>
+          <Heading level={2}>View Companies</Heading>
         </Flex>
       </View>
       <Divider size="M" />

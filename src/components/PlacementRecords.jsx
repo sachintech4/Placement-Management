@@ -115,12 +115,12 @@ function PlacementRecords() {
       if (res.ok) {
         const link = document.createElement("a");
         link.href = res.url;
-        link.donwload = `${placementDriveName}.xlsx`;
+        link.donwload = `${placementDriveName}_${placementYear}.xlsx`;
 
         link.click();
 
         ToastQueue.positive(
-          `Excel sheet for ${placementDriveName} downloaded`,
+          `Excel sheet for ${placementDriveName} ${placementYear} downloaded`,
           {
             timeout: 1000,
           }
