@@ -30,7 +30,7 @@ function Dashboard() {
       areas={["sidebar content"]}
       columns={["size-3600", "auto"]}
     >
-      <View backgroundColor="static-blue-600">
+      <View backgroundColor="static-blue-500">
         <Sidebar
           gridArea="sidebar"
           role={role}
