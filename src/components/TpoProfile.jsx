@@ -34,6 +34,13 @@ function TpoProfile() {
 
   const docRef = doc(db, cons.DB.COLLECTIONS.USERS_TPO, user.uid);
 
+  const handleContactNumber = (inputValue) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    const maxDigits = 10;
+    const limitedInput = numericInput.slice(0, maxDigits); // Limit to 10 digits
+    setContactNumberInput(limitedInput);
+  };
+
   // Get Tpo document using uid
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (doc) => {
@@ -175,7 +182,7 @@ function TpoProfile() {
             label="Contact Number"
             isReadOnly={!edit}
             value={contactNumberInput === null ? "" : contactNumberInput}
-            onChange={setContactNumberInput}
+            onChange={(e) => handleContactNumber(e)}
           />
           <View gridArea={"toggle"} justifySelf={"center"}>
             <ToggleButton

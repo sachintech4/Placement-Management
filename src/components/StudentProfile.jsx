@@ -56,6 +56,55 @@ function StudentProfile() {
 
   const docRef = doc(db, cons.DB.COLLECTIONS.USERS_STUDENT, user.uid);
 
+  const handleContactNumber = (inputValue) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    const maxDigits = 10;
+    const limitedInput = numericInput.slice(0, maxDigits); // Limit to 10 digits
+    setContactNumberInput(limitedInput);
+  };
+
+  const handle10Percentage = (inputValue, setPercentageInput) => {
+    const numericInput = inputValue.replace(/[^0-9.]/g, ""); // Remove non-numeric characters except for decimal point
+    setTenthPercentageInput(numericInput);
+  };
+  const handle12Percentage = (inputValue, setPercentageInput) => {
+    const numericInput = inputValue.replace(/[^0-9.]/g, ""); // Remove non-numeric characters except for decimal point
+    setTwelfthPercentageInput(numericInput);
+  };
+  const handleUgCgpa = (inputValue, setPercentageInput) => {
+    const numericInput = inputValue.replace(/[^0-9.]/g, ""); // Remove non-numeric characters except for decimal point
+    setUgCgpaInput(numericInput);
+  };
+  const handlePgCgpa = (inputValue, setPercentageInput) => {
+    const numericInput = inputValue.replace(/[^0-9.]/g, ""); // Remove non-numeric characters except for decimal point
+    setPgCgpaInput(numericInput);
+  };
+
+  const handle10YearOfPassing = (inputValue, setYearOfPassingInput) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, "");
+    const maxDigits = 10;
+    const limitedInput = numericInput.slice(0, maxDigits); // Remove non-numeric characters
+    setTenthYearOfPassingInput(limitedInput);
+  };
+  const handle12YearOfPassing = (inputValue, setYearOfPassingInput) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, "");
+    const maxDigits = 10;
+    const limitedInput = numericInput.slice(0, maxDigits); // Remove non-numeric characters
+    setTwelfthYearOfPassingInput(limitedInput);
+  };
+  const handleUgYearOfPassing = (inputValue, setYearOfPassingInput) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    const maxDigits = 10;
+    const limitedInput = numericInput.slice(0, maxDigits);
+    setUgYearOfPassingInput(limitedInput);
+  };
+  const handlePgYearOfPassing = (inputValue, setYearOfPassingInput) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    const maxDigits = 10;
+    const limitedInput = numericInput.slice(0, maxDigits);
+    setPgYearOfPassingInput(limitedInput);
+  };
+
   // Get Student document using uid
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (doc) => {
@@ -238,13 +287,6 @@ function StudentProfile() {
               />
             </Flex>
             <TextField
-              gridArea={"contactNumber"}
-              label="Contact Number"
-              isReadOnly={!edit}
-              value={contactNumberInput === null ? "" : contactNumberInput}
-              onChange={setContactNumberInput}
-            />
-            <TextField
               gridArea={"prn"}
               label="PRN"
               isReadOnly={!edit}
@@ -252,68 +294,91 @@ function StudentProfile() {
               onChange={setPrnInput}
             />
             <TextField
+              gridArea={"contactNumber"}
+              label="Contact Number"
+              isReadOnly={!edit}
+              value={contactNumberInput}
+              onChange={handleContactNumber}
+            />
+
+            <TextField
               gridArea={"tenthPercentage"}
               label="10th Percentage"
               isReadOnly={!edit}
-              value={tenthPercentageInput === null ? "" : tenthPercentageInput}
-              onChange={setTenthPercentageInput}
-            />
-            <TextField
-              gridArea={"tenthYearOfPassing"}
-              label="10th Year Of Passing"
-              isReadOnly={!edit}
-              value={
-                tenthYearOfPassingInput === null ? "" : tenthYearOfPassingInput
+              value={tenthPercentageInput}
+              onChange={(inputValue) =>
+                handle10Percentage(inputValue, setTenthPercentageInput)
               }
-              onChange={setTenthYearOfPassingInput}
             />
+
             <TextField
               gridArea={"twelfthPercentage"}
               label="12th Percentage"
               isReadOnly={!edit}
-              value={
-                twelfthPercentageInput === null ? "" : twelfthPercentageInput
+              value={twelfthPercentageInput}
+              onChange={(inputValue) =>
+                handle12Percentage(inputValue, setTwelfthPercentageInput)
               }
-              onChange={setTwelfthPercentageInput}
             />
+
+            <TextField
+              gridArea={"tenthYearOfPassing"}
+              label="10th Year Of Passing"
+              isReadOnly={!edit}
+              value={tenthYearOfPassingInput}
+              onChange={(inputValue) =>
+                handle10YearOfPassing(inputValue, setTenthYearOfPassingInput)
+              }
+            />
+
             <TextField
               gridArea={"twelfthYearOfPassing"}
               label="12th Year Of Passing"
               isReadOnly={!edit}
-              value={
-                twelfthYearOfPassingInput === null
-                  ? ""
-                  : twelfthYearOfPassingInput
+              value={twelfthYearOfPassingInput}
+              onChange={(inputValue) =>
+                handle12YearOfPassing(inputValue, setTwelfthYearOfPassingInput)
               }
-              onChange={setTwelfthYearOfPassingInput}
             />
+
             <TextField
               gridArea={"ugCgpa"}
               label="Under Graduate CGPA"
               isReadOnly={!edit}
-              value={ugCgpaInput === null ? "" : ugCgpaInput}
-              onChange={setUgCgpaInput}
+              value={ugCgpaInput}
+              onChange={(inputValue) =>
+                handleUgCgpa(inputValue, setUgCgpaInput)
+              }
             />
+
             <TextField
               gridArea={"ugYearOfPassing"}
-              label="under Graduate Year Of Passing"
+              label="Under Graduate Year Of Passing"
               isReadOnly={!edit}
-              value={ugYearOfPassingInput === null ? "" : ugYearOfPassingInput}
-              onChange={setUgYearOfPassingInput}
+              value={ugYearOfPassingInput}
+              onChange={(inputValue) =>
+                handleUgYearOfPassing(inputValue, setUgYearOfPassingInput)
+              }
             />
+
             <TextField
               gridArea={"pgCgpa"}
               label="Post Graduate CGPA"
               isReadOnly={!edit}
-              value={pgCgpaInput === null ? "" : pgCgpaInput}
-              onChange={setPgCgpaInput}
+              value={pgCgpaInput}
+              onChange={(inputValue) =>
+                handlePgCgpa(inputValue, setPgCgpaInput)
+              }
             />
+
             <TextField
               gridArea={"pgYearOfPassing"}
               label="Post Graduate Year Of Passing"
               isReadOnly={!edit}
-              value={pgYearOfPassingInput === null ? "" : pgYearOfPassingInput}
-              onChange={setPgYearOfPassingInput}
+              value={pgYearOfPassingInput}
+              onChange={(inputValue) =>
+                handlePgYearOfPassing(inputValue, setPgYearOfPassingInput)
+              }
             />
             <TextField
               gridArea={"isPlaced"}
