@@ -29,6 +29,19 @@ function AddTpo() {
   const [dob, setDob] = useState(null);
   const tpos = useTpos();
   const [file, setFile] = useState(null);
+  const [id, setID] = useState("");
+
+  const handleIdInput = (inputValue) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+    if (/^[0-9]+$/.test(numericInput)) {
+      setID(numericInput);
+    } else if (numericInput === "") {
+      setID("");
+    } else {
+      // Ignore the input if it's not a number
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +51,7 @@ function AddTpo() {
     const firstName = data.get("first-name").trim();
     const lastName = data.get("last-name").trim();
     const email = data.get("email").trim();
-    const id = data.get("id-number").trim();
+    // const id = data.get("id-number").trim();
 
     // todo: input sanitsation and validation
     const details = {
@@ -115,6 +128,7 @@ function AddTpo() {
         // Clear the form by resetting the state values
         setGender(null);
         setDob(null);
+        setID("");
         form.reset(); // Reset the form fields
       } else {
         throw { code: resJson.code, message: resJson.message };
@@ -196,8 +210,10 @@ function AddTpo() {
               label="ID"
               gridArea={"id-no"}
               name="id-number"
-              inputMode="numeric"
-              pattern="^\d*$"
+              value={id}
+              onChange={(e) => {
+                handleIdInput(e);
+              }}
             />
             <MenuTrigger gridArea={"gender"}>
               <ActionButton>{gender || "Select Gender"}</ActionButton>
@@ -264,6 +280,45 @@ function AddStudent() {
   const [dob, setDob] = useState(null);
   const [file, setFile] = useState(null);
   const students = useStudents();
+  const [prn, setPrn] = useState("");
+  const [rollNo, setRollNo] = useState("");
+  const [batch, setBatch] = useState("");
+
+  const handlePrnInput = (inputValue) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+    if (/^[0-9]+$/.test(numericInput)) {
+      setPrn(numericInput);
+    } else if (numericInput === "") {
+      setPrn("");
+    } else {
+      // Ignore the input if it's not a number
+    }
+  };
+
+  const handleRollNoInput = (inputValue) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+    if (/^[0-9]+$/.test(numericInput)) {
+      setRollNo(numericInput);
+    } else if (numericInput === "") {
+      setRollNo("");
+    } else {
+      // Ignore the input if it's not a number
+    }
+  };
+
+  const handleBatchInput = (inputValue) => {
+    const numericInput = inputValue.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+    if (/^[0-9]+$/.test(numericInput)) {
+      setBatch(numericInput);
+    } else if (numericInput === "") {
+      setBatch("");
+    } else {
+      // Ignore the input if it's not a number
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -273,20 +328,20 @@ function AddStudent() {
     const firstName = data.get("first-name").trim();
     const lastName = data.get("last-name").trim();
     const email = data.get("email").trim();
-    const prn = data.get("prn-number").trim();
-    const rollNo = data.get("roll-no").trim();
-    const batch = data.get("batch").trim();
+    // const prn = data.get("prn-number").trim();
+    // const rollNo = data.get("roll-no").trim();
+    // const batch = data.get("batch").trim();
 
     const details = {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      prn: prn,
-      rollNo: rollNo,
+      prn: prn.trim(),
+      rollNo: rollNo.trim(),
       gender: gender,
       dob: dob,
       role: "student",
-      batch: batch,
+      batch: batch.trim(),
     };
 
     // validation
@@ -377,6 +432,9 @@ function AddStudent() {
         // Clear the form by resetting the state values
         setGender(null);
         setDob(null);
+        setPrn("");
+        setRollNo("");
+        setBatch("");
         form.reset(); // Reset the form fields
       } else {
         throw { code: resJson.code, message: resJson.message };
@@ -462,11 +520,15 @@ function AddStudent() {
               label="PRN number"
               gridArea={"prn-no"}
               name="prn-number"
+              value={prn}
+              onChange={(e) => handlePrnInput(e)}
             />
             <TextField
               label="Roll number"
               gridArea={"roll-no"}
               name="roll-no"
+              value={rollNo}
+              onChange={(e) => handleRollNoInput(e)}
             />
             <MenuTrigger gridArea={"gender"}>
               <ActionButton>{gender || "Select Gender"}</ActionButton>
@@ -482,7 +544,13 @@ function AddStudent() {
               value={dob}
               onChange={setDob}
             />
-            <TextField label="Batch" gridArea={"batch"} name="batch" />
+            <TextField
+              label="Batch"
+              gridArea={"batch"}
+              name="batch"
+              value={batch}
+              onChange={(e) => handleBatchInput(e)}
+            />
             <View gridArea={"buttons"}>
               <Button type="submit">Register</Button>
             </View>
