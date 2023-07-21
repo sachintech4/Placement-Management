@@ -44,6 +44,7 @@ function LoginScreen() {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error("failed to sign in user");
+      ToastQueue.negative("Enter proper credentials.", { timeout: 1000 });
       console.error(error.message);
     }
   };
